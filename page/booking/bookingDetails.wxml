@@ -1,0 +1,47 @@
+<view class="container">
+  <scroll-view scroll-y="true">
+    <view class="graySpace"></view>
+     <view class="item-avatar-xs" bindtap="bindUpdateMyInfo">
+      <view>
+        <text class="title">详细信息:</text>
+        <text class="content"></text>
+      </view>
+    </view>
+
+    <view class="graySpace"></view>
+ <view class="item-avatar-xs" bindtap="bindUpdateMyInfo">
+      <view>
+        <text class="title">主预约人:</text>
+        <text class="content"></text>
+      </view>
+    </view>
+ <view class="item-avatar-xs" bindtap="bindUpdateMyInfo">
+      <view>
+        <text class="title">被预约人:</text>
+        <text class="content"></text>
+      </view>
+    </view>
+ 
+ <view class="item-avatar-xs" bindtap="bindUpdateMyInfo">
+      <view>
+        <text class="title">时间:</text>
+        <text class="content"></text>
+      </view>
+    </view>
+ <view class="item-avatar-xs" bindtap="bindUpdateMyInfo">
+      <view>
+        <text class="title">地点:</text>
+        <text class="content"></text>
+      </view>
+    </view>
+    <view class="item-avatar-xs" bindtap="bindUpdateMyInfo">
+      <view>
+        <text class="title">留言:</text>
+        <text class="content"></text>
+      </view>
+    </view>
+   
+  </scroll-view>
+
+
+</view>

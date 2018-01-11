@@ -1,0 +1,43 @@
+{
+  "pages": [
+    "page/booking/bookingList",
+    "page/booking/booking",
+    "page/me/me",
+    "page/me/update",
+    "page/calendar/calendar",
+    "page/booking/bookingDetails"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "WeChat",
+    "navigationBarTextStyle": "black",
+    "enablePullDownRefresh": true
+  },
+  "tabBar": {
+    "color": "#dddddd",
+    "selectedColor": "#3cc51f",
+    "borderStyle": "black",
+    "backgroundColor": "#ffffff",
+    "list": [
+      {
+        "pagePath": "page/booking/bookingList",
+        "iconPath": "image/list.png",
+        "selectedIconPath": "image/listHL.png",
+        "text": "预约列表"
+      },
+      {
+        "pagePath": "page/booking/booking",
+        "iconPath": "image/wechat.png",
+        "selectedIconPath": "image/wechatHL.png",
+        "text": "新建预约"
+      },
+      {
+        "pagePath": "page/me/me",
+        "iconPath": "image/user.png",
+        "selectedIconPath": "image/userHL.png",
+        "text": "我"
+      }
+    ]
+  }
+}

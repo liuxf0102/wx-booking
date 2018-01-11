@@ -1,0 +1,29 @@
+<view class="page" xmlns:wx="http://www.w3.org/1999/xhtml">
+
+  <view>
+    <view class="weui-cells__title">更新用户信息</view>
+    <view class="weui-cells weui-cells_after-title">
+      <view class="weui-cell weui-cell_input">
+        <view class="weui-cell__hd">
+          <view class="weui-label">真实姓名:</view>
+        </view>
+        <view class="weui-cell__bd">
+          <input class="weui-input" placeholder="请输入姓名" value="{{myInfo.real_name}}" maxlength='10' bindinput='inputRealName' />
+        </view>
+      </view>
+      <view class="weui-cell weui-cell_input weui-cell_vcode">
+        <view class="weui-cell__hd">
+          <view class="weui-label">手机号码:</view>
+        </view>
+        <view class="weui-cell__bd">
+          <input class="weui-input" placeholder="请输入手机号" value="{{myInfo.mobile}}" maxlength='11' bindinput='inputMobile' />
+        </view>
+
+      </view>
+
+    </view>
+    <view class="weui-btn-area">
+      <button class="weui-btn" type="primary" disabled="{{realNameIsReady&&mobileIsReady?false:true}}" bindtap="bindUpdateUserInfo">更新数据</button>
+    </view>
+  </view>
+</view>

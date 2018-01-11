@@ -1,0 +1,47 @@
+{
+	"description": "项目配置文件。",
+	"setting": {
+		"urlCheck": false,
+		"es6": true,
+		"postcss": true,
+		"minified": true,
+		"newFeature": true
+	},
+	"compileType": "miniprogram",
+	"libVersion": "1.7.2",
+	"appid": "wx5699f282563037ea",
+	"projectname": "AppointmentBook",
+	"condition": {
+		"search": {
+			"current": -1,
+			"list": []
+		},
+		"conversation": {
+			"current": -1,
+			"list": []
+		},
+		"miniprogram": {
+			"current": 2,
+			"list": [
+				{
+					"id": -1,
+					"name": "me",
+					"pathName": "pages/me/me",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "index",
+					"pathName": "page/booking/booking",
+					"query": "1000-1001-undefined"
+				},
+				{
+					"id": -1,
+					"name": "indexList",
+					"pathName": "page/booking/bookingList",
+					"query": "1000-1001-undefined"
+				}
+			]
+		}
+	}
+}

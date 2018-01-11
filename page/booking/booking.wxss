@@ -1,0 +1,38 @@
+.space{
+  padding-left: 40rpx;
+  font-size: 12px;
+  min-height: 30rpx;
+}
+.graySpace{
+  padding-left: 40rpx;
+  background: #eee;
+  font-size: 12px;
+  min-height: 30rpx;
+}
+.button-line{
+  display: flex;
+  padding: 20rpx 20rpx;
+  border-top: 1rpx solid #eee;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.view-button{
+  border: 4rpx solid #eee;
+  padding: 10rpx 10rpx 10rpx 10rpx;
+}
+.view-button-selected{
+  border: 4rpx solid #eee;
+  background: greenyellow;
+  padding: 10rpx 10rpx 10rpx 10rpx;
+}
+.view-show{
+  display: block;
+}
+.view-hide{
+  display: none;
+}
+.image_qrcode{
+  width: 700rpx;
+  height: 700rpx;
+}

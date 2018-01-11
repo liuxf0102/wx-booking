@@ -1,0 +1,68 @@
+<!--pages/aboutme/aboutmyInfo.wxml-->
+<view class="container">
+  <scroll-view scroll-y="true">
+    <view class="graySpace"></view>
+    <view class="item-avatar-lg">
+      <image bindtap="bindUpdateMyInfo" class="userinfo-avatar" src="{{userInfo.avatarUrl}}" background-size="cover"></image>
+
+      <view class="padding-left">
+        <view class="flex">
+          <text class="title">{{myInfo.real_name}}</text>
+        </view>
+        <view class="flex">
+          <text class="sub_title">昵称：{{userInfo.nickName}}</text>
+        </view>
+
+      </view>
+    </view>
+
+    <view class="graySpace"></view>
+    <view class="item-avatar-xs" id="real_name" bindtap="bindUpdateMyInfo">
+      <view>
+        <text class="title">姓名:</text>
+        <text class="content">{{myInfo.real_name}}</text>
+      </view>
+    </view>
+    <view class="item-avatar-xs" bindtap="bindUpdateMyInfo">
+
+      <view>
+        <text class="title">电话:</text>
+        <text class="content">{{myInfo.mobile}}</text>
+      </view>
+    </view>
+    <!--
+    <view class="item-avatar-xs" id="job_title" bindtap="bindUpdateMyInfo">
+      <view>
+        <text class="title">职称:</text>
+        <text class="content">{{myInfo.job_title}}</text>
+      </view>
+    </view>
+    <view class="item-avatar-xs" bindtap="bindUpdateMyInfo">
+      <view>
+        <text class="title">科室:</text>
+        <text class="content">{{myInfo.job_office}}</text>
+      </view>
+    </view>
+    <view class="item-avatar-xs" bindtap="bindUpdateMyInfo">
+      <view>
+        <text class="title">地址:</text>
+        <text class="content">{{myInfo.job_location}}</text>
+      </view>
+    </view>
+    <view class="item-avatar-xs" bindtap="bindUpdateMyInfo">
+      <view>
+        <text class="title">擅长:</text>
+        <text class="content">{{myInfo.goodat}}</text>
+      </view>
+    </view>
+    -->
+    <view class="graySpace"></view>
+    <view class="item-avatar-xs" bindtap="bindUpdateMyInfo">
+      <view>
+        <text class="title">备注:</text>
+        <text class="content"></text>
+      </view>
+    </view>
+
+  </scroll-view>
+</view>

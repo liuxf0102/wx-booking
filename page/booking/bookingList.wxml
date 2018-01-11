@@ -1,0 +1,52 @@
+<view class="container">
+  <scroll-view scroll-y="true">
+    <view class="graySpace"></view>
+    <view class="button-line" bindtouchstart="touchStart" bindtouchmove="touchMove" bindtouchend="touchEnd">
+      <view class="{{selectedWeekday==1? 'view-button-selected' : 'view-button' }}" data-idx="1" bindtap='setWeekDay'>
+        <view class="view-weekday">一</view>
+        <view class="view-day">{{day[0]}}:{{dayBooking[0]}}</view>
+      </view>
+      <view class="{{selectedWeekday==2? 'view-button-selected' : 'view-button' }}" data-idx="2" bindtap='setWeekDay'>
+        <view class="view-weekday">二</view>
+        <view class="view-day">{{day[1]}}:{{dayBooking[1]}}</view>
+      </view>
+      <view class="{{selectedWeekday==3? 'view-button-selected' : 'view-button' }}" data-idx="3" bindtap='setWeekDay'>
+        <view class="view-weekday">三</view>
+        <view class="view-day">{{day[2]}}:{{dayBooking[2]}}</view>
+      </view>
+      <view class="{{selectedWeekday==4? 'view-button-selected' : 'view-button' }}" data-idx="4" bindtap='setWeekDay'>
+        <view class="view-weekday">四</view>
+        <view class="view-day">{{day[3]}}:{{dayBooking[3]}}</view>
+      </view>
+
+      <view class="{{selectedWeekday==5? 'view-button-selected' : 'view-button' }}" data-idx="5" bindtap='setWeekDay'>
+        <view class="view-weekday">五</view>
+        <view class="view-day">{{day[4]}}:{{dayBooking[4]}}</view>
+      </view>
+
+      <view class="{{selectedWeekday==6? 'view-button-selected' : 'view-button' }}" data-idx="6" bindtap='setWeekDay'>
+        <view class="view-weekday">六</view>
+        <view class="view-day">{{day[5]}}:{{dayBooking[5]}}</view>
+      </view>
+
+      <view class="{{selectedWeekday==7? 'view-button-selected' : 'view-button' }}" data-idx="7" bindtap='setWeekDay'>
+        <view class="view-weekday">日</view>
+        <view class="view-day">{{day[6]}}:{{dayBooking[6]}}</view>
+      </view>
+    </view>
+
+    <view class="graySpace"></view>
+
+    <view wx:for="{{bookings}}" wx:key="{{item.id}}">
+      <view class="item-avatar-xs" data-bookingid="{{item.id}}" bindtap='tapGoBookingDetails'>
+        <view>
+          <text class="title">{{item.real_name}}</text>
+          <text class="content">{{item.mobile}}</text>
+        </view>
+      </view>
+    </view>
+
+  </scroll-view>
+
+
+</view>

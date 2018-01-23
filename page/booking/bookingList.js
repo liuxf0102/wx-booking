@@ -372,7 +372,7 @@ Page({
       curDate.setDate(curDate.getDate() - 1);
       tmpDay[curWeekday - i] = curDay;
       //set tmpDayClass
-      console.log("curDay:" + (curWeekday - i)+":"+ curDay);
+     // console.log("curDay:" + (curWeekday - i)+":"+ curDay);
       
       if (curDate.getTime() > (new Date().getTime()-25*3600*1000)){
         tmpDayClass[curWeekday - i]='text-day-count-red'; 
@@ -386,7 +386,7 @@ Page({
       var curDay = curDate.getDate();
       curDate.setDate(curDate.getDate() + 1);
       tmpDay[i] = curDay;
-      console.log("curDay:" +i+":"+ curDay);
+     // console.log("curDay:" +i+":"+ curDay);
       //set tmpDayClass
       if (curDate.getTime() > new Date().getTime()) {
         tmpDayClass[i] = 'text-day-count-red';
@@ -396,7 +396,7 @@ Page({
 
     }
     //console.log("tmpDay:" + tmpDay.join(" "));
-    console.log("tmpDayClass:" + tmpDayClass.join(" "));
+   // console.log("tmpDayClass:" + tmpDayClass.join(" "));
 
 
     this.setData({
@@ -422,11 +422,11 @@ Page({
     }
     var selectedWeekday = e.currentTarget.dataset.idx;
     var diffDay = (selectedWeekday - curWeekday);
-    console.log("curWeekday:" + curWeekday + ":selectWeekday" + selectedWeekday + ":diffDay:" + diffDay);
+   // console.log("curWeekday:" + curWeekday + ":selectWeekday" + selectedWeekday + ":diffDay:" + diffDay);
     curDate.setDate(curDate.getDate() + diffDay);
-    console.log("selDate:" + curDate);
+    //console.log("selDate:" + curDate);
     this.initWeekday(this.theCurrentPageLongTime + diffDay * 24 * 3600 * 1000);
-    console.log("setWeekday");
+    //console.log("setWeekday");
     this.setSelectedBookings();
   },
 

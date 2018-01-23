@@ -1,0 +1,62 @@
+<view class="page">
+  <view class="page__bd">
+    <view class="weui-tab">
+      <view class="weui-navbar">
+        <block wx:for="{{tabs}}" wx:key="*this">
+          <view id="{{index}}" class="weui-navbar__item {{activeIndex == index ? 'weui-bar__item_on' : ''}}" bindtap="tabClick">
+            <view class="weui-navbar__title">{{item}}</view>
+          </view>
+        </block>
+        <view class="weui-navbar__slider" style="left: {{sliderLeft}}px; transform: translateX({{sliderOffset}}px); -webkit-transform: translateX({{sliderOffset}}px);"></view>
+      </view>
+      <view class="weui-tab__panel">
+        <view class="weui-tab__content" hidden="{{activeIndex != 0}}">
+          <view class="weui-panel__bd">
+            <view class="weui-media-box weui-media-box_text">
+              <view class="weui-media-box__title weui-media-box__title_in-text">帮助中心</view>
+              <view class="weui-media-box__desc">让我帮你玩转简单实用，设计人性化的预约本小程序。</view>
+            </view>
+            <view class="weui-panel weui-panel_access">
+              <view class="weui-panel__hd">预约本乙方功能</view>
+              <view class="weui-panel__bd">
+                <view class="weui-media-box weui-media-box_text">
+                  <view class="weui-media-box__title weui-media-box__title_in-text">乙方扫码预约</view>
+                  <view class="weui-form-preview__value">直接用微信扫描甲方提供的小程序码，便可以向甲方申请预约，申请预约成功后，预约状态属于待审核状态。甲方审核通过后，便代表甲方同意了你的这个预约申请。为了要甲方知道你是谁，请输入电话号码和姓名。</view>
+                </view>
+              </view>
+
+            </view>
+          </view>
+        </view>
+        <view class="weui-tab__content" hidden="{{activeIndex != 1}}">
+          <view class="weui-cells weui-cells_after-title">
+            <view class="weui-cell" hover-class="weui-cell_active" wx:for="{{bookings}}" wx:key="{{item.id}}">
+              <view class="weui-cell__hd">
+                <image class="image" src="{{item.icon}}" />
+              </view>
+              <view class="weui-cell__bd">
+                <view data-bookingid="{{item.id}}" bindtap='tapBookingDetails'>{{item.real_name}}</view>
+                <view class="memo1">{{item.location_format}}</view>
+              </view>
+              <view class="weui-cell__ft">
+                <view data-bookingid="{{item.id}}" bindtap='tapBookingDetails'>{{item.month+"-"+item.day +" " +item.hour_format}}</view>
+                <view class="memo1">{{item.status_format}}</view>
+              </view>
+            </view>
+          </view>
+        </view>
+        <view class="weui-tab__content" hidden="{{activeIndex != 2}}">
+
+        </view>
+      </view>
+    </view>
+
+    <view class="weui-cells__tips"></view>
+
+    <view class="button-sp-area">
+
+
+
+    </view>
+  </view>
+</view>

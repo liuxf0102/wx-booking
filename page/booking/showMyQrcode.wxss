@@ -1,0 +1,6 @@
+/* page/booking/qrBooking.wxss */
+
+.image_qrcode{
+  width: 700rpx;
+  height: 700rpx;
+}

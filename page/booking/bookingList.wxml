@@ -1,52 +1,87 @@
-<view class="container">
-  <scroll-view scroll-y="true">
-    <view class="graySpace"></view>
-    <view class="button-line" bindtouchstart="touchStart" bindtouchmove="touchMove" bindtouchend="touchEnd">
-      <view class="{{selectedWeekday==1? 'view-button-selected' : 'view-button' }}" data-idx="1" bindtap='setWeekDay'>
-        <view class="view-weekday">一</view>
-        <view class="view-day">{{day[0]}}:{{dayBooking[0]}}</view>
-      </view>
-      <view class="{{selectedWeekday==2? 'view-button-selected' : 'view-button' }}" data-idx="2" bindtap='setWeekDay'>
-        <view class="view-weekday">二</view>
-        <view class="view-day">{{day[1]}}:{{dayBooking[1]}}</view>
-      </view>
-      <view class="{{selectedWeekday==3? 'view-button-selected' : 'view-button' }}" data-idx="3" bindtap='setWeekDay'>
-        <view class="view-weekday">三</view>
-        <view class="view-day">{{day[2]}}:{{dayBooking[2]}}</view>
-      </view>
-      <view class="{{selectedWeekday==4? 'view-button-selected' : 'view-button' }}" data-idx="4" bindtap='setWeekDay'>
-        <view class="view-weekday">四</view>
-        <view class="view-day">{{day[3]}}:{{dayBooking[3]}}</view>
-      </view>
+<view class="page" bindtouchstart="touchStart" bindtouchmove="touchMove" bindtouchend="touchEnd">
 
-      <view class="{{selectedWeekday==5? 'view-button-selected' : 'view-button' }}" data-idx="5" bindtap='setWeekDay'>
-        <view class="view-weekday">五</view>
-        <view class="view-day">{{day[4]}}:{{dayBooking[4]}}</view>
+  <view class="graySpace"></view>
+  <view class="button-line">
+    <view class="{{selectedWeekday==1? 'view-button-selected' : 'view-button' }} {{(today==(selectedYear+'-'+selectedMonth+'-'+day[0]))?'view-button-today':''}}" data-idx="1" bindtap='setWeekDay'>
+      <view class="view-weekday">一</view>
+      <view class="view-day">
+        <text>{{day[0]}}</text>
+        <text class="{{dayClass[0]}}">{{dayBooking[0]==0?"":":"+dayBooking[0]}}</text>
       </view>
-
-      <view class="{{selectedWeekday==6? 'view-button-selected' : 'view-button' }}" data-idx="6" bindtap='setWeekDay'>
-        <view class="view-weekday">六</view>
-        <view class="view-day">{{day[5]}}:{{dayBooking[5]}}</view>
+    </view>
+    <view class="{{selectedWeekday==2? 'view-button-selected' : 'view-button' }} {{(today==(selectedYear+'-'+selectedMonth+'-'+day[1]))?'view-button-today':''}}" data-idx="2" bindtap='setWeekDay'>
+      <view class="view-weekday">二</view>
+      <view class="view-day">
+        <text>{{day[1]}}</text>
+        <text class="{{dayClass[1]}}">{{dayBooking[1]==0?"":":"+dayBooking[1]}}</text>
       </view>
-
-      <view class="{{selectedWeekday==7? 'view-button-selected' : 'view-button' }}" data-idx="7" bindtap='setWeekDay'>
-        <view class="view-weekday">日</view>
-        <view class="view-day">{{day[6]}}:{{dayBooking[6]}}</view>
+    </view>
+    <view class="{{selectedWeekday==3? 'view-button-selected' : 'view-button' }} {{(today==(selectedYear+'-'+selectedMonth+'-'+day[2]))?'view-button-today':''}}" data-idx="3" bindtap='setWeekDay'>
+      <view class="view-weekday">三</view>
+      <view class="view-day">
+        <text>{{day[2]}}</text>
+        <text class="{{dayClass[2]}}">{{dayBooking[2]==0?"":":"+dayBooking[2]}}</text>
+      </view>
+    </view>
+    <view class="{{selectedWeekday==4? 'view-button-selected' : 'view-button' }} {{(today==(selectedYear+'-'+selectedMonth+'-'+day[3]))?'view-button-today':''}}" data-idx="4" bindtap='setWeekDay'>
+      <view class="view-weekday">四</view>
+      <view class="view-day">
+        <text>{{day[3]}}</text>
+        <text class="{{dayClass[3]}}">{{dayBooking[3]==0?"":":"+dayBooking[3]}}</text>
       </view>
     </view>
 
-    <view class="graySpace"></view>
+    <view class="{{selectedWeekday==5? 'view-button-selected' : 'view-button' }} {{(today==(selectedYear+'-'+selectedMonth+'-'+day[4]))?'view-button-today':''}}" data-idx="5" bindtap='setWeekDay'>
+      <view class="view-weekday">五</view>
+      <view class="view-day">
+        <text>{{day[4]}}</text>
+        <text class="{{dayClass[4]}}">{{dayBooking[4]==0?"":":"+dayBooking[4]}}</text>
+      </view>
+    </view>
 
-    <view wx:for="{{bookings}}" wx:key="{{item.id}}">
-      <view class="item-avatar-xs" data-bookingid="{{item.id}}" bindtap='tapGoBookingDetails'>
+    <view class="{{selectedWeekday==6? 'view-button-selected' : 'view-button' }} {{(today==(selectedYear+'-'+selectedMonth+'-'+day[5]))?'view-button-today':''}}" data-idx="6" bindtap='setWeekDay'>
+      <view class="view-weekday">六</view>
+      <view class="view-day">
+        <text>{{day[5]}}</text>
+        <text class="{{dayClass[5]}}">{{dayBooking[5]==0?"":":"+dayBooking[5]}}</text>
+      </view>
+    </view>
+
+    <view class="{{selectedWeekday==7? 'view-button-selected' : 'view-button' }} {{(today==(selectedYear+'-'+selectedMonth+'-'+day[6]))?'view-button-today':''}}" data-idx="7" bindtap='setWeekDay'>
+      <view class="view-weekday">日</view>
+      <view class="view-day">
+        <text>{{day[6]}}</text>
+        <text class="{{dayClass[6]}}">{{dayBooking[6]==0?"":":"+dayBooking[6]}}</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="graySpace"></view>
+  <view class="weui-cells weui-cells_after-title">
+
+    <view class="weui-cell" wx:for="{{bookings}}" wx:key="{{item.id}}">
+      <view class="weui-cell__hd">
+        <image class="image" src="{{item.icon}}" data-userid="{{item.userid2}}" data-name="{{item.real_name}}" bindtap="selectedUserid2" />
+      </view>
+      <view class="weui-cell__bd" hover-class="weui-cell_active">
+        <view data-bookingid="{{item.id}}" bindtap='tapBookingDetails'>{{item.name_format}}</view>
+        <view data-bookingid="{{item.id}}" bindtap='tapBookingDetails' class="memo1">{{item.memo1_format}}</view>
+      </view>
+      <view class="weui-cell__ft" hover-class="weui-cell_active">
+        <view data-bookingid="{{item.id}}" bindtap='tapBookingDetails'>{{item.hour_format}}</view>
         <view>
-          <text class="title">{{item.real_name}}</text>
-          <text class="content">{{item.mobile}}</text>
+        <text class="memo1">{{item.status_format}}</text>
+        <text class="{{item.prop_class_format==':修'?'text-red':'text-black'}}">{{item.prop_class_format}}</text>
         </view>
       </view>
     </view>
+  </view>
+  <view class="graySpace"></view>
 
-  </scroll-view>
 
+  <view class="weui-btn-area">
+    <button class="weui-btn" type="primary" disabled="{{buttonDisabled}}" bindtap="bindNewBooking">新建预约{{selectedUserid2Name}}</button>
+  </view>
+  <view class="space_900rpx"></view>
 
 </view>

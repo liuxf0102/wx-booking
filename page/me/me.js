@@ -57,6 +57,34 @@ Page({
       url: '/page/me/update',
     })
   },
+  bindShowMyQrcode:function(e)
+  {
+    wx.navigateTo({
+      url: '/page/booking/showMyQrcode',
+    })
+  },
+  bindHelp: function (e) {
+   // console.log("redirectTo:" + e.currentTarget.id);
+    wx.navigateTo({
+      url: '/page/me/help',
+    })
+  },
+  bindAbout: function (e) {
+    //console.log("redirectTo:" + e.currentTarget.id);
+    wx.navigateTo({
+      url: '/page/me/about',
+    })
+  },
+  bindQrcode:function(e){
+    wx.navigateTo({
+      url: '/page/booking/showMyQrcode',
+    })
+  },
+  bindUserid2Page:function(e){
+    wx.redirectTo({
+      url: '/page/booking/qrBookingList',
+    })
+  },
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
@@ -68,6 +96,7 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
+    
     this.setData({
       myInfo: wx.getStorageSync('MY_INFO')
     });

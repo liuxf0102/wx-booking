@@ -1,0 +1,13 @@
+/* page/booking/qrBookingList.wxss */
+.image{
+  float: left;
+  width: 100rpx;
+  height: 100rpx;
+  margin-right: 20rpx;
+  box-sizing: border-box;
+}
+.memo1 {
+  font-size: 26rpx;
+  color: #888;
+  padding-top: 10rpx;
+}

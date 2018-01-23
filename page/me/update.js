@@ -6,8 +6,10 @@ Page({
     myInfo: {},
     realName: "",
     mobile: "",
+    jobLocation:"",
     realNameIsReady: false,
     mobileIsReady: false,
+    buttonIsReady:true,
     tmpUserid: ""
 
   },
@@ -16,26 +18,29 @@ Page({
     var that = this;
 
 
-    //发起网络请求 restAPI QRCode
+    //发起网络请求 
     wx.request({
       url: getApp().globalData.SERVER_URL + '/user/update',
       method: 'put',
       data: {
         userid: that.data.myInfo.userid,
         real_name: that.data.realName,
-        mobile: that.data.mobile
+        mobile: that.data.mobile,
+        job_location: that.data.jobLocation
 
       },
       success: function (res) {
         console.log("userid:" + res.data[0].userid);
+        that.setData({
+          buttonIsReady:false
+        });
         //set userid 2 Storage
-        wx.showModal({
-          title: '系统提示',
-          content: '更新用户信息成功.',
-          showCancel: false
+        wx.showToast({
+          title: '更新用户信息成功',
         });
 
         getApp().reloadUserInfo();
+        
 
       }
     });
@@ -134,6 +139,15 @@ Page({
     this.setData({
       mobile: mobile
     });
+
+
+  },
+  inputJobLocation: function (e) {
+    if (e.detail.value.length >= 1) {
+      this.setData({
+        jobLocation: e.detail.value
+     })
+    }
 
 
   },

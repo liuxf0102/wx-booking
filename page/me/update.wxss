@@ -1,11 +1,4 @@
 /* pages/persons/persons.wxss */
-@import "/page/common/lib/weui.wxss";
-.graySpace{
-  padding-left: 40rpx;
-  background: #eee;
-  font-size: 12px;
-  min-height: 30rpx;
-}
 .item-avatar-lg,.item-avatar-md,.item-avatar-sm,.item-avatar-xs{
   display: flex;
   padding: 20rpx 20rpx;

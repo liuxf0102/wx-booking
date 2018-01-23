@@ -3,7 +3,7 @@
   <scroll-view scroll-y="true">
     <view class="graySpace"></view>
     <view class="item-avatar-lg">
-      <image bindtap="bindUpdateMyInfo" class="userinfo-avatar" src="{{userInfo.avatarUrl}}" background-size="cover"></image>
+      <image bindtap="bindShowMyQrcode" class="userinfo-avatar" src="{{userInfo.avatarUrl}}" background-size="cover"></image>
 
       <view class="padding-left">
         <view class="flex">
@@ -30,6 +30,14 @@
         <text class="content">{{myInfo.mobile}}</text>
       </view>
     </view>
+    <view class="item-avatar-xs" bindtap="bindUpdateMyInfo">
+      <view>
+        <text class="title">地址:</text>
+        <text class="content">{{myInfo.job_location}}
+        </text>
+      </view>
+    </view>
+    
     <!--
     <view class="item-avatar-xs" id="job_title" bindtap="bindUpdateMyInfo">
       <view>
@@ -43,12 +51,7 @@
         <text class="content">{{myInfo.job_office}}</text>
       </view>
     </view>
-    <view class="item-avatar-xs" bindtap="bindUpdateMyInfo">
-      <view>
-        <text class="title">地址:</text>
-        <text class="content">{{myInfo.job_location}}</text>
-      </view>
-    </view>
+    
     <view class="item-avatar-xs" bindtap="bindUpdateMyInfo">
       <view>
         <text class="title">擅长:</text>
@@ -57,12 +60,30 @@
     </view>
     -->
     <view class="graySpace"></view>
-    <view class="item-avatar-xs" bindtap="bindUpdateMyInfo">
+    <view class="item-avatar-xs" bindtap="bindQrcode">
       <view>
-        <text class="title">备注:</text>
+        <text class="title">我的二维码:</text>
         <text class="content"></text>
       </view>
     </view>
-
+    <view class="item-avatar-xs" bindtap="bindUserid2Page">
+      <view>
+        <text class="title">我是乙方:</text>
+        <text class="content"></text>
+      </view>
+    </view>
+    <view class="graySpace"></view>
+    <view class="item-avatar-xs" bindtap="bindHelp">
+      <view>
+        <text class="title">帮助与反馈:</text>
+        <text class="content"></text>
+      </view>
+    </view>
+<view class="item-avatar-xs" bindtap="bindAbout">
+      <view>
+        <text class="title">关于预约本:</text>
+        <text class="content"></text>
+      </view>
+    </view>
   </scroll-view>
 </view>

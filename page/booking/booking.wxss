@@ -3,12 +3,7 @@
   font-size: 12px;
   min-height: 30rpx;
 }
-.graySpace{
-  padding-left: 40rpx;
-  background: #eee;
-  font-size: 12px;
-  min-height: 30rpx;
-}
+
 .button-line{
   display: flex;
   padding: 20rpx 20rpx;

@@ -10,7 +10,7 @@
 	"compileType": "miniprogram",
 	"libVersion": "1.7.2",
 	"appid": "wx5699f282563037ea",
-	"projectname": "AppointmentBook",
+	"projectname": "wx-booking",
 	"condition": {
 		"search": {
 			"current": -1,
@@ -20,26 +20,42 @@
 			"current": -1,
 			"list": []
 		},
+		"game": {
+			"current": -1,
+			"list": []
+		},
 		"miniprogram": {
-			"current": 2,
+			"current": -1,
 			"list": [
 				{
-					"id": -1,
+					"id": 0,
 					"name": "me",
-					"pathName": "pages/me/me",
+					"pathName": "page/me/me",
 					"query": ""
 				},
 				{
 					"id": -1,
-					"name": "index",
-					"pathName": "page/booking/booking",
-					"query": "1000-1001-undefined"
+					"name": "扫码预约",
+					"pathName": "page/booking/qrBookingNew",
+					"query": ""
 				},
 				{
 					"id": -1,
-					"name": "indexList",
-					"pathName": "page/booking/bookingList",
-					"query": "1000-1001-undefined"
+					"name": "help",
+					"pathName": "page/me/help",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "预约详细信息",
+					"pathName": "page/booking/bookingDetails",
+					"query": "bookingId=1077"
+				},
+				{
+					"id": 4,
+					"name": "memo",
+					"pathName": "page/booking/memo1",
+					"query": "bookingId=1090"
 				}
 			]
 		}

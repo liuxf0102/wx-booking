@@ -6,7 +6,7 @@ App({
     logs.unshift(Date.now())
     wx.setStorageSync('logs', logs)
     var that = this;
-    console.log("App 0");
+    //console.log("App 0");
   
   },
 
@@ -15,33 +15,18 @@ App({
     this.globalData.userInfo = res.userInfo;
   },
 
-  getAccessToken: function () {
-    var that = this;
-    wx.request({
-      url: 'https://api.weixin.qq.com/cgi-bin/token',
-      data: {
-        appid: 'wx5699f282563037ea',
-        secret: '9f8dc89e304f4f0082598c60df5e1519',
-        grant_type: 'client_credential'
-      }, success: function (res) {
-        console.log("access_token:" + res.data.access_token);
-        that.globalData.accessToken = res.data.access_token;
 
-
-      }
-    });
-  },
 
   reloadUserInfo: function () {
 
     wx.getUserInfo({
       success: function (res) {
-        console.log("App 60");
+       // console.log("App 60");
         getApp().globalData.userInfo = res.userInfo;
         var openid = getApp().globalData.openid;
         var unionid = getApp().globalData.unionid;
         //set UserInfo 2 db :open_id,nickName,
-        console.log("App 61");
+     //   console.log("App 61");
         if (unionid != "") {
           //发起网络请求 restAPI QRCode
           wx.request({
@@ -57,6 +42,7 @@ App({
               console.log("userid:" + res.data[0].myInfo.userid);
               //set userid 2 Storage
               getApp().globalData.userid = res.data[0].myInfo.userid;
+              getApp().globalData.mobile = res.data[0].myInfo.mobile;
               wx.setStorageSync('MY_INFO', res.data[0].myInfo)
             }
           });
@@ -71,8 +57,10 @@ App({
     unionid:'',
     openid: '',
     mobile:'',
-    session_key:'',
-    accessToken: '',
+    nickName:'',
+    icon:'',
+    gender:'',
+    params:{},
     SERVER_URL:'https://www.4exam.cn'
     //SERVER_URL: 'http://10.6.217.17:8081'
     //SERVER_URL: 'http://192.168.31.123:8081'

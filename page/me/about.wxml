@@ -1,0 +1,37 @@
+<view class="page">
+  <view class="graySpace"></view>
+  <view class="weui-panel__bd">
+    <view class="weui-media-box weui-media-box_text">
+      <view class="weui-media-box__title weui-media-box__title_in-text">关于预约本 [1.2.4]</view>
+      <view class="weui-media-box__desc"></view>
+    </view>
+
+  </view>
+  <view class="graySpace"></view>
+  <view class="page__bd">
+
+    <view class="weui-panel weui-panel_access">
+      <view class="weui-panel__hd">更新历史</view>
+      <view class="weui-panel__bd">
+        <view class="weui-media-box weui-media-box_text">
+          <view class="weui-media-box__title weui-media-box__title_in-text">2018/1/21:添加留言功能</view>
+          <view class="weui-form-preview__value">乙方申请预约时，可以给甲方留言，方便审核通过你的预约申请，同时甲方也可以回复乙方的留言。</view>
+        </view>
+        <view class="weui-media-box weui-media-box_text">
+          <view class="weui-media-box__title weui-media-box__title_in-text">2018/1/20:添加扫码预约</view>
+          <view class="weui-form-preview__value">作为预约的甲方，我想做甩手掌柜，输入乙方信息，太麻烦了，那么你可以让乙方扫码进行新建预约。</view>
+        </view>
+
+      </view>
+
+    </view>
+    <view class="weui-panel weui-panel_access">
+
+
+
+    </view>
+
+  </view>
+
+
+</view>

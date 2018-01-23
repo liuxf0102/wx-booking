@@ -1,0 +1,30 @@
+<view class="page">
+  <view class="page__bd">
+    <view class="graySpace"></view>
+
+    <view class="weui-cell" hover-class="weui-cell_active">
+      <view class="weui-cell__hd">
+        <image class="image" src="{{myInfo.icon}}" />
+      </view>
+      <view class="weui-cell__bd">
+        <view>{{myInfo.real_name}}</view>
+        <view style="font-size: 13px;color: #888888;">{{myInfo.nickName}}</view>
+      </view>
+      <view class="weui-cell__ft">
+        <view>扫码申请预约</view>
+        <view></view>
+      </view>
+    </view>
+
+    <view class="graySpace"></view>
+    
+   <view class="view-center">
+    <image class="image_qrcode" src="{{qrcodeURL}}"></image>
+    </view>
+    <view class="weui-cells__tips">
+    提示：可以将该二维码打印出来，让对方扫码进行预约。扫码预约的信息，初始是待审核状态，您可以将其状态修改为审核通过，表示您同意了该预约信息。
+    </view>
+
+    
+  </view>
+</view>

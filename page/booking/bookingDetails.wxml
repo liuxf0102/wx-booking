@@ -1,47 +1,113 @@
-<view class="container">
-  <scroll-view scroll-y="true">
+<view class="page">
+  <view class="page__bd">
     <view class="graySpace"></view>
-     <view class="item-avatar-xs" bindtap="bindUpdateMyInfo">
-      <view>
-        <text class="title">详细信息:</text>
-        <text class="content"></text>
+
+    <view class="weui-cell" hover-class="weui-cell_active" data-id="{{booking.id}}" bindtap='tapBooking'>
+      <view class="weui-cell__hd">
+        <image class="image" src="{{booking.icon}}" />
+      </view>
+      <view class="weui-cell__bd">
+        <view>{{booking.real_name}}</view>
+        <view style="font-size: 13px;color: #888888;">{{booking.nick_name}}-{{booking.mobile}}</view>
+      </view>
+      <view class="weui-cell__ft">
+        <view>{{booking.status_format}}</view>
+        <view></view>
       </view>
     </view>
 
     <view class="graySpace"></view>
- <view class="item-avatar-xs" bindtap="bindUpdateMyInfo">
-      <view>
-        <text class="title">主预约人:</text>
-        <text class="content"></text>
-      </view>
-    </view>
- <view class="item-avatar-xs" bindtap="bindUpdateMyInfo">
-      <view>
-        <text class="title">被预约人:</text>
-        <text class="content"></text>
-      </view>
-    </view>
- 
- <view class="item-avatar-xs" bindtap="bindUpdateMyInfo">
-      <view>
-        <text class="title">时间:</text>
-        <text class="content"></text>
-      </view>
-    </view>
- <view class="item-avatar-xs" bindtap="bindUpdateMyInfo">
-      <view>
-        <text class="title">地点:</text>
-        <text class="content"></text>
-      </view>
-    </view>
-    <view class="item-avatar-xs" bindtap="bindUpdateMyInfo">
-      <view>
-        <text class="title">留言:</text>
-        <text class="content"></text>
-      </view>
-    </view>
-   
-  </scroll-view>
+    <view class="weui-cells__title">预约详细信息:</view>
+    <view class="weui-cells weui-cells_after-title">
 
+
+      <view class="weui-cell weui-cell_access">
+
+        <view class="weui-cell__hd">
+          <view class="weui-label">预约时间:</view>
+        </view>
+        <picker mode="date" value="{{date}}" disabled="{{datePickerDisabled}}" start="{{curYear+ '-' + curMonth + '-' + curDay}}" end="{{endYear+ '-' + endMonth + '-' + endDay}}" bindchange="bindDateChange">
+          <view class="weui-cell__bd">
+            {{booking.weekday_format}} {{booking.month}}-{{booking.day}} {{booking.hour_format}}
+          </view>
+        </picker>
+      </view>
+<view class="weui-cell weui-cell_access" >
+        <view class="weui-cell__hd">
+          <view class="weui-label" data-idx="{{booking.id}}" bindtap='tapPropClass'>预约类型:</view>
+        </view>
+        <view class="weui-cell__bd">
+         <text data-idx="{{booking.id}}" bindtap='tapPropClass'> {{booking.prop_class_format}}</text>
+        </view>
+      </view>
+      <view class="weui-cell weui-cell_access" hidden="{{booking.memo2==''?true:false}}">
+
+        <view class="weui-cell__hd">
+          <view class="weui-label">对方留言:</view>
+        </view>
+        <view class="weui-cell__bd">
+          <text class="booking-memo2">{{booking.memo2}}</text>
+        </view>
+      </view>
+
+      <view class="weui-cell weui-cell_access" hidden="{{booking.memo2==''?true:false}}">
+
+        <view class="weui-cell__bd">
+
+        </view>
+
+        <view class="view-right" bindtap='tapMemo2_1'>
+          <text class="booking-memo2"> {{booking.memo2_1}}-回复留言</text>
+        </view>
+      </view>
+
+
+      <view class="weui-cell weui-cell_access">
+        <view class="weui-cell__hd">
+          <view class="weui-label">创建时间:</view>
+        </view>
+        <view class="weui-cell__bd">
+          {{booking.c_time_format}}
+        </view>
+      </view>
+      <view class="weui-cell weui-cell_access">
+
+        <view class="weui-cell__bd">
+          <text class="booking-memo2">{{booking.memo1}}</text>
+        </view>
+
+      </view>
+      <view class="view-right_padding_30rpx" bindtap='tapMemo1'>
+        <text class="booking-memo2">更新备注</text>
+      </view>
+
+
+
+    </view>
+
+  </view>
+
+  <view class="space_30rpx"></view>
+  <view class="graySpace"></view>
+  <view class="weui-cells__title">预约历史:</view>
+
+  <view class="weui-cells weui-cells_after-title">
+
+    <view class="weui-cell" hover-class="weui-cell_active" wx:for="{{bookingHistory}}" wx:if="{{item.id != booking.id}}" wx:key="{{item.id}}"  >
+
+      <view class="weui-cell__bd">
+        <view data-bookingid="{{item.id}}" bindtap='tapBookingDetails'>{{item.year+'年'+item.month+'月'+item.day+'号'}}</view>
+        <view class="booking-memo1">{{item.memo1}}</view>
+      </view>
+      <view class="weui-cell__ft">
+        <view data-bookingid="{{item.id}}" bindtap='tapBookingDetails'>{{item.status_format}}</view>
+        <view></view>
+      </view>
+
+    </view>
+  </view>
+
+  <view class="graySpace"></view>
+  <view class="space_900rpx"></view>
 
 </view>

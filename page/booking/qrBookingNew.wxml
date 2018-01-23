@@ -1,0 +1,84 @@
+<view class="page">
+  <view class="page__bd">
+    <view class="weui-tab">
+      <view class="weui-navbar">
+        <block wx:for="{{tabs}}" wx:key="*this">
+          <view id="{{index}}" class="weui-navbar__item {{activeIndex == index ? 'weui-bar__item_on' : ''}}" bindtap="tabClick">
+            <view class="weui-navbar__title">{{item}}</view>
+          </view>
+        </block>
+        <view class="weui-navbar__slider" style="left: {{sliderLeft}}px; transform: translateX({{sliderOffset}}px); -webkit-transform: translateX({{sliderOffset}}px);"></view>
+      </view>
+      <view class="weui-tab__panel">
+        <view class="weui-tab__content" hidden="{{activeIndex != 0}}">
+
+
+          <view class="weui-cell" hover-class="weui-cell_active">
+            <view class="weui-cell__hd">
+              <image class="image" src="{{userInfo1.icon}}" />
+            </view>
+            <view class="weui-cell__bd">
+              <view>{{userInfo1.real_name}}</view>
+              <view style="font-size: 13px;color: #888888;">{{userInfo1.nick_name}}</view>
+            </view>
+            <view class="weui-cell__ft">
+              <view style="color:red">对方信息</view>
+              <view></view>
+            </view>
+          </view>
+          <view class="weui-cell weui-cell_input">
+            <view class="weui-cell__hd">
+              <view class="weui-label">地址:</view>
+            </view>
+            <view class="weui-cell__bd">
+              <input class="weui-input" disabled="true" value="{{userInfo1.job_location}}" maxlength='50' />
+            </view>
+          </view>
+          <view class="graySpace"></view>
+
+          <view class="weui-cells weui-cells_after-title">
+            <view class="weui-cell weui-cell_input">
+
+              <view class="weui-cell__hd">
+                <view class="weui-label">预约时间:</view>
+              </view>
+              <picker mode="date" value="{{date}}" start="{{curYear+ '-' + curMonth + '-' + curDay}}" end="{{endYear+ '-' + endMonth + '-' + endDay}}" bindchange="bindDateChange">
+                <view class="weui-cell__bd">
+                  <view class="weui-input">{{weekday_format}} {{month}}-{{day}} {{hour_format}}</view>
+                </view>
+              </picker>
+            </view>
+            <view class="weui-cell weui-cell_input">
+              <view class="weui-cell__hd">
+                <view class="weui-label">我的姓名:</view>
+              </view>
+              <view class="weui-cell__bd">
+                <input class="weui-input" placeholder="请输入姓名" value="{{myInfo.real_name}}" maxlength='10' bindinput='inputRealName' />
+              </view>
+            </view>
+            <view class="weui-cell weui-cell_input">
+              <view class="weui-cell__hd">
+                <view class="weui-label">我的手机:</view>
+              </view>
+              <view class="weui-cell__bd">
+                <input class="weui-input" placeholder="请输入手机号" value="{{myInfo.mobile}}" maxlength='11' bindinput='inputMobile' />
+              </view>
+            </view>
+
+          </view>
+
+          <view class="weui-btn-area">
+
+            <button class="weui-btn" type="primary" disabled="{{!(buttonIsReady&&userInfo1IsReady&&mobileIsReady)}}" bindtap="bindNewBookingQR">申请预约</button>
+          </view>
+        </view>
+
+
+
+      </view>
+      <view class="weui-tab__content" hidden="{{activeIndex != 1}}"></view>
+      <view class="weui-tab__content" hidden="{{activeIndex != 2}}"></view>
+    </view>
+  </view>
+
+</view>

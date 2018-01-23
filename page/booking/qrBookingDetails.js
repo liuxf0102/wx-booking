@@ -1,12 +1,17 @@
 // page/booking/bookingDetails.js
 let util = require('../../util/util.js');
 let server = require('server.js');
+var sliderWidth = 96
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
+    tabs: ["详细信息", "预约历史"],
+    activeIndex: 0,
+    sliderOffset: 0,
+    sliderLeft: 0,
     booking: {},
     year: 2018,
     month: 1,
@@ -16,38 +21,49 @@ Page({
     hours: [8, 9, 10, 13, 14, 15],
     hourLabels: ["上午8点", "上午9点", "上午10点", "下午1点", "下午2点", "下午3点"],
     datePickerDisabled: true,
-    memo1Length: 0,
-    memo2_1Length: 0,
-    memo1Max: 200,
-    bookingHistory: [],
-    buttonDisabled: true
+    memo2Length: 0,
+    memo2Max: 200,
+    buttonDisabled: false
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    console.log("options:" + JSON.stringify(options));
-
+    //console.log("options:" + JSON.stringify(options));
+    if(options.bookingNext){
+      this.setData({
+        bookingNext:true
+      });
+    }
+    var that=this;
+    wx.getSystemInfo({
+      success: function (res) {
+        that.setData({
+          sliderLeft: (res.windowWidth / that.data.tabs.length - sliderWidth) / 2,
+          sliderOffset: res.windowWidth / that.data.tabs.length * that.data.activeIndex
+        });
+      }
+    });
+    server.refreshBooking(getApp().globalData.userid, function () { });
     //console.log(map.get(8));
     var that = this;
     let id = options.bookingId;
     if (id != 'undefined') {
       this.initBooking(id);
     }
-    let curDate = new Date();
-    let endDate = new Date();
-    endDate.setTime(endDate.getTime() + 200 * 24 * 3600 * 1000);
-    //
+  },
+  tabClick: function (e) {
     this.setData({
-      curYear: curDate.getFullYear(),
-      curMonth: curDate.getMonth() + 1,
-      curDay: curDate.getDate(),
-      endYear: endDate.getFullYear(),
-      endMonth: endDate.getMonth() + 1,
-      endDay: endDate.getDate()
-    })
-
+      sliderOffset: e.currentTarget.offsetLeft,
+      activeIndex: e.currentTarget.id
+    });
+    if (e.currentTarget.id==1)
+    {
+      wx.redirectTo({
+        url: '/page/booking/qrBookingList',
+      })
+    }
   },
   initBooking: function (id) {
     var that = this;
@@ -55,8 +71,8 @@ Page({
       url: getApp().globalData.SERVER_URL + '/booking/byId',
       method: 'post',
       data: {
-        id: id
-
+        id: id,
+        linkedUserid:'userid1'
       }, success: function (res) {
         //console.log(JSON.stringify(res.data[0]));
         let booking = res.data[0].data;
@@ -67,51 +83,21 @@ Page({
         booking.hour_format = util.formatHour(booking.hour);
         booking.weekday_format = util.formatWeekday(booking.weekday);
         booking.status_format = util.formatBookingStatus(booking.status);
-        booking.prop_class_format = util.formatBookingClass(booking.prop_class);
         that.setData({
           booking: booking,
-          memo1Length: booking.memo1.length,
-          memo2_1Length: booking.memo2_1.length
+          memo2Length: booking.memo2.length
         });
         console.log("booking userid1:" + booking.userid1);
         if (getApp().globalData.userid == booking.userid1) {
           that.setData({
             datePickerDisabled: false
           })
-        };
-
-        //init booking history
-        that.initBookingHistory(booking.userid2);
-
-      }
-    })
-  },
-  initBookingHistory: function (userid2) {
-    var that = this;
-    wx.request({
-      url: getApp().globalData.SERVER_URL + '/booking/list',
-      method: 'post',
-      data: {
-        userid1: getApp().globalData.userid,
-        userid2: userid2
-      }, success: function (res) {
-        //console.log(JSON.stringify(res.data[0]));
-        let bookingHistory = res.data[0].data;
-
-        for (let i = 0; i < bookingHistory.length; i++) {
-          bookingHistory[i].status_format = util.formatBookingStatus(bookingHistory[i].status);
         }
-        //sort
-        bookingHistory.sort(function (a, b) {
-          return (b.year * 10000 + b.month * 100 + b.day) - (a.year * 10000 + a.month * 100 + a.day);
-        });
-        that.setData({
-          bookingHistory: bookingHistory
-        });
+
       }
     })
   },
-  tapBooking: function () {
+  tapBooking: function (bookingId) {
     var that = this;
     wx.showActionSheet({
       itemList: ['审核通过', '取消预约', '用户爽约', '完成履约'],
@@ -123,7 +109,7 @@ Page({
         if (res.tapIndex == 0) {
           status = 1;
         } else if (res.tapIndex == 1) {
-          status = -1;
+          status = 2;
         } else if (res.tapIndex == 2) {
           status = 3;
         } else if (res.tapIndex == 3) {
@@ -132,48 +118,36 @@ Page({
           status = 0;
         }
 
-        let status_format = ['审核通过', '取消预约', '用户爽约', '完成履约'];
+
 
         if (!res.cancel) {
-          wx.showModal({
-            title: '系统提示',
-            content: '你要将状态修改为[' + status_format[res.tapIndex] + ']吗?',
+          //发起网络请求 
+          wx.request({
+            url: getApp().globalData.SERVER_URL + '/booking/update',
+            method: 'put',
+            data: {
+              id: that.data.booking.id,
+              status: status
+            },
             success: function (res) {
-              if (res.confirm) {
-
-                //发起网络请求 
-                wx.request({
-                  url: getApp().globalData.SERVER_URL + '/booking/update',
-                  method: 'put',
-                  data: {
-                    id: that.data.booking.id,
-                    status: status
-                  },
-                  success: function (res) {
-                    console.log("id:" + res.data[0].id);
-                    that.initBooking(res.data[0].id);
-                    //set userid 2 Storage
-
-                    wx.showToast({
-                      title: '更新成功.',
-                    })
-                    //refreshBooking
-                    server.refreshBooking(getApp().globalData.userid, function () { });
+              console.log("id:" + res.data[0].id);
+              that.initBooking(res.data[0].id);
+              //set userid 2 Storage
+              wx.showModal({
+                title: '系统提示',
+                content: '更新成功.',
+                showCancel: false
+              });
 
 
-                  }
-                });
 
-              }
             }
-
-          })
+          });
 
         }
       }
     });
   },
-
   bindDateChange: function (e) {
 
     let that = this;
@@ -220,7 +194,7 @@ Page({
 
           wx.showModal({
             title: '调整预约时间',
-            content: '时间调整为:' + that.data.booking.weekday_format + " " + that.data.month + "-" + that.data.day + " " + that.data.booking.hour_format + "吗?",
+            content: '你要将预约时间调整为:' + that.data.booking.weekday_format + " " + that.data.month + "-" + that.data.day + " " + that.data.booking.hour_format + "吗?",
             success: function (res) {
               if (res.confirm) {
                 wx.request({
@@ -238,10 +212,11 @@ Page({
                     console.log("id:" + res.data[0].id);
                     that.initBooking(res.data[0].id);
                     //set userid 2 Storage
-
-                    wx.showToast({
-                      title: '更新成功.',
-                    })
+                    wx.showModal({
+                      title: '系统提示',
+                      content: '更新成功.',
+                      showCancel: false
+                    });
 
 
 
@@ -257,71 +232,58 @@ Page({
       }
     });
   },
-  tapMemo1: function (e) {
-    wx.redirectTo({
-      url: '/page/booking/memo1?bookingId=' + this.data.booking.id,
+  tapMemo2:function (e){
+    wx.navigateTo({
+      url: '/page/booking/qrMemo2?bookingId=' + this.data.booking.id,
     })
+    
   },
-  tapMemo2_1: function (e) {
-    wx.redirectTo({
-      url: '/page/booking/memo2_1?bookingId=' + this.data.booking.id,
-    })
+  inputMemo2: function (e) {
+    //console.log("memo2:"+e.detail.value);
+    let memo2 = e.detail.value;
+
+    this.setData({
+      memo2: memo2,
+      memo2Length: memo2.length,
+      buttonDisabled: false
+    });
+
   },
-  tapPropClass: function (e) {
-    var that = this;
-    //console.log("tapPropClass:"+JSON.stringify(e));
-    let status_format = ['修复', '治疗', '拔牙', '洗牙','换药'];
-    wx.showActionSheet({
-      itemList: status_format,
+  bindUpdateMemo2: function (e) {
+    let that = this;
+    wx.request({
+      url: getApp().globalData.SERVER_URL + '/booking/update',
+      method: 'put',
+      data: {
+        id: that.data.booking.id,
+        memo2: that.data.memo2
+      },
       success: function (res) {
-        //let selectedHour = that.data.hourLabels[res.tapIndex];
-        //console.log("selectedHour:" + res.tapIndex);
-        let prop_class = res.tapIndex;
-        if (!res.cancel) {
-          wx.showModal({
-            title: '系统提示',
-            content: '预约类型修改为[' + status_format[res.tapIndex] + ']吗?',
-            success: function (res) {
-              if (res.confirm) {
+        console.log("id:" + res.data[0].id);
+        that.initBooking(res.data[0].id);
+        that.setData({
+          buttonDisabled: true
+        });
 
-                //发起网络请求 
-                wx.request({
-                  url: getApp().globalData.SERVER_URL + '/booking/update',
-                  method: 'put',
-                  data: {
-                    id: that.data.booking.id,
-                    prop_class: prop_class
-                  },
-                  success: function (res) {
-                    console.log("id:" + res.data[0].id);
-                    that.initBooking(res.data[0].id);
-                    //set userid 2 Storage
+        //set userid 2 Storage
+        wx.showModal({
+          title: '系统提示',
+          content: '更新成功.',
+          showCancel: false
+        });
 
-                    wx.showToast({
-                      title: '更新成功.',
-                    })
-                    //refreshBooking
-                    server.refreshBooking(getApp().globalData.userid, function () { });
-                  }
-                });
 
-              }
-            }
 
-          })
-
-        }
       }
     });
+
+
   },
-  tapBookingDetails: function (e) {
-    console.log("tapBookineDetails:" + JSON.stringify(e));
-    let bookingId = e.target.dataset.bookingid;
-    if (bookingId) {
-      wx.redirectTo({
-        url: '/page/booking/bookingDetails?bookingId=' + bookingId,
-      });
-    }
+
+  bindNewBookingQR:function(e){
+    wx.redirectTo({
+      url: '/page/booking/qrBookingNew?userid1='+this.data.booking.userid1,
+    })
   },
   /**
    * 生命周期函数--监听页面初次渲染完成
@@ -355,10 +317,7 @@ Page({
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function () {
-    if (this.data.booking.id) {
-      this.initBooking(this.data.booking.id);
-    }
-    wx.stopPullDownRefresh();
+
   },
 
   /**

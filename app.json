@@ -5,7 +5,16 @@
     "page/me/me",
     "page/me/update",
     "page/calendar/calendar",
-    "page/booking/bookingDetails"
+    "page/booking/bookingDetails",
+    "page/me/help",
+    "page/me/about",
+    "page/booking/showMyQrcode",
+    "page/booking/qrBookingNew",
+    "page/booking/qrBookingDetails",
+    "page/booking/qrBookingList",
+    "page/booking/memo1",
+    "page/booking/memo2_1",
+    "page/booking/qrMemo2"
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -25,12 +34,6 @@
         "iconPath": "image/list.png",
         "selectedIconPath": "image/listHL.png",
         "text": "预约列表"
-      },
-      {
-        "pagePath": "page/booking/booking",
-        "iconPath": "image/wechat.png",
-        "selectedIconPath": "image/wechatHL.png",
-        "text": "新建预约"
       },
       {
         "pagePath": "page/me/me",

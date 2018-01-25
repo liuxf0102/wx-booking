@@ -30,6 +30,7 @@ Page({
     day: [0, 0, 0, 0, 0, 0, 0],
     dayBooking: [0, 0, 0, 0, 0, 0, 0],
     dayClass: ['', '', '', '', '', '', ''],
+    dayFlag: ['', '', '', '', '', '', ''],
     today: '',
     buttonDisabled: true
   },
@@ -37,6 +38,9 @@ Page({
   server_getBookingList() {
     var that = this;
     console.log("server_getBookingList userid:" + getApp().globalData.userid);
+    if (getApp().globalData.userid == '') {
+      return;
+    }
     //发起网络请求 restAPI dates
     wx.request({
       url: getApp().globalData.SERVER_URL + '/booking/list',
@@ -64,6 +68,33 @@ Page({
     })
   },
 
+  server_getUserRotaList() {
+    var that = this;
+    //console.log("server_getUserRotaList userid:" + getApp().globalData.userid);
+    if (getApp().globalData.userid == '') {
+      return;
+    }
+    //发起网络请求 restAPI dates
+    wx.request({
+      url: getApp().globalData.SERVER_URL + '/rota/list',
+      method: 'post',
+      data: {
+        userid: getApp().globalData.userid
+
+      }, success: function (res) {
+        //console.log(res);
+        //that.setData({
+        //  bookings: res.data[0].data
+        //});
+        wx.setStorageSync(getApp().SCONST.ROTA, res.data[0].data);
+        console.log("getUserRota finished.");
+        wx.stopPullDownRefresh();
+        //that.setSelectedBookings();
+        that.initDayFlag();
+        wx.hideLoading();
+      }
+    })
+  },
 
   touchStart: function (e) {
     startX = e.touches[0].pageX; // 获取触摸时的原点
@@ -93,17 +124,17 @@ Page({
 
   move2left() {
     let curDate = new Date();
-    if (this.theCurrentPageLongTime < curDate.getTime() + 200 * 24 * 3600 * 1000 ) {
+    if (this.theCurrentPageLongTime < curDate.getTime() + 200 * 24 * 3600 * 1000) {
       this.initWeekday(this.theCurrentPageLongTime + 7 * 24 * 3600 * 1000);
       this.setSelectedBookings();
     }
   },
   move2right() {
     let curDate = new Date();
-    if (this.theCurrentPageLongTime>curDate.getTime() - 200 * 24 * 3600 * 1000 )  {
+    if (this.theCurrentPageLongTime > curDate.getTime() - 200 * 24 * 3600 * 1000) {
 
-    this.initWeekday(this.theCurrentPageLongTime - 7 * 24 * 3600 * 1000);
-    this.setSelectedBookings();
+      this.initWeekday(this.theCurrentPageLongTime - 7 * 24 * 3600 * 1000);
+      this.setSelectedBookings();
     }
   },
 
@@ -114,6 +145,8 @@ Page({
     var bookings_all = wx.getStorageSync(getApp().SCONST.BOOKING) || [];
     var selectedBookings = [];
     var tmpDayBooking = [0, 0, 0, 0, 0, 0, 0];
+
+
     for (var i = 0; i < bookings_all.length; i++) {
 
       let theBookingDay = new Date(bookings_all[i].year + "-" + bookings_all[i].month + "-" + bookings_all[i].day);
@@ -138,6 +171,12 @@ Page({
         //console.log("hour:" + bookings_all[i].hour);
         bookings_all[i].hour_format = util.formatHour(bookings_all[i].hour);
         bookings_all[i].status_format = util.formatBookingStatus(bookings_all[i].status);
+        let status_class = "text-status";
+        if (bookings_all[i].status == 4)//status is finished
+        {
+          status_class = "text-status-finished";
+        }
+        bookings_all[i].status_class = status_class;
         let prop_class_format = "";
         if (bookings_all[i].prop_class == "0") {
           prop_class_format = ":修";
@@ -155,6 +194,17 @@ Page({
           prop_class_format = ":换";
         }
         bookings_all[i].prop_class_format = prop_class_format;
+
+        let prop_class_class = 'text-black';
+        if (bookings_all[i].prop_class == "0") {
+          prop_class_class = 'text-red';
+        }
+        if (bookings_all[i].status == 4)//status is finished
+        {
+          prop_class_class = "text-black";
+        }
+        bookings_all[i].prop_class_class = prop_class_class;
+
         let memo1 = bookings_all[i].memo1;
         if (memo1.length > 16) {
           memo1 = memo1.substring(0, 16);
@@ -181,8 +231,8 @@ Page({
 
     //sort booking by hour
     selectedBookings.sort(function (a, b) {
-      //console.log("a:"+a.hour+":b"+b.hour);
-      return a.hour - b.hour
+      //console.log("a:" + (a.status * 100 + (a.hour-0)));
+      return (a.status * 100 + (a.hour - 0)) - (b.status * 100 + (b.hour - 0));
     });
 
 
@@ -205,7 +255,7 @@ Page({
     this.setData(
       {
         bookings: selectedBookings,
-        dayBooking: tmpDayBooking,
+        dayBooking: tmpDayBooking
       }
     );
   },
@@ -341,6 +391,7 @@ Page({
           getApp().globalData.real_name = res.data[0].myInfo.real_name;
           wx.setStorageSync('MY_INFO', res.data[0].myInfo)
           that.server_getBookingList();
+          that.server_getUserRotaList();
 
         }
       });
@@ -372,12 +423,12 @@ Page({
       curDate.setDate(curDate.getDate() - 1);
       tmpDay[curWeekday - i] = curDay;
       //set tmpDayClass
-     // console.log("curDay:" + (curWeekday - i)+":"+ curDay);
-      
-      if (curDate.getTime() > (new Date().getTime()-25*3600*1000)){
-        tmpDayClass[curWeekday - i]='text-day-count-red'; 
-      }else{
-        tmpDayClass[curWeekday - i] = 'text-day-count'; 
+      // console.log("curDay:" + (curWeekday - i)+":"+ curDay);
+
+      if (curDate.getTime() > (new Date().getTime() - 25 * 3600 * 1000)) {
+        tmpDayClass[curWeekday - i] = 'text-day-count-blue';
+      } else {
+        tmpDayClass[curWeekday - i] = 'text-day-count';
       }
 
     }
@@ -386,19 +437,19 @@ Page({
       var curDay = curDate.getDate();
       curDate.setDate(curDate.getDate() + 1);
       tmpDay[i] = curDay;
-     // console.log("curDay:" +i+":"+ curDay);
+      // console.log("curDay:" +i+":"+ curDay);
       //set tmpDayClass
       if (curDate.getTime() > new Date().getTime()) {
-        tmpDayClass[i] = 'text-day-count-red';
-      }else{
+        tmpDayClass[i] = 'text-day-count-blue';
+      } else {
         tmpDayClass[i] = 'text-day-count';
       }
 
     }
     //console.log("tmpDay:" + tmpDay.join(" "));
-   // console.log("tmpDayClass:" + tmpDayClass.join(" "));
+    // console.log("tmpDayClass:" + tmpDayClass.join(" "));
 
-
+    
     this.setData({
       selectedDay: selectedDay,
       selectedWeekday: curWeekday,
@@ -408,8 +459,11 @@ Page({
 
 
     wx.setNavigationBarTitle({ title: t })
-    // console.log("initWeekDay finished.");
+     console.log("initWeekDay finished.");
+     this.initDayFlag();
   },
+
+
 
   setWeekDay: function (e) {
 
@@ -422,7 +476,7 @@ Page({
     }
     var selectedWeekday = e.currentTarget.dataset.idx;
     var diffDay = (selectedWeekday - curWeekday);
-   // console.log("curWeekday:" + curWeekday + ":selectWeekday" + selectedWeekday + ":diffDay:" + diffDay);
+    // console.log("curWeekday:" + curWeekday + ":selectWeekday" + selectedWeekday + ":diffDay:" + diffDay);
     curDate.setDate(curDate.getDate() + diffDay);
     //console.log("selDate:" + curDate);
     this.initWeekday(this.theCurrentPageLongTime + diffDay * 24 * 3600 * 1000);
@@ -432,7 +486,7 @@ Page({
 
 
   tapBookingDetails: function (e) {
-    console.log("tapGoBookingDetails:" + JSON.stringify(e.target));
+    //console.log("tapGoBookingDetails:" + JSON.stringify(e.target));
     //console.log("tapGoBookingDetails:" + JSON.stringify(e.target.dataset.bookingid));
     wx.navigateTo({
       url: '/page/booking/bookingDetails?bookingId=' + e.target.dataset.bookingid,
@@ -472,7 +526,112 @@ Page({
     });
   },
 
+  longpressDay: function (e) {
+    let that = this;
+    //console.log("longtapDay:"+ JSON.stringify(e));
+    var curDate = new Date();
+    curDate.setTime(this.theCurrentPageLongTime);
+    var curWeekday = curDate.getDay();
+    //fixed sunday weekday 0 to 7
+    if (curWeekday == 0) {
+      curWeekday = 7;
+    }
+    var selectedWeekday = e.currentTarget.dataset.idx;
+    var diffDay = (selectedWeekday - curWeekday);
+    // console.log("curWeekday:" + curWeekday + ":selectWeekday" + selectedWeekday + ":diffDay:" + diffDay);
+    curDate.setDate(curDate.getDate() + diffDay);
+    //console.log("selDate:" + curDate);
+    let selectedDayLongTime = this.theCurrentPageLongTime + diffDay * 24 * 3600 * 1000;
 
+    wx.showActionSheet({
+      itemList: ['值班','休息'],
+      success: function (res) {
+
+        //console.log("selected:" + res.tapIndex);
+        let flag = '';
+        if (res.tapIndex==0)
+        {
+          flag='班';
+        }
+        if (res.tapIndex == 1) {
+          flag = '休';
+        }
+        if (!res.cancel) {
+          let selectedDay = new Date();
+          selectedDay.setTime(selectedDayLongTime);
+          let day = util.formatDate(selectedDay);
+
+          wx.request({
+            url: getApp().globalData.SERVER_URL + '/rota/updateOrCreate',
+            method: 'put',
+            data: {
+              userid: getApp().globalData.userid,
+              day: day,
+              flag: flag
+
+            }, success: function (res) {
+              //console.log("add date success:");
+              if (res.statusCode == 200 && res.data[0].result == 'success') {
+                //show booked item info
+                wx.showToast({
+                  title: '更新成功.',
+                });
+                // let dayFlag = ['', '休', '班'];
+                // that.setData(
+                //   { dayFlag: dayFlag }
+                // )
+                that.server_getUserRotaList();
+                   
+              } else {
+                wx.showModal({
+                  title: '系统提示',
+                  content: '错误：' + JSON.stringify(res),
+                })
+              }
+            },
+            fail: function (err) {
+              wx.showModal({
+                title: '系统提示',
+                content: '错误：' + JSON.stringify(err),
+              })
+            }
+          })
+
+
+        }
+      }
+    });
+
+  },
+
+  initDayFlag:function(){
+
+    //get rota from storage
+    let rota_all = wx.getStorageSync(getApp().SCONST.ROTA) || [];
+    let tmpDayFlag = ['', '', '', '', '', '', ''];
+    for (let i = 0; i < rota_all.length; i++) {
+
+      let theRotaDay = new Date(rota_all[i].day);
+      //console.log("rota_all:" + rota_all[i].day);
+      //check wether booking Day is last week or  week ahead
+      if (theRotaDay.getTime() > this.theCurrentPageLongTime - 7 * 24 * 3600 * 1000 && theRotaDay.getTime() < this.theCurrentPageLongTime + 7 * 24 * 3600 * 1000) {
+        let tmpDay=this.data.day;
+        for (let t = 0; t < tmpDay.length; t++) {
+          if (tmpDay[t] == theRotaDay.getDate()) {
+            //console.log("tmpDay[]:" +t+":"+ tmpDay[t]);
+            tmpDayFlag[t] = rota_all[i].flag;
+          }
+        }
+
+      }
+
+    }
+   // console.log("tmpDayFlag:" + tmpDayFlag.join(" "));
+    this.setData({
+      dayFlag: tmpDayFlag
+    });
+
+  },
 
   /**
    * 生命周期函数--监听页面初次渲染完成
@@ -522,7 +681,9 @@ Page({
     })
 
     this.server_getBookingList();
+    this.server_getUserRotaList()
     this.initWeekday(new Date().getTime());
+    
   },
 
   /**

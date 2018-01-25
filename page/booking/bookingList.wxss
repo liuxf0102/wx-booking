@@ -34,11 +34,12 @@
   border-top: 1rpx solid #eee;
   align-items: center;
   justify-content: space-between;
+  line-height:42rpx;
 }
 
 .view-button {
   border: 4rpx solid #eee;
-  padding: 1rpx;
+  padding: 2rpx;
   width: 90rpx;
   align-content: center;
   align-items: center;
@@ -47,7 +48,7 @@
 .view-button-selected {
   background: greenyellow;
   border: 4rpx solid #eee;
-  padding: 1rpx;
+  padding: 2rpx;
   width: 90rpx;
   align-content: center;
   align-items: center;
@@ -70,20 +71,71 @@
   align-content: center;
   align-items: center;
   text-align: center;
+  padding: 0rpx;
+  margin: 0rpx;
 }
-
+.text-weekday {
+  border: 0px solid blue;
+  align-content: center;
+  align-items: center;
+  text-align: center;
+  font-size: 36rpx;
+  padding: 0rpx;
+  margin: 0rpx;
+}
+.text-weekday-flag{
+  border: 0px solid blue;
+  align-content: center;
+  align-items: center;
+  text-align: center;
+  color: #888;
+  font-size: 20rpx;
+}
 .view-day {
   border: 0px solid #eee;
   align-content: center;
   align-items: center;
   text-align: center;
+  font-size: 32rpx;
+  padding: 0rpx;
+  margin: 0rpx;
 }
-
+.view-day-booking {
+  border: 0px solid #eee;
+  align-content: center;
+  align-items: center;
+  text-align: center;
+  font-size: 32rpx;
+  padding: 0rpx;
+  margin: 0rpx;
+}
 .text-day-count {
+  font-size: 32rpx;
   color: black;
+  padding: 0rpx;
+  margin: 0rpx;
 }
 .text-day-count-red {
+  font-size: 32rpx;
   color: red;
+  padding: 0rpx;
+  margin: 0rpx;
+}
+.text-day-count-blue {
+  font-size: 32rpx;
+  color: blue;
+  padding: 0rpx;
+  margin: 0rpx;
+}
+.text-status{
+  font-size: 26rpx;
+  color: #888;
+  padding-top: 10rpx;
+}
+.text-status-finished{
+  font-size: 26rpx;
+  color:black;
+  padding-top: 10rpx;
 }
 
 .image {

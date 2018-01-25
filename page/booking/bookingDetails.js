@@ -113,6 +113,9 @@ Page({
   },
   tapBooking: function () {
     var that = this;
+    if(getApp().globalData.userid==''){
+      return;
+    }
     wx.showActionSheet({
       itemList: ['审核通过', '取消预约', '用户爽约', '完成履约'],
       success: function (res) {
@@ -243,7 +246,8 @@ Page({
                       title: '更新成功.',
                     })
 
-
+                    //refreshBooking
+                    server.refreshBooking(getApp().globalData.userid, function () { });
 
                   }
                 });

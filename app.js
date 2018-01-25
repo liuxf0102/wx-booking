@@ -61,11 +61,12 @@ App({
     icon:'',
     gender:'',
     params:{},
-    SERVER_URL:'https://www.4exam.cn'
-    //SERVER_URL: 'http://10.6.217.17:8081'
+    version:"V2.0.1",
+    //SERVER_URL:'https://www.4exam.cn'
+    SERVER_URL: 'http://10.6.217.17:8081'
     //SERVER_URL: 'http://192.168.31.123:8081'
   },
   //Storage object 
-  SCONST: { "MY_INFO": "MY_INFO", "BOOKING": "BOOKING" }
+  SCONST: { "MY_INFO": "MY_INFO", "BOOKING": "BOOKING","ROTA":"ROTA" }
 
 })

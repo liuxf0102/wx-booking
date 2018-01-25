@@ -1,6 +1,9 @@
 const refreshBooking=function(userid,cb)  {
   
   console.log("userid:" + userid);
+  if(userid==""){
+    return;
+  }
   //发起网络请求 restAPI dates
   wx.request({
     url: getApp().globalData.SERVER_URL + '/booking/list',

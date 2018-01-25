@@ -1,44 +1,47 @@
 <!--pages/aboutme/aboutmyInfo.wxml-->
 <view class="container">
-  <scroll-view scroll-y="true">
-    <view class="graySpace"></view>
-    <view class="item-avatar-lg">
-      <image bindtap="bindShowMyQrcode" class="userinfo-avatar" src="{{userInfo.avatarUrl}}" background-size="cover"></image>
 
-      <view class="padding-left">
-        <view class="flex">
-          <text class="title">{{myInfo.real_name}}</text>
-        </view>
-        <view class="flex">
-          <text class="sub_title">昵称：{{userInfo.nickName}}</text>
-        </view>
 
-      </view>
+
+  <view class="graySpace"></view>
+
+  <view class="weui-cell" hover-class="weui-cell_active">
+    <view class="weui-cell__hd">
+      <image class="image" src="{{myInfo.icon}}" bindtap="bindQrcode" />
     </view>
-
-    <view class="graySpace"></view>
-    <view class="item-avatar-xs" id="real_name" bindtap="bindUpdateMyInfo">
-      <view>
-        <text class="title">姓名:</text>
-        <text class="content">{{myInfo.real_name}}</text>
-      </view>
+    <view class="weui-cell__bd">
+      <view>{{myInfo.real_name}}</view>
+      <view style="font-size: 13px;color: #888888;">{{myInfo.nick_name}}</view>
     </view>
-    <view class="item-avatar-xs" bindtap="bindUpdateMyInfo">
-
-      <view>
-        <text class="title">电话:</text>
-        <text class="content">{{myInfo.mobile}}</text>
-      </view>
+    <view class="weui-cell__ft">
+      <view>{{version}}</view>
+      <view></view>
     </view>
-    <view class="item-avatar-xs" bindtap="bindUpdateMyInfo">
-      <view>
-        <text class="title">地址:</text>
-        <text class="content">{{myInfo.job_location}}
+  </view>
+
+  <view class="graySpace"></view>
+  <view class="item-avatar-xs" id="real_name" bindtap="bindUpdateMyInfo">
+    <view>
+      <text class="title">姓名:</text>
+      <text class="content">{{myInfo.real_name}}</text>
+    </view>
+  </view>
+  <view class="item-avatar-xs" bindtap="bindUpdateMyInfo">
+
+    <view>
+      <text class="title">电话:</text>
+      <text class="content">{{myInfo.mobile}}</text>
+    </view>
+  </view>
+  <view class="item-avatar-xs" bindtap="bindUpdateMyInfo">
+    <view>
+      <text class="title">地址:</text>
+      <text class="content">{{myInfo.job_location}}
         </text>
-      </view>
     </view>
-    
-    <!--
+  </view>
+
+  <!--
     <view class="item-avatar-xs" id="job_title" bindtap="bindUpdateMyInfo">
       <view>
         <text class="title">职称:</text>
@@ -59,31 +62,37 @@
       </view>
     </view>
     -->
-    <view class="graySpace"></view>
-    <view class="item-avatar-xs" bindtap="bindQrcode">
-      <view>
-        <text class="title">我的二维码:</text>
-        <text class="content"></text>
-      </view>
+  <view class="graySpace"></view>
+  <view class="item-avatar-xs" bindtap="bindQrcode">
+    <view>
+      <text class="title">我的二维码:</text>
+      <text class="content"></text>
     </view>
-    <view class="item-avatar-xs" bindtap="bindUserid2Page">
-      <view>
-        <text class="title">我是乙方:</text>
-        <text class="content"></text>
-      </view>
+  </view>
+  <view class="item-avatar-xs" bindtap="bindUserid2Page">
+    <view>
+      <text class="title">我是乙方:</text>
+      <text class="content"></text>
     </view>
-    <view class="graySpace"></view>
-    <view class="item-avatar-xs" bindtap="bindHelp">
-      <view>
-        <text class="title">帮助与反馈:</text>
-        <text class="content"></text>
-      </view>
+  </view>
+  <view class="graySpace"></view>
+  <view class="item-avatar-xs" bindtap="bindHelp">
+    <view>
+      <text class="title">帮助中心:</text>
+      <text class="content"></text>
     </view>
-<view class="item-avatar-xs" bindtap="bindAbout">
-      <view>
-        <text class="title">关于预约本:</text>
-        <text class="content"></text>
-      </view>
+  </view>
+  <view class="item-avatar-xs" bindtap="bindHelp">
+    <view>
+      <text class="title">建议与意见:</text>
+      <text class="content"></text>
     </view>
-  </scroll-view>
+  </view>
+  <view class="item-avatar-xs" bindtap="bindAbout">
+    <view>
+      <text class="title">关于预约本:</text>
+      <text class="content">{{version}}</text>
+    </view>
+  </view>
+
 </view>

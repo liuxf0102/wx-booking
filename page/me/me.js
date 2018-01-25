@@ -6,11 +6,11 @@ Page({
  * 页面的初始数据
  */
   data: {
+
     userInfo: {},
     hasUserInfo: false,
-    myInfo: {
-      "real_name": "刘大夫", "memo": "说起来都是泪"
-    }
+    myInfo: { },
+    version:getApp().globalData.version
 
   },
 

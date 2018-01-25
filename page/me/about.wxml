@@ -2,7 +2,7 @@
   <view class="graySpace"></view>
   <view class="weui-panel__bd">
     <view class="weui-media-box weui-media-box_text">
-      <view class="weui-media-box__title weui-media-box__title_in-text">关于预约本 [1.2.4]</view>
+      <view class="weui-media-box__title weui-media-box__title_in-text">关于预约本 {{version}}</view>
       <view class="weui-media-box__desc"></view>
     </view>
 

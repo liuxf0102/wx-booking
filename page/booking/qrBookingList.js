@@ -53,6 +53,7 @@ Page({
         linkedUserid:'userid1'
       }, success: function (res) {
         let bookings = res.data[0].data;
+        //console.log("bookings:" + JSON.stringify(res.data[0]));
         //let applyItem={};
         for (let i = 0; i < bookings.length; i++) {
           bookings[i].hour_format = util.formatHour(bookings[i].hour);
@@ -93,6 +94,13 @@ Page({
       url: '/page/booking/qrBookingDetails?bookingNext=true&bookingId='+bookingId,
     });
     }
+  },
+  tapHome:function(e)
+  {
+    console.log("tapHome");
+    wx.switchTab({
+      url: '/page/me/me',
+    })
   },
   /**
    * 生命周期函数--监听页面初次渲染完成

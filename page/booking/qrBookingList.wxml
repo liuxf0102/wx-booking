@@ -17,6 +17,7 @@
               <view class="weui-media-box__desc">让我帮你玩转简单实用，设计人性化的预约本小程序。</view>
             </view>
             <view class="weui-panel weui-panel_access">
+              <view class="weui-panel__hd" bindtap='tapHome'>我是甲方</view>
               <view class="weui-panel__hd">预约本乙方功能</view>
               <view class="weui-panel__bd">
                 <view class="weui-media-box weui-media-box_text">

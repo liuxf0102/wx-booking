@@ -1,39 +1,57 @@
 /**app.wxss**/
 @import 'style/weui.wxss';
-.graySpace{
+
+.graySpace {
   background: #eee;
   min-height: 20rpx;
 }
-.space_900rpx{
+
+.space_900rpx {
   min-height: 900rpx;
 }
-.space_30rpx{
+
+.space_30rpx {
   min-height: 30rpx;
 }
-.view-center{
+
+.view-center {
   align-items: center;
   text-align: center;
 }
-.view-center-padding{
+
+.view-center-padding {
   align-items: center;
   text-align: center;
   padding: 10rpx 30rpx;
 }
-.view-right{
+
+.view-right {
   align-items: center;
   text-align: right;
   padding-bottom: 10rpx;
 }
-.view-right_padding_30rpx{
+
+.view-right_padding_30rpx {
   align-items: center;
   text-align: right;
   padding-right: 30rpx;
   padding-bottom: 10rpx;
 }
-.image{
+
+.image {
   float: left;
   width: 125rpx;
   height: 125rpx;
   margin-right: 20rpx;
   box-sizing: border-box;
+}
+
+.form_button {
+  background-color: transparent;
+  padding: 0;
+  margin: 0;
+  display: inline;
+  position: static;
+  border: 0;
+  text-align: left;
 }

@@ -44,7 +44,11 @@
               </view>
               <picker mode="date" value="{{date}}" start="{{curYear+ '-' + curMonth + '-' + curDay}}" end="{{endYear+ '-' + endMonth + '-' + endDay}}" bindchange="bindDateChange">
                 <view class="weui-cell__bd">
-                  <view class="weui-input">{{weekday_format}} {{month}}-{{day}} {{hour_format}}</view>
+                  <form bindsubmit="formSubmit" report-submit='true'>
+                    <button class="form_button" form-type="submit">
+                      <view class="weui-input">{{weekday_format}} {{month}}月{{day}}号 {{hour_format}}</view>
+                    </button>
+                  </form>
                 </view>
               </picker>
             </view>
@@ -53,7 +57,11 @@
                 <view class="weui-label">我的姓名:</view>
               </view>
               <view class="weui-cell__bd">
-                <input class="weui-input" placeholder="请输入姓名" value="{{myInfo.real_name}}" maxlength='10' bindinput='inputRealName' />
+                <form bindsubmit="formSubmit" report-submit='true'>
+                  <button class="form_button" form-type="submit">
+                    <input class="weui-input" placeholder="请输入姓名" value="{{myInfo.real_name}}" maxlength='10' bindinput='inputRealName' />
+                  </button>
+                </form>
               </view>
             </view>
             <view class="weui-cell weui-cell_input">
@@ -61,16 +69,37 @@
                 <view class="weui-label">我的手机:</view>
               </view>
               <view class="weui-cell__bd">
-                <input class="weui-input" placeholder="请输入手机号" value="{{myInfo.mobile}}" maxlength='11' bindinput='inputMobile' />
+                <form bindsubmit="formSubmit" report-submit='true'>
+                  <button class="form_button" form-type="submit">
+                    <input class="weui-input" placeholder="请输入手机号" value="{{myInfo.mobile}}" maxlength='11' bindinput='inputMobile' />
+                  </button>
+                </form>
+              </view>
+            </view>
+            <view class="weui-cell weui-cell_input">
+              <view class="weui-cell__hd">
+                <view class="weui-label">留言:</view>
+              </view>
+              <view class="weui-cell__bd">
+                <form bindsubmit="formSubmit" report-submit='true'>
+                  <button class="form_button" form-type="submit">
+                    <input class="weui-input" placeholder="请输入留言" value="{{memo2}}" maxlength='50' bindinput='inputMemo2' />
+                  </button>
+                </form>
               </view>
             </view>
 
           </view>
 
           <view class="weui-btn-area">
+            <form bindsubmit="formSubmit" report-submit="true">
 
-            <button class="weui-btn" type="primary" disabled="{{!(buttonIsReady&&userInfo1IsReady&&mobileIsReady)}}" bindtap="bindNewBookingQR">申请预约</button>
+              <button formType="submit" class="weui-btn" type="primary" disabled="{{!(buttonIsReady&&userInfo1IsReady&&mobileIsReady)}}" bindtap="bindNewBookingQR">申请预约</button>
+
+            </form>
           </view>
+
+
         </view>
 
 

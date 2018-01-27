@@ -3,8 +3,9 @@ let util = require('../../util/util.js');
 var sliderWidth = 96
 Page({
   pageUserid1: "",
-  //pageScene: '1000',
   pageScene: '',
+  pageScene: '999',
+
   /**
    * 页面的初始数据
    */
@@ -25,6 +26,7 @@ Page({
     hour: 8,
     hours: [8, 9, 10, 13, 14, 15],
     hourLabels: ["上午8点", "上午9点", "上午10点", "下午1点", "下午2点", "下午3点"],
+    memo2: ""
   },
 
   /**
@@ -64,8 +66,7 @@ Page({
     if (typeof scene !== 'undefined' && scene !== 'undefined') {
       this.pageScene = scene;
     }
-    if(options.userid1)
-    {
+    if (options.userid1) {
       this.pageScene = options.userid1;
     }
     console.log("scene:" + this.pageScene);
@@ -327,16 +328,19 @@ Page({
 
   bindNewBookingQR: function (e) {
     var that = this;
-
+    //console.log("formids:"+JSON.stringify(getApp().globalData.formids));
+    
     wx.showModal({
       title: '预约信息确认',
-      content: '对方姓名：' + this.data.userInfo1.real_name + "[" + this.data.userInfo1.nick_name + "]" + ' 预约时间:' + this.data.weekday_format + ' ' + this.data.day + '号' + this.data.hour_format,
+      content: ' 对方姓名:' + this.data.userInfo1.real_name +  '\n\r时间:' + this.data.weekday_format + ' ' + this.data.month + '月' + this.data.day + '号 ' + this.data.hour_format,
       showCancel: true,
       success: function (res) {
         if (res.confirm) {
           that.setData({
             buttonIsReady: false
           });
+
+          getApp().formids2Server();
           //check mobile 
           //发起网络请求 restAPI add new booking to database;
           wx.request({
@@ -351,7 +355,8 @@ Page({
               day: that.data.day,
               weekday: that.data.weekday,
               hour: that.data.hour,
-              minute: 0
+              minute: 0,
+              memo2: that.data.memo2
 
 
             }, success: function (res) {
@@ -497,6 +502,11 @@ Page({
       real_name: e.detail.value
     });
   },
+  inputMemo2: function (e) {
+    this.setData({
+      memo2: e.detail.value
+    });
+  },
   inputMobile: function (e) {
 
     //Check for the correct phone number
@@ -529,7 +539,12 @@ Page({
   onReady: function () {
 
   },
-
+  formSubmit: function (e) {
+    var that = this
+    //console.log("formid:"+e.detail.formid);
+    let formid = e.detail.formId;
+    getApp().formidCollect(formid);
+  },
   /**
    * 生命周期函数--监听页面显示
    */

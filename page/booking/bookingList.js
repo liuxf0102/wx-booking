@@ -29,6 +29,8 @@ Page({
     hours: [8, 9, 10, 13, 14, 15],
     day: [0, 0, 0, 0, 0, 0, 0],
     dayBooking: [0, 0, 0, 0, 0, 0, 0],
+    dayBookingPendingApproval: [0, 0, 0, 0, 0, 0, 0],
+    dayBookingKeyTask: [0, 0, 0, 0, 0, 0, 0],
     dayClass: ['', '', '', '', '', '', ''],
     dayFlag: ['', '', '', '', '', '', ''],
     today: '',
@@ -145,6 +147,8 @@ Page({
     var bookings_all = wx.getStorageSync(getApp().SCONST.BOOKING) || [];
     var selectedBookings = [];
     var tmpDayBooking = [0, 0, 0, 0, 0, 0, 0];
+    var tmpDayBookingPendingApproval = [0, 0, 0, 0, 0, 0, 0];
+    var tmpDayBookingKeyTask = [0, 0, 0, 0, 0, 0, 0];
 
 
     for (var i = 0; i < bookings_all.length; i++) {
@@ -162,6 +166,14 @@ Page({
             // console.log("right1:" + tmpDayBooking[t]);
             //console.log("t:" + t + "dayBooking:" + this.data.daybooking[t]);
             //this.data.daybooking[t]++;
+            //check whether exist pending approval
+            if (bookings_all[i].status.toString() == "0") {
+              tmpDayBookingPendingApproval[t]++;
+            }
+            //check whether exist key task
+            if (bookings_all[i].prop_class == "0") {
+              tmpDayBookingKeyTask[t]++;
+            }
           }
         }
       }
@@ -206,9 +218,16 @@ Page({
         bookings_all[i].prop_class_class = prop_class_class;
 
         let memo1 = bookings_all[i].memo1;
+        
+        //如果是待审核状态则显示对方的留言
+        if (bookings_all[i].status.toString() == "0") {
+          memo1 = bookings_all[i].memo2
+        }
         if (memo1.length > 16) {
           memo1 = memo1.substring(0, 16);
         }
+        
+
         bookings_all[i].memo1_format = memo1;
 
         //format show real_name
@@ -255,7 +274,9 @@ Page({
     this.setData(
       {
         bookings: selectedBookings,
-        dayBooking: tmpDayBooking
+        dayBooking: tmpDayBooking,
+        dayBookingPendingApproval: tmpDayBookingPendingApproval,
+        dayBookingKeyTask: tmpDayBookingKeyTask
       }
     );
   },
@@ -427,6 +448,7 @@ Page({
 
       if (curDate.getTime() > (new Date().getTime() - 25 * 3600 * 1000)) {
         tmpDayClass[curWeekday - i] = 'text-day-count-blue';
+
       } else {
         tmpDayClass[curWeekday - i] = 'text-day-count';
       }
@@ -441,6 +463,7 @@ Page({
       //set tmpDayClass
       if (curDate.getTime() > new Date().getTime()) {
         tmpDayClass[i] = 'text-day-count-blue';
+
       } else {
         tmpDayClass[i] = 'text-day-count';
       }
@@ -449,7 +472,7 @@ Page({
     //console.log("tmpDay:" + tmpDay.join(" "));
     // console.log("tmpDayClass:" + tmpDayClass.join(" "));
 
-    
+
     this.setData({
       selectedDay: selectedDay,
       selectedWeekday: curWeekday,
@@ -459,8 +482,8 @@ Page({
 
 
     wx.setNavigationBarTitle({ title: t })
-     console.log("initWeekDay finished.");
-     this.initDayFlag();
+    console.log("initWeekDay finished.");
+    this.initDayFlag();
   },
 
 
@@ -544,14 +567,13 @@ Page({
     let selectedDayLongTime = this.theCurrentPageLongTime + diffDay * 24 * 3600 * 1000;
 
     wx.showActionSheet({
-      itemList: ['值班','休息'],
+      itemList: ['值班', '休息'],
       success: function (res) {
 
         //console.log("selected:" + res.tapIndex);
         let flag = '';
-        if (res.tapIndex==0)
-        {
-          flag='班';
+        if (res.tapIndex == 0) {
+          flag = '班';
         }
         if (res.tapIndex == 1) {
           flag = '休';
@@ -581,7 +603,7 @@ Page({
                 //   { dayFlag: dayFlag }
                 // )
                 that.server_getUserRotaList();
-                   
+
               } else {
                 wx.showModal({
                   title: '系统提示',
@@ -604,7 +626,7 @@ Page({
 
   },
 
-  initDayFlag:function(){
+  initDayFlag: function () {
 
     //get rota from storage
     let rota_all = wx.getStorageSync(getApp().SCONST.ROTA) || [];
@@ -615,7 +637,7 @@ Page({
       //console.log("rota_all:" + rota_all[i].day);
       //check wether booking Day is last week or  week ahead
       if (theRotaDay.getTime() > this.theCurrentPageLongTime - 7 * 24 * 3600 * 1000 && theRotaDay.getTime() < this.theCurrentPageLongTime + 7 * 24 * 3600 * 1000) {
-        let tmpDay=this.data.day;
+        let tmpDay = this.data.day;
         for (let t = 0; t < tmpDay.length; t++) {
           if (tmpDay[t] == theRotaDay.getDate()) {
             //console.log("tmpDay[]:" +t+":"+ tmpDay[t]);
@@ -626,13 +648,86 @@ Page({
       }
 
     }
-   // console.log("tmpDayFlag:" + tmpDayFlag.join(" "));
+    // console.log("tmpDayFlag:" + tmpDayFlag.join(" "));
     this.setData({
       dayFlag: tmpDayFlag
     });
 
   },
 
+  longpressBooking: function (e) {
+    let that = this;
+    let bookingId = e.target.dataset.bookingid;
+    let fromStatus = e.target.dataset.status;
+    let flag = false;
+    let toStatus = fromStatus;
+    if (fromStatus == "0")//待审核-->审核通过
+    {
+      toStatus = "1";
+      flag = true;
+    };
+    if (fromStatus == "1")//审核通过-->已完成
+    {
+      toStatus = "4";
+      flag = true;
+    };
+    if (flag) {
+      //发起网络请求 
+      wx.request({
+        url: getApp().globalData.SERVER_URL + '/booking/update',
+        method: 'put',
+        data: {
+          id: bookingId,
+          status: toStatus
+        },
+        success: function (res) {
+          console.log("id:" + res.data[0].id);
+          //set userid 2 Storage
+          if (toStatus == 1) {
+            wx.showToast({
+              title: '该预约审核通过.',
+            })
+          }
+          if (toStatus == 4) {
+            wx.showToast({
+              title: '该预约已完成.',
+            })
+          }
+          //refreshBooking
+          let booking={};
+          booking.id=bookingId;
+          booking.status=toStatus;
+          that.updateSelectedBookings(booking);
+          that.setSelectedBookings();
+
+
+        }
+      });
+    }
+  },
+
+  updateSelectedBookings(booking) {
+
+    //console.log("setSelectedBooking:year" + this.data.selectedYear + "month:" + this.data.selectedMonth + "day:" + this.data.selectedDay + "weekday:" + this.data.selectedWeekday)
+
+    var bookings_all = wx.getStorageSync(getApp().SCONST.BOOKING) || [];
+
+
+    for (var i = 0; i < bookings_all.length; i++) {
+
+      //convert hour to hour_format
+      if (booking.id == bookings_all[i].id) {
+        if (booking.status) {
+          bookings_all[i].status = booking.status;
+        }
+
+      }
+    };
+
+    wx.setStorageSync(getApp().SCONST.BOOKING, bookings_all);
+    //console.log("daybooking:" + tmpDayBooking);
+    //console.log("daybooking:"+this.data.hours.indexOf(15));
+  },
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
@@ -683,7 +778,7 @@ Page({
     this.server_getBookingList();
     this.server_getUserRotaList()
     this.initWeekday(new Date().getTime());
-    
+
   },
 
   /**

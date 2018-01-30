@@ -52,6 +52,8 @@
   margin: 0;
   display: inline;
   position: static;
-  border: 0;
+  border: 1;
   text-align: left;
+  line-height:42rpx;
+  
 }

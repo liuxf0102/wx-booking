@@ -34,6 +34,8 @@ Page({
     dayClass: ['', '', '', '', '', '', ''],
     dayFlag: ['', '', '', '', '', '', ''],
     today: '',
+    curYear: '',
+    curMonth: '',
     buttonDisabled: true
   },
 
@@ -171,8 +173,12 @@ Page({
               tmpDayBookingPendingApproval[t]++;
             }
             //check whether exist key task
-            if (bookings_all[i].prop_class == "0") {
+            if (bookings_all[i].prop_class.toString() == "0" && (bookings_all[i].status.toString() == "0" || bookings_all[i].status.toString() == "1")) {
+
               tmpDayBookingKeyTask[t]++;
+              if (tmpDayBookingKeyTask[t] > 4) {
+                tmpDayBookingKeyTask[t] = 4;
+              }
             }
           }
         }
@@ -218,15 +224,16 @@ Page({
         bookings_all[i].prop_class_class = prop_class_class;
 
         let memo1 = bookings_all[i].memo1;
-        
+
         //如果是待审核状态则显示对方的留言
-        if (bookings_all[i].status.toString() == "0") {
-          memo1 = bookings_all[i].memo2
+        if (bookings_all[i].status.toString() == "0" || memo1 == "") {
+
+          memo1 = bookings_all[i].memo2 == "" ? "" : "[留]" + bookings_all[i].memo2
         }
         if (memo1.length > 16) {
           memo1 = memo1.substring(0, 16);
         }
-        
+
 
         bookings_all[i].memo1_format = memo1;
 
@@ -426,11 +433,21 @@ Page({
     curDate.setTime(theLongTime)
     //console.log("theCurrentPageLongTime:" + curDate);
     var t = "预约列表:" + curDate.getFullYear() + "年" + (curDate.getMonth() + 1) + "月";
+
+    this.setData({
+      curYear: curDate.getFullYear(),
+      curMonth: curDate.getMonth() + 1,
+    });
+
+
+
     this.theCurrentPageLongTime = theLongTime;
     this.setData({
       selectedYear: curDate.getFullYear(),
-      selectedMonth: curDate.getMonth() + 1,
+      selectedMonth: curDate.getMonth() + 1
     });
+
+
     var selectedDay = curDate.getDate();
     var curWeekday = curDate.getDay();
     //fixed sunday weekday 0 to 7
@@ -479,6 +496,24 @@ Page({
       day: tmpDay,
       dayClass: tmpDayClass
     });
+
+    //check wether the current week cross the month
+    //console.log("this.data.selectedMonth:" + (this.data.selectedMonth));
+
+    if ((new Date().getMonth() + 1) - this.data.selectedMonth == 1 && ((selectedDay - 0) > 20)) {
+      //console.log("cross month:");
+      this.setData({
+        curYear: curDate.getFullYear(),
+        curMonth: (this.data.selectedMonth - 0) + 1,
+      });
+    }
+    if ((new Date().getMonth() + 1) - this.data.selectedMonth == -1 && ((selectedDay - 0) < 10)) {
+      // console.log("cross month 2:");
+      this.setData({
+        curYear: curDate.getFullYear(),
+        curMonth: (this.data.selectedMonth - 0) - 1,
+      });
+    }
 
 
     wx.setNavigationBarTitle({ title: t })
@@ -582,7 +617,7 @@ Page({
           let selectedDay = new Date();
           selectedDay.setTime(selectedDayLongTime);
           let day = util.formatDate(selectedDay);
-
+          getApp().formids2Server();
           wx.request({
             url: getApp().globalData.SERVER_URL + '/rota/updateOrCreate',
             method: 'put',
@@ -671,7 +706,14 @@ Page({
       toStatus = "4";
       flag = true;
     };
+    if (fromStatus == "4") {
+      wx.showToast({
+        title: '该预约已完成.'
+      })
+    };
+
     if (flag) {
+      getApp().formids2Server();
       //发起网络请求 
       wx.request({
         url: getApp().globalData.SERVER_URL + '/booking/update',
@@ -681,22 +723,22 @@ Page({
           status: toStatus
         },
         success: function (res) {
-          console.log("id:" + res.data[0].id);
+          //console.log("id:" + res.data[0].id);
           //set userid 2 Storage
           if (toStatus == 1) {
             wx.showToast({
-              title: '该预约审核通过.',
+              title: '该预约审核通过.'
             })
           }
           if (toStatus == 4) {
             wx.showToast({
-              title: '该预约已完成.',
+              title: '该预约已完成.'
             })
           }
           //refreshBooking
-          let booking={};
-          booking.id=bookingId;
-          booking.status=toStatus;
+          let booking = {};
+          booking.id = bookingId;
+          booking.status = toStatus;
           that.updateSelectedBookings(booking);
           that.setSelectedBookings();
 
@@ -727,6 +769,12 @@ Page({
     wx.setStorageSync(getApp().SCONST.BOOKING, bookings_all);
     //console.log("daybooking:" + tmpDayBooking);
     //console.log("daybooking:"+this.data.hours.indexOf(15));
+  },
+  formSubmit: function (e) {
+    var that = this
+    //console.log("formid:"+e.detail.formid);
+    let formid = e.detail.formId;
+    getApp().formidCollect(formid);
   },
   /**
    * 生命周期函数--监听页面初次渲染完成

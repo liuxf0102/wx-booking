@@ -62,6 +62,10 @@ App({
     getApp().globalData.formids = formids;
   },
   formids2Server: function () {
+    if (getApp().globalData.formids.length==0)
+    {
+      return;
+    }
     wx.request({
       url: getApp().globalData.SERVER_URL + '/user/appendFormids',
       data: {
@@ -101,7 +105,7 @@ App({
     icon: '',
     gender: '',
     params: {},
-    version: "V2.1.1",
+    version: "V2.2.0",
     SERVER_URL: 'https://www.4exam.cn',
     //SERVER_URL: 'http://127.0.0.1:8081'
 

@@ -2,66 +2,113 @@
 
   <view class="graySpace"></view>
   <view class="button-line">
-    <view class="{{selectedWeekday==1? 'view-button-selected' : 'view-button' }} {{(today==(selectedYear+'-'+selectedMonth+'-'+day[0]))?'view-button-today':''}}" data-idx="1" bindtap='setWeekDay'  bindlongpress='longpressDay'>
-      <view class="view-weekday"><text class="text-weekday">一</text><text class="text-weekday-flag">{{dayFlag[0]}}</text></view>
-      <view class="view-day">
-        <text>{{day[0]}}</text>
-        <text class="{{dayClass[0]=='text-day-count-red'?(dayBookingPendingApproval[0]>0?'text-day-count-red':dayClass[0]):'text-day-count'}}">{{dayBooking[0]>0?":"+dayBooking[0]:""}}</text>
-      </view>
-      
-    </view>
-    <view class="{{selectedWeekday==2? 'view-button-selected' : 'view-button' }} {{(today==(selectedYear+'-'+selectedMonth+'-'+day[1]))?'view-button-today':''}}" data-idx="2" bindtap='setWeekDay'  bindlongpress='longpressDay'>
-      <view class="view-weekday"><text class="text-weekday">二</text><text class="text-weekday-flag">{{dayFlag[1]}}</text></view>
-     <view class="view-day">
-        <text>{{day[1]}}</text>
-        <text class="{{dayClass[1]=='text-day-count-blue'?(dayBookingPendingApproval[1]>0?'text-day-count-red':dayClass[1]):'text-day-count'}}">{{dayBooking[1]>0?":"+dayBooking[1]:""}}</text>
-      </view>
-     
-    
-    </view>
-    <view class="{{selectedWeekday==3? 'view-button-selected' : 'view-button' }} {{(today==(selectedYear+'-'+selectedMonth+'-'+day[2]))?'view-button-today':''}}" data-idx="3" bindtap='setWeekDay'  bindlongpress='longpressDay'>
-      <view class="view-weekday"><text class="text-weekday">三</text><text class="text-weekday-flag">{{dayFlag[2]}}</text></view>
-      <view class="view-day">
-        <text>{{day[2]}}</text>
-        <text class="{{dayClass[2]=='text-day-count-blue'?(dayBookingPendingApproval[2]>0?'text-day-count-red':dayClass[2]):'text-day-count'}}">{{dayBooking[2]>0?":"+dayBooking[2]:""}}</text>
-      </view>
-     
-    </view>
-    <view class="{{selectedWeekday==4? 'view-button-selected' : 'view-button' }} {{(today==(selectedYear+'-'+selectedMonth+'-'+day[3]))?'view-button-today':''}}" data-idx="4" bindtap='setWeekDay'  bindlongpress='longpressDay'>
-      <view class="view-weekday"><text class="text-weekday">四</text><text class="text-weekday-flag">{{dayFlag[3]}}</text></view>
-      <view class="view-day">
-        <text>{{day[3]}}</text>
-        <text class="{{dayClass[3]=='text-day-count-blue'?(dayBookingPendingApproval[3]>0?'text-day-count-red':dayClass[3]):'text-day-count'}}">{{dayBooking[3]>0?":"+dayBooking[3]:""}}</text>
-      </view>
-      
-    </view>
+    <form bindsubmit="formSubmit" report-submit='true'>
 
-    <view class="{{selectedWeekday==5? 'view-button-selected' : 'view-button' }} {{(today==(selectedYear+'-'+selectedMonth+'-'+day[4]))?'view-button-today':''}}" data-idx="5" bindtap='setWeekDay' bindlongpress='longpressDay' >
-      <view class="view-weekday"><text class="text-weekday">五</text><text class="text-weekday-flag">{{dayFlag[4]}}</text></view>
-      <view class="view-day">
-        <text>{{day[4]}}</text>
-        <text class="{{dayClass[4]=='text-day-count-blue'?(dayBookingPendingApproval[4]>0?'text-day-count-red':dayClass[4]):'text-day-count'}}">{{dayBooking[4]>0?":"+dayBooking[4]:""}}</text>
-      </view>
-     
-    </view>
+      <button form-type="submit" class="{{selectedWeekday==1? 'view-button-selected' : 'view-button' }} {{(today==(curYear+'-'+curMonth+'-'+day[0]))?'view-button-today':''}}" data-idx="1" bindtap='setWeekDay' bindlongpress='longpressDay'>
+        <view class="view-weekday">
+          <text class="text-weekday">一</text>
+          <text class="text-weekday-flag">{{dayFlag[0]}}</text>
+        </view>
+        <view class="view-day">
+          <text>{{day[0]}}</text>
+          <text class="{{dayClass[0]=='text-day-count-blue'?(dayBookingPendingApproval[0]>0?'text-day-count-red':dayClass[0]):'text-day-count'}} text-bold-{{dayBookingKeyTask[0]}}">{{dayBooking[0]>0?":"+dayBooking[0]:""}}</text>
+        </view>
+      </button>
 
-    <view class="{{selectedWeekday==6? 'view-button-selected' : 'view-button' }} {{(today==(selectedYear+'-'+selectedMonth+'-'+day[5]))?'view-button-today':''}}" data-idx="6" bindtap='setWeekDay'  bindlongpress='longpressDay'>
-      <view class="view-weekday"><text class="text-weekday">六</text><text class="text-weekday-flag">{{dayFlag[5]}}</text></view>
-      <view class="view-day">
-        <text>{{day[5]}}</text>
-        <text class="{{dayClass[5]=='text-day-count-blue'?(dayBookingPendingApproval[5]>0?'text-day-count-red':dayClass[5]):'text-day-count'}}">{{dayBooking[5]>0?":"+dayBooking[5]:""}}</text>
-      </view>
-      
-    </view>
+    </form>
+    <form bindsubmit="formSubmit" report-submit='true'>
 
-    <view class="{{selectedWeekday==7? 'view-button-selected' : 'view-button' }} {{(today==(selectedYear+'-'+selectedMonth+'-'+day[6]))?'view-button-today':''}}" data-idx="7" bindtap='setWeekDay' bindlongpress='longpressDay'>
-      <view class="view-weekday"><text class="text-weekday">日</text><text class="text-weekday-flag">{{dayFlag[6]}}</text></view>
-      <view class="view-day">
-        <text>{{day[6]}}</text>
-        <text class="{{dayClass[6]=='text-day-count-blue'?(dayBookingPendingApproval[6]>0?'text-day-count-red':dayClass[6]):'text-day-count'}}">{{dayBooking[6]>0?":"+dayBooking[6]:""}}</text>
-      </view>
-     
-    </view>
+      <button form-type="submit" class="{{selectedWeekday==2? 'view-button-selected' : 'view-button' }} {{(today==(curYear+'-'+curMonth+'-'+day[1]))?'view-button-today':''}}" data-idx="2" bindtap='setWeekDay' bindlongpress='longpressDay'>
+        <view class="view-weekday">
+          <text class="text-weekday">二</text>
+          <text class="text-weekday-flag">{{dayFlag[1]}}</text>
+        </view>
+        <view class="view-day">
+          <text>{{day[1]}}</text>
+          <text class="{{dayClass[1]=='text-day-count-blue'?(dayBookingPendingApproval[1]>0?'text-day-count-red':dayClass[1]):'text-day-count'}} text-bold-{{dayBookingKeyTask[1]}}">{{dayBooking[1]>0?":"+dayBooking[1]:""}}</text>
+        </view>
+
+      </button>
+
+    </form>
+    <form bindsubmit="formSubmit" report-submit='true'>
+
+      <button form-type="submit" class="{{selectedWeekday==3? 'view-button-selected' : 'view-button' }} {{(today==(curYear+'-'+curMonth+'-'+day[2]))?'view-button-today':''}}" data-idx="3" bindtap='setWeekDay' bindlongpress='longpressDay'>
+        <view class="view-weekday">
+          <text class="text-weekday">三</text>
+          <text class="text-weekday-flag">{{dayFlag[2]}}</text>
+        </view>
+        <view class="view-day">
+          <text>{{day[2]}}</text>
+          <text class="{{dayClass[2]=='text-day-count-blue'?(dayBookingPendingApproval[2]>0?'text-day-count-red':dayClass[2]):'text-day-count'}} text-bold-{{dayBookingKeyTask[2]}}">{{dayBooking[2]>0?":"+dayBooking[2]:""}}</text>
+        </view>
+
+      </button>
+
+    </form>
+    <form bindsubmit="formSubmit" report-submit='true'>
+
+      <button form-type="submit" class="{{selectedWeekday==4? 'view-button-selected' : 'view-button' }} {{(today==(curYear+'-'+curMonth+'-'+day[3]))?'view-button-today':''}}" data-idx="4" bindtap='setWeekDay' bindlongpress='longpressDay'>
+        <view class="view-weekday">
+          <text class="text-weekday">四</text>
+          <text class="text-weekday-flag">{{dayFlag[3]}}</text>
+        </view>
+        <view class="view-day">
+          <text>{{day[3]}}</text>
+          <text class="{{dayClass[3]=='text-day-count-blue'?(dayBookingPendingApproval[3]>0?'text-day-count-red':dayClass[3]):'text-day-count'}} text-bold-{{dayBookingKeyTask[3]}}">{{dayBooking[3]>0?":"+dayBooking[3]:""}}</text>
+        </view>
+
+      </button>
+
+    </form>
+
+    <form bindsubmit="formSubmit" report-submit='true'>
+
+      <button form-type="submit" class="{{selectedWeekday==5? 'view-button-selected' : 'view-button' }} {{(today==(curYear+'-'+curMonth+'-'+day[4]))?'view-button-today':''}}" data-idx="5" bindtap='setWeekDay' bindlongpress='longpressDay'>
+        <view class="view-weekday">
+          <text class="text-weekday">五</text>
+          <text class="text-weekday-flag">{{dayFlag[4]}}</text>
+        </view>
+        <view class="view-day">
+          <text>{{day[4]}}</text>
+          <text class="{{dayClass[4]=='text-day-count-blue'?(dayBookingPendingApproval[4]>0?'text-day-count-red':dayClass[4]):'text-day-count'}} text-bold-{{dayBookingKeyTask[4]}}">{{dayBooking[4]>0?":"+dayBooking[4]:""}}</text>
+        </view>
+
+      </button>
+
+    </form>
+
+    <form bindsubmit="formSubmit" report-submit='true'>
+
+      <button form-type="submit" class="{{selectedWeekday==6? 'view-button-selected' : 'view-button' }} {{(today==(curYear+'-'+curMonth+'-'+day[5]))?'view-button-today':''}}" data-idx="6" bindtap='setWeekDay' bindlongpress='longpressDay'>
+        <view class="view-weekday">
+          <text class="text-weekday">六</text>
+          <text class="text-weekday-flag">{{dayFlag[5]}}</text>
+        </view>
+        <view class="view-day">
+          <text>{{day[5]}}</text>
+          <text class="{{dayClass[5]=='text-day-count-blue'?(dayBookingPendingApproval[5]>0?'text-day-count-red':dayClass[5]):'text-day-count'}} text-bold-{{dayBookingKeyTask[5]}}">{{dayBooking[5]>0?":"+dayBooking[5]:""}}</text>
+        </view>
+
+      </button>
+
+    </form>
+
+    <form bindsubmit="formSubmit" report-submit='true'>
+
+      <button form-type="submit" class="{{selectedWeekday==7? 'view-button-selected' : 'view-button' }} {{(today==(curYear+'-'+curMonth+'-'+day[6]))?'view-button-today':''}}" data-idx="7" bindtap='setWeekDay' bindlongpress='longpressDay'>
+        <view class="view-weekday">
+          <text class="text-weekday">日</text>
+          <text class="text-weekday-flag">{{dayFlag[6]}}</text>
+        </view>
+        <view class="view-day">
+          <text>{{day[6]}}</text>
+          <text class="{{dayClass[6]=='text-day-count-blue'?(dayBookingPendingApproval[6]>0?'text-day-count-red':dayClass[6]):'text-day-count'}} text-bold-{{dayBookingKeyTask[6]}}">{{dayBooking[6]>0?":"+dayBooking[6]:""}}</text>
+        </view>
+
+      </button>
+
+    </form>
   </view>
 
   <view class="graySpace"></view>
@@ -78,8 +125,8 @@
       <view class="weui-cell__ft" hover-class="weui-cell_active">
         <view data-bookingid="{{item.id}}" bindtap='tapBookingDetails'>{{item.hour_format}}</view>
         <view>
-        <text class="{{item.status_class}}">{{item.status_format}}</text>
-        <text class="{{item.prop_class_class}}">{{item.prop_class_format}}</text>
+          <text class="{{item.status_class}}">{{item.status_format}}</text>
+          <text class="{{item.prop_class_class}}">{{item.prop_class_format}}</text>
         </view>
       </view>
     </view>
@@ -90,6 +137,7 @@
   <view class="weui-btn-area">
     <button class="weui-btn" type="primary" disabled="{{buttonDisabled}}" bindtap="bindNewBooking">新建预约{{selectedUserid2Name}}</button>
   </view>
+
   <view class="space_900rpx"></view>
 
 </view>

@@ -30,6 +30,7 @@ Page({
     day: [0, 0, 0, 0, 0, 0, 0],
     dayBooking: [0, 0, 0, 0, 0, 0, 0],
     dayBookingPendingApproval: [0, 0, 0, 0, 0, 0, 0],
+    dayBookingUnfinished: [0, 0, 0, 0, 0, 0, 0],
     dayBookingKeyTask: [0, 0, 0, 0, 0, 0, 0],
     dayClass: ['', '', '', '', '', '', ''],
     dayFlag: ['', '', '', '', '', '', ''],
@@ -150,6 +151,7 @@ Page({
     var selectedBookings = [];
     var tmpDayBooking = [0, 0, 0, 0, 0, 0, 0];
     var tmpDayBookingPendingApproval = [0, 0, 0, 0, 0, 0, 0];
+    var tmpDayBookingUnfinished = [0, 0, 0, 0, 0, 0, 0];
     var tmpDayBookingKeyTask = [0, 0, 0, 0, 0, 0, 0];
 
 
@@ -171,7 +173,17 @@ Page({
             //check whether exist pending approval
             if (bookings_all[i].status.toString() == "0") {
               tmpDayBookingPendingApproval[t]++;
+              if (tmpDayBookingPendingApproval[t] > 1) {
+                tmpDayBookingPendingApproval[t] = 1;
+              }
             }
+            if (bookings_all[i].status.toString() == "0" || bookings_all[i].status.toString() == "1") {
+              tmpDayBookingUnfinished[t]++;
+              if (tmpDayBookingUnfinished[t] > 1) {
+                tmpDayBookingUnfinished[t] = 1;
+              }
+            }
+
             //check whether exist key task
             if (bookings_all[i].prop_class.toString() == "0" && (bookings_all[i].status.toString() == "0" || bookings_all[i].status.toString() == "1")) {
 
@@ -283,6 +295,7 @@ Page({
         bookings: selectedBookings,
         dayBooking: tmpDayBooking,
         dayBookingPendingApproval: tmpDayBookingPendingApproval,
+        dayBookingUnfinished: tmpDayBookingUnfinished,
         dayBookingKeyTask: tmpDayBookingKeyTask
       }
     );

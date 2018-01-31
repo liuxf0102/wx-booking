@@ -11,7 +11,7 @@
         </view>
         <view class="view-day">
           <text>{{day[0]}}</text>
-          <text class="{{dayClass[0]=='text-day-count-blue'?(dayBookingPendingApproval[0]>0?'text-day-count-red':dayClass[0]):'text-day-count'}} text-bold-{{dayBookingKeyTask[0]}}">{{dayBooking[0]>0?":"+dayBooking[0]:""}}</text>
+          <text class="{{dayClass[0]}} text-color-pending-approval-{{dayBookingPendingApproval[0]}} {{dayClass[0]=='text-day-count'?'text-color-unfinished':'null'}}-{{dayBookingUnfinished[0]}}  text-bold-{{dayBookingKeyTask[0]}}">{{dayBooking[0]>0?":"+dayBooking[0]:""}}</text>
         </view>
       </button>
 
@@ -25,7 +25,7 @@
         </view>
         <view class="view-day">
           <text>{{day[1]}}</text>
-          <text class="{{dayClass[1]=='text-day-count-blue'?(dayBookingPendingApproval[1]>0?'text-day-count-red':dayClass[1]):'text-day-count'}} text-bold-{{dayBookingKeyTask[1]}}">{{dayBooking[1]>0?":"+dayBooking[1]:""}}</text>
+          <text class="{{dayClass[1]}} text-color-pending-approval-{{dayBookingPendingApproval[1]}} {{dayClass[1]=='text-day-count'?'text-color-unfinished':'null'}}-{{dayBookingUnfinished[1]}}  text-bold-{{dayBookingKeyTask[1]}}">{{dayBooking[1]>0?":"+dayBooking[1]:""}}</text>
         </view>
 
       </button>
@@ -40,7 +40,7 @@
         </view>
         <view class="view-day">
           <text>{{day[2]}}</text>
-          <text class="{{dayClass[2]=='text-day-count-blue'?(dayBookingPendingApproval[2]>0?'text-day-count-red':dayClass[2]):'text-day-count'}} text-bold-{{dayBookingKeyTask[2]}}">{{dayBooking[2]>0?":"+dayBooking[2]:""}}</text>
+          <text class="{{dayClass[2]}} text-color-pending-approval-{{dayBookingPendingApproval[2]}} {{dayClass[2]=='text-day-count'?'text-color-unfinished':'null'}}-{{dayBookingUnfinished[2]}}  text-bold-{{dayBookingKeyTask[2]}}">{{dayBooking[2]>0?":"+dayBooking[2]:""}}</text>
         </view>
 
       </button>
@@ -55,7 +55,7 @@
         </view>
         <view class="view-day">
           <text>{{day[3]}}</text>
-          <text class="{{dayClass[3]=='text-day-count-blue'?(dayBookingPendingApproval[3]>0?'text-day-count-red':dayClass[3]):'text-day-count'}} text-bold-{{dayBookingKeyTask[3]}}">{{dayBooking[3]>0?":"+dayBooking[3]:""}}</text>
+          <text class="{{dayClass[3]}} text-color-pending-approval-{{dayBookingPendingApproval[3]}} {{dayClass[3]=='text-day-count'?'text-color-unfinished':'null'}}-{{dayBookingUnfinished[3]}}  text-bold-{{dayBookingKeyTask[3]}}">{{dayBooking[3]>0?":"+dayBooking[3]:""}}</text>
         </view>
 
       </button>
@@ -71,7 +71,7 @@
         </view>
         <view class="view-day">
           <text>{{day[4]}}</text>
-          <text class="{{dayClass[4]=='text-day-count-blue'?(dayBookingPendingApproval[4]>0?'text-day-count-red':dayClass[4]):'text-day-count'}} text-bold-{{dayBookingKeyTask[4]}}">{{dayBooking[4]>0?":"+dayBooking[4]:""}}</text>
+          <text class="{{dayClass[4]}} text-color-pending-approval-{{dayBookingPendingApproval[4]}} {{dayClass[4]=='text-day-count'?'text-color-unfinished':'null'}}-{{dayBookingUnfinished[4]}}  text-bold-{{dayBookingKeyTask[4]}}">{{dayBooking[4]>0?":"+dayBooking[4]:""}}</text>
         </view>
 
       </button>
@@ -87,7 +87,7 @@
         </view>
         <view class="view-day">
           <text>{{day[5]}}</text>
-          <text class="{{dayClass[5]=='text-day-count-blue'?(dayBookingPendingApproval[5]>0?'text-day-count-red':dayClass[5]):'text-day-count'}} text-bold-{{dayBookingKeyTask[5]}}">{{dayBooking[5]>0?":"+dayBooking[5]:""}}</text>
+          <text class="{{dayClass[5]}} text-color-pending-approval-{{dayBookingPendingApproval[5]}} {{dayClass[5]=='text-day-count'?'text-color-unfinished':'null'}}-{{dayBookingUnfinished[5]}}  text-bold-{{dayBookingKeyTask[5]}}">{{dayBooking[5]>0?":"+dayBooking[5]:""}}</text>
         </view>
 
       </button>
@@ -103,7 +103,7 @@
         </view>
         <view class="view-day">
           <text>{{day[6]}}</text>
-          <text class="{{dayClass[6]=='text-day-count-blue'?(dayBookingPendingApproval[6]>0?'text-day-count-red':dayClass[6]):'text-day-count'}} text-bold-{{dayBookingKeyTask[6]}}">{{dayBooking[6]>0?":"+dayBooking[6]:""}}</text>
+          <text class="{{dayClass[6]}} text-color-pending-approval-{{dayBookingPendingApproval[6]}} {{dayClass[6]=='text-day-count'?'text-color-unfinished':'null'}}-{{dayBookingUnfinished[6]}}  text-bold-{{dayBookingKeyTask[6]}}">{{dayBooking[6]>0?":"+dayBooking[6]:""}}</text>
         </view>
 
       </button>

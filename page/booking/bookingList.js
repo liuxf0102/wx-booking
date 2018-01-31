@@ -617,7 +617,6 @@ Page({
           let selectedDay = new Date();
           selectedDay.setTime(selectedDayLongTime);
           let day = util.formatDate(selectedDay);
-          getApp().formids2Server();
           wx.request({
             url: getApp().globalData.SERVER_URL + '/rota/updateOrCreate',
             method: 'put',
@@ -713,7 +712,6 @@ Page({
     };
 
     if (flag) {
-      getApp().formids2Server();
       //发起网络请求 
       wx.request({
         url: getApp().globalData.SERVER_URL + '/booking/update',
@@ -804,7 +802,7 @@ Page({
    * 生命周期函数--监听页面隐藏
    */
   onHide: function () {
-
+    getApp().formids2Server();
   },
 
   /**

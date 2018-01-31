@@ -2,12 +2,7 @@
 App({
   onLaunch: function () {
     // 展示本地存储能力
-    var logs = wx.getStorageSync('logs') || []
-    logs.unshift(Date.now())
-    wx.setStorageSync('logs', logs)
-    var that = this;
-    //console.log("App 0");
-
+    
   },
 
   userInfoReadyCallback: function (res) {
@@ -56,10 +51,15 @@ App({
     console.log("formid:" + formid);
     // "the formId is a mock one" will be set for formid
     if (!(formid.indexOf("formId") > 0)) {
+      let data={"formid":formid,"expire":((new Date().getTime())+7*24*3600*1000-3*60*1000)};
       
-      formids.push(formid);
+      formids.push(data);
     }
     getApp().globalData.formids = formids;
+    //if the formid count 10 then send to server
+    if (getApp().globalData.formids.length>10){
+      this.formids2Server();
+    }
   },
   formids2Server: function () {
     if (getApp().globalData.formids.length==0)
@@ -80,12 +80,13 @@ App({
           // success
           //console.log('成功' + JSON.stringify(res));
           getApp().globalData.formids = [];
+          console.log('formids2Server ok.');
         }
         // console.log(e.detail.formid);
       },
       fail: function (err) {
         // fail
-        console.log('失败' + err);
+        console.error('formids2Server' + err);
       },
       complete: function () {
         // complete
@@ -105,7 +106,7 @@ App({
     icon: '',
     gender: '',
     params: {},
-    version: "V2.2.0",
+    version: "V2.2.1",
     SERVER_URL: 'https://www.4exam.cn',
     //SERVER_URL: 'http://127.0.0.1:8081'
 

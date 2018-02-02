@@ -78,6 +78,14 @@
             </view>
             <view class="weui-cell weui-cell_input">
               <view class="weui-cell__hd">
+                <view class="weui-label">预约类型:</view>
+              </view>
+              <view class="weui-cell__bd">
+                <view class="weui-input" bindtap='tapPropClass'> {{prop_class}}</view>
+              </view>
+            </view>
+            <view class="weui-cell weui-cell_input">
+              <view class="weui-cell__hd">
                 <view class="weui-label">留言:</view>
               </view>
               <view class="weui-cell__bd">

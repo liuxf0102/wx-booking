@@ -1,0 +1,31 @@
+<view class="page">
+
+
+  <view class="weui-cells__title">设置预约本类型</view>
+  <view class="weui-cell" wx:for="{{prop_classes}}" wx:key="{{item}}">
+
+    <view class="weui-cell__bd" hover-class="weui-cell_active">
+      <view bindtap='tapBookingDetails'>{{item}}</view>
+    </view>
+    <view class="weui-cell__ft" hover-class="weui-cell_active">
+      <view class="view-color-blue" data-propclass="{{item}}" bindtap='tapDeletePropClass'>删除</view>
+    </view>
+  </view>
+<view class="graySpace"></view>
+<view class="weui-cell">
+
+    <view class="weui-cell__bd" >
+      <view><input placeholder="请输入新预约类型" value="{{newPropClass}}" maxlength='10' bindinput='inputPropClass' /></view>
+    </view>
+    <view class="weui-cell__ft" hover-class="weui-cell_active">
+      <view  class="view-color-blue" bindtap='tapAddPropClass'>增加</view>
+    </view>
+  </view>
+
+  <view class="weui-btn-area">
+    <button class="weui-btn" type="primary" disabled="{{!(buttonIsReady)}}" bindtap="bindUpdateUserInfo">保存更新</button>
+  </view>
+  
+
+
+</view>

@@ -37,7 +37,7 @@
           <view class="weui-label" data-idx="{{booking.id}}" bindtap='tapPropClass'>预约类型:</view>
         </view>
         <view class="weui-cell__bd">
-         <text data-idx="{{booking.id}}" bindtap='tapPropClass'> {{booking.prop_class_format}}</text>
+         <text data-idx="{{booking.id}}" bindtap='tapPropClass'> {{booking.prop_class}}</text>
         </view>
       </view>
       <view class="weui-cell weui-cell_access" hidden="{{booking.memo2==''?true:false}}">

@@ -4,7 +4,7 @@ var sliderWidth = 96
 Page({
   pageUserid1: "",
   pageScene: '',
-  pageScene: '999',
+  //pageScene: '999',
 
   /**
    * 页面的初始数据
@@ -26,7 +26,8 @@ Page({
     hour: 8,
     hours: [8, 9, 10, 13, 14, 15],
     hourLabels: ["上午8点", "上午9点", "上午10点", "下午1点", "下午2点", "下午3点"],
-    memo2: ""
+    memo2: "",
+    prop_class:"未知"
   },
 
   /**
@@ -195,6 +196,14 @@ Page({
           if (res.statusCode == 200 && res.data[0].result == 'success') {
 
             console.log("userid1 real_name:" + res.data[0].myInfo.real_name);
+            let strConfig = res.data[0].myInfo.config;
+            if (strConfig == '') {
+              strConfig = "{}";
+            }
+            let config = JSON.parse(strConfig);
+            if (config.prop_classes && config.prop_classes.length > 0) {
+              getApp().globalData.BOOKING_PROP_CLASSES = config.prop_classes;
+            }
             that.setData({
               userInfo1: res.data[0].myInfo,
               userInfo1IsReady: true
@@ -249,6 +258,7 @@ Page({
           //set userid 2 Storage
           getApp().globalData.userid = res.data[0].myInfo.userid;
           getApp().globalData.mobile = res.data[0].myInfo.mobile;
+          
 
           var myreg = /^((1)+\d{10})$/;
           that.setData({
@@ -332,7 +342,7 @@ Page({
     
     wx.showModal({
       title: '预约信息确认',
-      content: ' 对方姓名:' + this.data.userInfo1.real_name +  '\n\r时间:' + this.data.weekday_format + ' ' + this.data.month + '月' + this.data.day + '号 ' + this.data.hour_format,
+      content: ' 对方姓名:' + this.data.userInfo1.real_name +  '\n\r时间:' + this.data.weekday_format + ' ' + this.data.month + '月' + this.data.day + '号 ' + this.data.hour_format+'\n\r预约类型:'+this.data.prop_class,
       showCancel: true,
       success: function (res) {
         if (res.confirm) {
@@ -340,7 +350,7 @@ Page({
             buttonIsReady: false
           });
 
-          getApp().formids2Server();
+          
           //check mobile 
           //发起网络请求 restAPI add new booking to database;
           wx.request({
@@ -356,7 +366,8 @@ Page({
               weekday: that.data.weekday,
               hour: that.data.hour,
               minute: 0,
-              memo2: that.data.memo2
+              memo2: that.data.memo2,
+              prop_class:that.data.prop_class
 
 
             }, success: function (res) {
@@ -533,6 +544,28 @@ Page({
 
 
   },
+  tapPropClass: function (e) {
+    var that = this;
+    //console.log("tapPropClass:"+JSON.stringify(e));
+
+    let prop_classes = getApp().globalData.BOOKING_PROP_CLASSES;
+    if (prop_classes.length == 0) {
+      prop_classes = getApp().globalData.BOOKING_PROP_CLASSES_DEFAULT;
+    }
+    wx.showActionSheet({
+      itemList: prop_classes,
+      success: function (res) {
+        //let selectedHour = that.data.hourLabels[res.tapIndex];
+        //console.log("selectedHour:" + res.tapIndex);
+        let prop_class = prop_classes[res.tapIndex];
+        if (!res.cancel) {
+          that.setData({
+            prop_class: prop_classes[res.tapIndex]
+          });
+        }
+      }
+    });
+  },
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
@@ -556,7 +589,7 @@ Page({
    * 生命周期函数--监听页面隐藏
    */
   onHide: function () {
-
+    getApp().formids2Server();
   },
 
   /**

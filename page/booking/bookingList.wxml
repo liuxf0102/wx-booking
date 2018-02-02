@@ -132,8 +132,6 @@
     </view>
   </view>
   <view class="graySpace"></view>
-
-
   <view class="weui-btn-area">
     <button class="weui-btn" type="primary" disabled="{{buttonDisabled}}" bindtap="bindNewBooking">新建预约{{selectedUserid2Name}}</button>
   </view>

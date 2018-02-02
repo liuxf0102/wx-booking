@@ -4,7 +4,11 @@
       <view class="weui-navbar">
         <block wx:for="{{tabs}}" wx:key="*this">
           <view id="{{index}}" class="weui-navbar__item {{activeIndex == index ? 'weui-bar__item_on' : ''}}" bindtap="tabClick">
-            <view class="weui-navbar__title">{{item}}</view>
+            <form bindsubmit="formSubmit" report-submit='true'>
+              <button class="form_button" form-type="submit">
+                <view class="weui-navbar__title">{{item}}</view>
+              </button>
+            </form>
           </view>
         </block>
         <view class="weui-navbar__slider" style="left: {{sliderLeft}}px; transform: translateX({{sliderOffset}}px); -webkit-transform: translateX({{sliderOffset}}px);"></view>
@@ -81,8 +85,8 @@
             <view class="graySpace"></view>
             <view hidden="{{bookingNext?false:true}}" class="weui-btn-area">
 
-            <button class="weui-btn"  type="primary"  bindtap="bindNewBookingQR">申请下次预约</button>
-          </view>
+              <button class="weui-btn" type="primary" bindtap="bindNewBookingQR">申请下次预约</button>
+            </view>
             <view class="space_900rpx"></view>
           </view>
         </view>

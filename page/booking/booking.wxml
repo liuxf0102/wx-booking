@@ -30,13 +30,33 @@
         <input class="weui-input" placeholder="请输入姓名" value="{{userid2Name}}" maxlength="10" focus="{{real_name_focus}}" disabled='{{!userid2isNew}}' bindinput='inputRealName' />
       </view>
     </view>
-    
+    <view class="weui-cell weui-cell_input">
+              <view class="weui-cell__hd">
+                <view class="weui-label">预约类型:</view>
+              </view>
+              <view class="weui-cell__bd">
+                <view class="weui-input" bindtap='tapPropClass'> {{prop_class}}</view>
+              </view>
+            </view>
+            <view class="weui-cell weui-cell_input">
+              <view class="weui-cell__hd">
+                <view class="weui-label">备注:</view>
+              </view>
+              <view class="weui-cell__bd">
+                <form bindsubmit="formSubmit" report-submit='true'>
+                  <button class="form_button" form-type="submit">
+                    <input class="weui-input" placeholder="请输入备注" value="{{memo1}}" maxlength='50' bindinput='inputMemo1' />
+                  </button>
+                </form>
+              </view>
+            </view>
+
   </view>
   <view class="space_30rpx"></view>
   <view class="weui-btn-area">
-    <button  class="weui-btn" type="primary"  disabled="{{!(buttonIsReady&&mobileIsReady&&realNameIsReady)}}" bindtap="bindNewBooking">{{bookingStatus}}</button>
-    
-    <button  class="weui-btn" type="primary"  bindtap="bindShowMyQrcode">让对方扫码预约</button>
-    
+    <button class="weui-btn" type="primary" disabled="{{!(buttonIsReady&&mobileIsReady&&realNameIsReady)}}" bindtap="bindNewBooking">{{bookingStatus}}</button>
+
+    <button class="weui-btn" type="primary" bindtap="bindShowMyQrcode">让对方扫码预约</button>
+
   </view>
 </view>

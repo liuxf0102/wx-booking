@@ -1,0 +1,4 @@
+/* page/me/settingPropClass.wxss */
+.view-color-blue{
+  color: blue
+}

@@ -62,6 +62,14 @@
       </view>
     </view>
     -->
+     <view class="graySpace"></view>
+  <view class="item-avatar-xs" bindtap="bindBookingPropClass">
+    <view>
+      <text class="title">个性化设置-预约类型</text>
+      <text class="content"></text>
+    </view>
+  </view>
+ 
   <view class="graySpace"></view>
   <view class="item-avatar-xs" bindtap="bindQrcode">
     <view>

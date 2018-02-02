@@ -22,8 +22,9 @@ Page({
     hour: 8,
     minute: 0,
     hourLabel: "上午8点",
-    qrcodeURL: ''
-
+    qrcodeURL: '',
+    prop_class:'未知',
+    memo1:''
 
 
   },
@@ -134,7 +135,9 @@ Page({
         day: this.data.day,
         weekday: this.data.weekday,
         hour: this.data.hour,
-        minute: this.data.minute
+        minute: this.data.minute,
+        prop_class:this.data.prop_class,
+        memo1:this.data.memo1
 
       }, success: function (res) {
         //console.log("add date success:");
@@ -266,7 +269,11 @@ Page({
     })
 
   },
-
+  inputMemo1: function (e) {
+    this.setData({
+      memo1: e.detail.value
+    });
+  },
   getOrCreateUserInfoByMobile: function (mobile) {
     var that = this;
     //发起网络请求 
@@ -319,6 +326,28 @@ Page({
       }
     });
 
+  },
+  tapPropClass: function (e) {
+    var that = this;
+    //console.log("tapPropClass:"+JSON.stringify(e));
+
+    let prop_classes = getApp().globalData.BOOKING_PROP_CLASSES;
+    if (prop_classes.length == 0) {
+      prop_classes = getApp().globalData.BOOKING_PROP_CLASSES_DEFAULT;
+    }
+    wx.showActionSheet({
+      itemList: prop_classes,
+      success: function (res) {
+        //let selectedHour = that.data.hourLabels[res.tapIndex];
+        //console.log("selectedHour:" + res.tapIndex);
+        let prop_class = prop_classes[res.tapIndex];
+        if (!res.cancel) {
+          that.setData({
+            prop_class: prop_classes[res.tapIndex]
+          });
+        }
+      }
+    });
   },
   /**
   * 生命周期函数--监听页面初次渲染完成

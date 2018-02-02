@@ -67,7 +67,7 @@ Page({
         booking.hour_format = util.formatHour(booking.hour);
         booking.weekday_format = util.formatWeekday(booking.weekday);
         booking.status_format = util.formatBookingStatus(booking.status);
-        booking.prop_class_format = util.formatBookingClass(booking.prop_class);
+        //booking.prop_class_format = util.formatBookingClass(booking.prop_class);
         that.setData({
           booking: booking,
           memo1Length: booking.memo1.length,
@@ -274,17 +274,21 @@ Page({
   tapPropClass: function (e) {
     var that = this;
     //console.log("tapPropClass:"+JSON.stringify(e));
-    let status_format = ['修复', '治疗', '拔牙', '洗牙','换药'];
+    
+    let prop_classes = getApp().globalData.BOOKING_PROP_CLASSES;
+    if (prop_classes.length==0){
+      prop_classes = getApp().globalData.BOOKING_PROP_CLASSES_DEFAULT;
+    }
     wx.showActionSheet({
-      itemList: status_format,
+      itemList: prop_classes,
       success: function (res) {
         //let selectedHour = that.data.hourLabels[res.tapIndex];
         //console.log("selectedHour:" + res.tapIndex);
-        let prop_class = res.tapIndex;
+        let prop_class = prop_classes[res.tapIndex];
         if (!res.cancel) {
           wx.showModal({
             title: '系统提示',
-            content: '预约类型修改为[' + status_format[res.tapIndex] + ']吗?',
+            content: '预约类型修改为[' + prop_classes[res.tapIndex] + ']吗?',
             success: function (res) {
               if (res.confirm) {
 

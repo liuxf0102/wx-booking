@@ -26,7 +26,6 @@ Page({
     selectedMonth: 0,
     selectedDay: 0,
     selectedWeekday: 0,
-    hours: [8, 9, 10, 13, 14, 15],
     day: [0, 0, 0, 0, 0, 0, 0],
     dayBooking: [0, 0, 0, 0, 0, 0, 0],
     dayBookingPendingApproval: [0, 0, 0, 0, 0, 0, 0],
@@ -37,6 +36,8 @@ Page({
     today: '',
     curYear: '',
     curMonth: '',
+    time:'0:0',
+    timeRange: [['8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20'], ['0','15','30','45']],
     buttonDisabled: true
   },
 
@@ -185,7 +186,7 @@ Page({
             }
 
             //check whether exist key task
-            if (bookings_all[i].prop_class.toString() == "0" && (bookings_all[i].status.toString() == "0" || bookings_all[i].status.toString() == "1")) {
+            if ((getApp().globalData.BOOKING_PROP_CLASSES.length > 0 && (bookings_all[i].prop_class == getApp().globalData.BOOKING_PROP_CLASSES[0])) && (bookings_all[i].status.toString() == "0" || bookings_all[i].status.toString() == "1")) {
 
               tmpDayBookingKeyTask[t]++;
               if (tmpDayBookingKeyTask[t] > 4) {
@@ -208,25 +209,15 @@ Page({
         }
         bookings_all[i].status_class = status_class;
         let prop_class_format = "";
-        if (bookings_all[i].prop_class == "0") {
-          prop_class_format = ":修";
-        }
-        if (bookings_all[i].prop_class == "1") {
-          prop_class_format = ":治";
-        }
-        if (bookings_all[i].prop_class == "2") {
-          prop_class_format = ":拔";
-        }
-        if (bookings_all[i].prop_class == "3") {
-          prop_class_format = ":洗";
-        }
-        if (bookings_all[i].prop_class == "4") {
-          prop_class_format = ":换";
+
+        if (bookings_all[i].prop_class.length >= 2) {
+          prop_class_format = ":" + bookings_all[i].prop_class.substring(0, 2);
         }
         bookings_all[i].prop_class_format = prop_class_format;
 
         let prop_class_class = 'text-black';
-        if (bookings_all[i].prop_class == "0") {
+        //the first class is key task
+        if (getApp().globalData.BOOKING_PROP_CLASSES.length>0&&(bookings_all[i].prop_class == getApp().globalData.BOOKING_PROP_CLASSES[0])) {
           prop_class_class = 'text-red';
         }
         if (bookings_all[i].status == 4)//status is finished
@@ -430,6 +421,14 @@ Page({
           getApp().globalData.userid = res.data[0].myInfo.userid;
           getApp().globalData.mobile = res.data[0].myInfo.mobile;
           getApp().globalData.real_name = res.data[0].myInfo.real_name;
+          let strConfig = res.data[0].myInfo.config;
+          if (strConfig==''){
+            strConfig="{}";
+          }
+          let config = JSON.parse(strConfig);
+          if (config.prop_classes && config.prop_classes.length > 0) {
+            getApp().globalData.BOOKING_PROP_CLASSES = config.prop_classes;
+          }
           wx.setStorageSync('MY_INFO', res.data[0].myInfo)
           that.server_getBookingList();
           that.server_getUserRotaList();
@@ -567,13 +566,21 @@ Page({
   bindNewBooking: function (e) {
     var that = this;
     wx.showActionSheet({
-      itemList: ['上午8点', '上午9点', '上午10点', '下午1点', '下午2点', '下午3点'],
+      itemList: getApp().globalData.BOOKING_HOURS_FORMAT,
       success: function (res) {
         //let selectedHour = that.data.hourLabels[res.tapIndex];
         //console.log("selectedHour:" + res.tapIndex);
         if (!res.cancel) {
+          //select other time
+          // if (getApp().globalData.BOOKING_HOURS[res.tapIndex]=="-1"){
+          //   that.setData({
+          //     time:"8:00"
+          //   });
+          //   return;
+          // }
+
           wx.navigateTo({
-            url: '/page/booking/booking?year=' + that.data.selectedYear + '&month=' + that.data.selectedMonth + '&day=' + that.data.selectedDay + '&weekday=' + that.data.selectedWeekday + '&hour=' + that.data.hours[res.tapIndex] + '&userid2=' + that.data.selectedUserid2,
+            url: '/page/booking/booking?year=' + that.data.selectedYear + '&month=' + that.data.selectedMonth + '&day=' + that.data.selectedDay + '&weekday=' + that.data.selectedWeekday + '&hour=' + getApp().globalData.BOOKING_HOURS[res.tapIndex] + '&userid2=' + that.data.selectedUserid2,
           });
         }
       }

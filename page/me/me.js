@@ -85,6 +85,11 @@ Page({
       url: '/page/booking/qrBookingList',
     })
   },
+  bindBookingPropClass:function(e){
+    wx.navigateTo({
+      url: '/page/me/settingPropClass',
+    })
+  },
   /**
    * 生命周期函数--监听页面初次渲染完成
    */

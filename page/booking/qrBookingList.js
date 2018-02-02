@@ -102,6 +102,12 @@ Page({
       url: '/page/me/me',
     })
   },
+  formSubmit: function (e) {
+    var that = this
+    //console.log("formid:"+e.detail.formid);
+    let formid = e.detail.formId;
+    getApp().formidCollect(formid);
+  },
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
@@ -120,7 +126,7 @@ Page({
    * 生命周期函数--监听页面隐藏
    */
   onHide: function () {
-
+    getApp().formids2Server();
   },
 
   /**

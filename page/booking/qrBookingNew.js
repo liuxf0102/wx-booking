@@ -3,8 +3,7 @@ let util = require('../../util/util.js');
 var sliderWidth = 96
 Page({
   pageUserid1: "",
-  pageScene: '',
-  //pageScene: '999',
+  pageScene: '999',
 
   /**
    * 页面的初始数据
@@ -27,7 +26,8 @@ Page({
     hours: [8, 9, 10, 13, 14, 15],
     hourLabels: ["上午8点", "上午9点", "上午10点", "下午1点", "下午2点", "下午3点"],
     memo2: "",
-    prop_class:"未知"
+    prop_class:"未知",
+    prop_classes:[]
   },
 
   /**
@@ -202,7 +202,10 @@ Page({
             }
             let config = JSON.parse(strConfig);
             if (config.prop_classes && config.prop_classes.length > 0) {
-              getApp().globalData.BOOKING_PROP_CLASSES = config.prop_classes;
+              let prop_classes = config.prop_classes;
+              that.setData({
+                prop_classes:prop_classes
+              });
             }
             that.setData({
               userInfo1: res.data[0].myInfo,
@@ -548,7 +551,7 @@ Page({
     var that = this;
     //console.log("tapPropClass:"+JSON.stringify(e));
 
-    let prop_classes = getApp().globalData.BOOKING_PROP_CLASSES;
+    let prop_classes = this.data.prop_classes;
     if (prop_classes.length == 0) {
       prop_classes = getApp().globalData.BOOKING_PROP_CLASSES_DEFAULT;
     }

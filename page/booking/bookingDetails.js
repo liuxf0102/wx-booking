@@ -100,6 +100,19 @@ Page({
 
         for (let i = 0; i < bookingHistory.length; i++) {
           bookingHistory[i].status_format = util.formatBookingStatus(bookingHistory[i].status);
+          let memo1 = bookingHistory[i].memo1;
+
+          //如果是待审核状态则显示对方的留言
+          if (bookingHistory[i].status.toString() == "0" || memo1 == "") {
+
+            memo1 = bookingHistory[i].memo2 == "" ? "" : "[留]" + bookingHistory[i].memo2
+          }
+          if (memo1.length > 16) {
+            memo1 = memo1.substring(0, 16);
+          }
+
+
+          bookingHistory[i].memo1_format = memo1;
         }
         //sort
         bookingHistory.sort(function (a, b) {

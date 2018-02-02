@@ -90,7 +90,7 @@
       <text class="content"></text>
     </view>
   </view>
-  <view class="item-avatar-xs" bindtap="bindHelp">
+  <view class="item-avatar-xs" bindtap="bindComment">
     <view>
       <text class="title">建议与意见:</text>
       <text class="content"></text>

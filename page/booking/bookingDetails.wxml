@@ -97,7 +97,7 @@
 
       <view class="weui-cell__bd">
         <view data-bookingid="{{item.id}}" bindtap='tapBookingDetails'>{{item.year+'年'+item.month+'月'+item.day+'号'}}</view>
-        <view class="booking-memo1">{{item.memo1}}</view>
+        <view class="booking-history-memo1">{{item.memo1_format}}</view>
       </view>
       <view class="weui-cell__ft">
         <view data-bookingid="{{item.id}}" bindtap='tapBookingDetails'>{{item.status_format}}</view>

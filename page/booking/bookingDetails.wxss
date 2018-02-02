@@ -30,3 +30,8 @@
   color:blue;
   
 }
+.booking-history-memo1{
+  font-size: 28rpx;
+  color:#888;
+  
+}

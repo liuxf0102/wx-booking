@@ -69,6 +69,12 @@ Page({
       url: '/page/me/help',
     })
   },
+  bindComment: function (e) {
+    // console.log("redirectTo:" + e.currentTarget.id);
+    wx.navigateTo({
+      url: '/page/me/comment',
+    })
+  },
   bindAbout: function (e) {
     //console.log("redirectTo:" + e.currentTarget.id);
     wx.navigateTo({

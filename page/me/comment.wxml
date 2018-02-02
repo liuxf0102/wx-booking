@@ -1,0 +1,38 @@
+<view class="page">
+
+  <view class="weui-cells__title">输入建议与意见</view>
+  <view class="weui-cells weui-cells_after-title">
+    <view class="weui-cell">
+      <view class="weui-cell__bd">
+        <textarea class="weui-textarea" placeholder="系统筛选后，对所有人可见。" value="{{booking.comment}}" maxlength="{{commentMax}}" style="height: 3.3em" bindinput='inputComment' />
+        <view class="weui-textarea-counter">{{commentLength}}/{{commentMax}}</view>
+      </view>
+    </view>
+  </view>
+
+
+  <view class="weui-btn-area">
+    <button type="primary" disabled="{{!(buttonIsReady)}}" bindtap="bindComment">保存</button>
+  </view>
+<view class="graySpace"></view>
+  <view class="weui-cells weui-cells_after-title">
+
+    <view class="weui-cell" wx:for="{{comments}}" wx:key="{{item.id}}">
+      <view class="weui-cell__hd">
+        <image class="image" src="{{item.icon}}" data-userid="{{item.userid2}}" data-name="{{item.real_name}}" bindtap="selectedUserid2" />
+      </view>
+      <view class="weui-cell__bd" hover-class="weui-cell_active">
+        <view data-bookingid="{{item.id}}" data-status="{{item.status}}" bindtap='tapBookingDetails' bindlongpress='longpressBooking'>{{item.real_name}}</view>
+        <view data-bookingid="{{item.id}}" data-status="{{item.status}}" bindtap='tapBookingDetails' class="memo1" bindlongpress='longpressBooking'>{{item.comment}}</view>
+      </view>
+      <view class="weui-cell__ft" hover-class="weui-cell_active">
+        <view data-bookingid="{{item.id}}" bindtap='tapBookingDetails'>{{item.c_time}}</view>
+        <view>
+          <text class="{{item.status_class}}">{{item.status}}</text>
+          <text class="{{item.prop_class_class}}"></text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+</view>

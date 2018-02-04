@@ -31,11 +31,22 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    if(getApp().globalData.userid=='')
-    {
-      m_login.login();
+ 
+    
+    let myInfo = wx.getStorageSync('MY_INFO') || {};
+    if (myInfo.userid) {
+      console.log("getUnionid from storage.");
+      getApp().initGlobalData(myInfo);
+    }else{
+      m_login.login(function (myInfo) {
+        getApp().initGlobalData(myInfo);
+        that.setData({
+          myInfo: myInfo
+        });
+        //set myInfo 2 storage
+        wx.setStorageSync('MY_INFO', myInfo);
+      });
     }
-
     //console.log("options:" + JSON.stringify(options));
     if(options.bookingNext){
       this.setData({

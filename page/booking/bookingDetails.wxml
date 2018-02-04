@@ -20,24 +20,25 @@
     <view class="weui-cells__title">预约详细信息:</view>
     <view class="weui-cells weui-cells_after-title">
 
+      <picker mode="date" value="{{date}}" disabled="{{datePickerDisabled}}" start="{{curYear+ '-' + curMonth + '-' + curDay}}" end="{{endYear+ '-' + endMonth + '-' + endDay}}" bindchange="bindDateChange">
+        <view class="weui-cell weui-cell_access" hover-class="weui-cell_active">
 
-      <view class="weui-cell weui-cell_access">
-
-        <view class="weui-cell__hd">
-          <view class="weui-label">预约时间:</view>
-        </view>
-        <picker mode="date" value="{{date}}" disabled="{{datePickerDisabled}}" start="{{curYear+ '-' + curMonth + '-' + curDay}}" end="{{endYear+ '-' + endMonth + '-' + endDay}}" bindchange="bindDateChange">
-          <view class="weui-cell__bd">
-            {{booking.weekday_format}} {{booking.month}}-{{booking.day}} {{booking.hour_format}}
+          <view class="weui-cell__hd">
+            <view class="weui-label">预约时间:</view>
           </view>
-        </picker>
-      </view>
-<view class="weui-cell weui-cell_access" >
+
+          <view class="weui-cell__bd">
+            {{booking.weekday_format}} {{booking.month}}月{{booking.day}}号 {{booking.hour_format}}
+          </view>
+
+        </view>
+      </picker>
+      <view class="weui-cell weui-cell_access" hover-class="weui-cell_active" data-idx="{{booking.id}}" bindtap='tapPropClass'>
         <view class="weui-cell__hd">
-          <view class="weui-label" data-idx="{{booking.id}}" bindtap='tapPropClass'>预约类型:</view>
+          <view class="weui-label">预约类型:</view>
         </view>
         <view class="weui-cell__bd">
-         <text data-idx="{{booking.id}}" bindtap='tapPropClass'> {{booking.prop_class}}</text>
+          <text> {{booking.prop_class}}</text>
         </view>
       </view>
       <view class="weui-cell weui-cell_access" hidden="{{booking.memo2==''?true:false}}">
@@ -93,7 +94,7 @@
 
   <view class="weui-cells weui-cells_after-title">
 
-    <view class="weui-cell" hover-class="weui-cell_active" wx:for="{{bookingHistory}}" wx:if="{{item.id != booking.id}}" wx:key="{{item.id}}"  >
+    <view class="weui-cell" hover-class="weui-cell_active" wx:for="{{bookingHistory}}" wx:if="{{item.id != booking.id}}" wx:key="{{item.id}}">
 
       <view class="weui-cell__bd">
         <view data-bookingid="{{item.id}}" bindtap='tapBookingDetails'>{{item.year+'年'+item.month+'月'+item.day+'号'}}</view>

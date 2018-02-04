@@ -1,5 +1,6 @@
 // page/booking/qrBookingNew.js
 let util = require('../../util/util.js');
+let m_login = require('m_login.js');
 var sliderWidth = 96
 Page({
   pageUserid1: "",
@@ -24,19 +25,18 @@ Page({
     weekday: 1,
     hour: 8,
     hours: [8, 9, 10, 13, 14, 15],
+    hour_format: '上午8点',
     hourLabels: ["上午8点", "上午9点", "上午10点", "下午1点", "下午2点", "下午3点"],
     memo2: "",
-    prop_class:"未知",
-    prop_classes:[]
+    prop_class: "未知",
+    prop_classes: []
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    wx.showLoading({
-      title: '数据加载中...',
-    })
+
     var that = this;
 
 
@@ -71,7 +71,25 @@ Page({
       this.pageScene = options.userid1;
     }
     console.log("scene:" + this.pageScene);
-    this.wxlogin();
+    let myInfo = wx.getStorageSync('MY_INFO') || {};
+    if (myInfo.userid) {
+      console.log("getUnionid from storage.");
+      getApp().initGlobalData(myInfo);
+
+      this.setData({
+        myInfo: myInfo
+      });
+    } else {
+      m_login.login(function (myInfo) {
+        getApp().initGlobalData(myInfo);
+        that.setData({
+          myInfo: myInfo
+        });
+        //set myInfo 2 storage
+        wx.setStorageSync('MY_INFO',myInfo);
+      });
+    }
+
     this.initQrcodeScene();
     this.initSelectedTime();
   },
@@ -88,90 +106,6 @@ Page({
         url: '/page/booking/qrBookingList',
       })
     }
-  },
-  wxlogin: function () {
-    var that = this;
-    // 登录
-    wx.login({
-      success: res => {
-        // 发送 res.code 到后台换取 openId, sessionKey, unionId
-        //console.log("App 10");
-        if (res.code) {
-          //发起网络请求
-
-          wx.request({
-            url: getApp().globalData.SERVER_URL + "/weixin/getUserInfo",
-            data: {
-              js_code: res.code,
-            },
-            method: "post",
-            success: function (res) {
-              //console.log("openid:" + JSON.stringify(res.data[0].data));
-              var tmp_openid = JSON.parse(res.data[0].data).openid;
-              console.log("openid:" + tmp_openid);
-              getApp().globalData.openid = tmp_openid;
-
-              var tmp_session_key = JSON.parse(res.data[0].data).session_key;
-
-              // 获取用户信息
-              wx.getSetting({
-                success: res => {
-                  // console.log("App 30");
-                  //if (res.authSetting['scope.userInfo']) {
-
-                  // 已经授权，可以直接调用 getUserInfo 获取头像昵称，不会弹框
-                  wx.getUserInfo({
-                    withCredentials: true,
-                    success: res => {
-                      // 可以将 res 发送给后台解码出 unionId
-                      //console.log("App 40");
-                      // console.log("encryptedData:" + res.encryptedData);
-                      getApp().globalData.userInfo = res.userInfo;
-                      getApp().globalData.nickName = res.userInfo.nickName;
-                      getApp().globalData.icon = res.userInfo.avatarUrl;
-                      getApp().globalData.gender = res.userInfo.gender;
-                      //console.log("userInfo:" + JSON.stringify(res.userInfo));
-
-                      //发起网络请求
-
-                      wx.request({
-                        url: getApp().globalData.SERVER_URL + "/weixin/getUnionid",
-                        data: {
-                          sessionKey: tmp_session_key,
-                          iv: res.iv,
-                          encryptedData: res.encryptedData
-                        },
-                        method: "post",
-                        success: function (res) {
-                          var unionid = res.data[0].unionid;
-                          getApp().globalData.unionid = unionid;
-                          console.log("unionid:" + unionid);
-                          that.initMyInfo(unionid);
-
-
-                        }
-                      });
-
-
-
-                    }
-                  })
-                  //}
-                }
-              });
-
-
-            }
-          });
-
-
-        } else {
-          console.log('获取用户登录态失败！' + res.errMsg)
-        }
-
-      }
-    })
-
   },
 
   initQrcodeScene: function () {
@@ -204,7 +138,7 @@ Page({
             if (config.prop_classes && config.prop_classes.length > 0) {
               let prop_classes = config.prop_classes;
               that.setData({
-                prop_classes:prop_classes
+                prop_classes: prop_classes
               });
             }
             that.setData({
@@ -239,43 +173,7 @@ Page({
     }
   },
 
-  initMyInfo: function (unionid) {
-    var that = this;
-    if (unionid != "") {
-      //发起网络请求 restAPI QRCode
-      var openid = getApp().globalData.openid;
-      wx.request({
-        url: getApp().globalData.SERVER_URL + '/user/getOrCreateUserInfoByUnionid',
-        method: 'post',
-        data: {
-          unionid: unionid,
-          openid: openid,
-          nick_name: getApp().globalData.userInfo.nickName,
-          icon: getApp().globalData.userInfo.avatarUrl,
-          gender: getApp().globalData.userInfo.gender,
-        },
-        success: function (res) {
 
-          console.log("getOrCreateUserInfoByUnionid userid:" + res.data[0].myInfo.userid);
-          //console.log("getOrCreateUserInfoByUnionid userid:" + JSON.parse(res.data[0].myInfo.job_title).k);
-          //set userid 2 Storage
-          getApp().globalData.userid = res.data[0].myInfo.userid;
-          getApp().globalData.mobile = res.data[0].myInfo.mobile;
-          
-
-          var myreg = /^((1)+\d{10})$/;
-          that.setData({
-            myInfo: res.data[0].myInfo,
-            hour_format: that.data.hourLabels[0],
-            mobileIsReady: myreg.test(res.data[0].myInfo.mobile),
-            real_name: res.data[0].myInfo.real_name,
-            mobile: res.data[0].myInfo.mobile
-          });
-          wx.hideLoading();
-        }
-      });
-    }
-  },
   initSelectedTime: function () {
     let curDate = new Date();
     curDate.setDate(curDate.getDate() + 7);
@@ -342,10 +240,10 @@ Page({
   bindNewBookingQR: function (e) {
     var that = this;
     //console.log("formids:"+JSON.stringify(getApp().globalData.formids));
-    
+
     wx.showModal({
       title: '预约信息确认',
-      content: ' 对方姓名:' + this.data.userInfo1.real_name +  '\n\r时间:' + this.data.weekday_format + ' ' + this.data.month + '月' + this.data.day + '号 ' + this.data.hour_format+'\n\r预约类型:'+this.data.prop_class,
+      content: ' 对方姓名:' + this.data.userInfo1.real_name + '\n\r时间:' + this.data.weekday_format + ' ' + this.data.month + '月' + this.data.day + '号 ' + this.data.hour_format + '\n\r预约类型:' + this.data.prop_class,
       showCancel: true,
       success: function (res) {
         if (res.confirm) {
@@ -353,7 +251,7 @@ Page({
             buttonIsReady: false
           });
 
-          
+
           //check mobile 
           //发起网络请求 restAPI add new booking to database;
           wx.request({
@@ -370,7 +268,7 @@ Page({
               hour: that.data.hour,
               minute: 0,
               memo2: that.data.memo2,
-              prop_class:that.data.prop_class
+              prop_class: that.data.prop_class
 
 
             }, success: function (res) {

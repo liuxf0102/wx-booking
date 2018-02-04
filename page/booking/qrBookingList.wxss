@@ -11,3 +11,6 @@
   color: #888;
   padding-top: 10rpx;
 }
+button::after {
+  border: 0;
+}

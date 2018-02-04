@@ -1,5 +1,8 @@
-const  login= function () {
+const  login= function (cb) {
   var that = this;
+  wx.showLoading({
+    title: '数据加载中',
+  })
   // 登录
   wx.login({
     success: res => {
@@ -55,8 +58,28 @@ const  login= function () {
                         var unionid = res.data[0].unionid;
                         getApp().globalData.unionid = unionid;
                         console.log("unionid:" + unionid);
-                        initMyInfo(unionid);
+                        //initMyInfo(unionid);
+                        wx.request({
+                          url: getApp().globalData.SERVER_URL + '/user/getOrCreateUserInfoByUnionid',
+                          method: 'post',
+                          data: {
+                            unionid: unionid,
+                            openid: getApp().globalData.openid,
+                            nick_name: getApp().globalData.nickName,
+                            icon: getApp().globalData.icon,
+                            gender: getApp().globalData.gender,
+                          },
+                          success: function (res) {
 
+                            console.log("getOrCreateUserInfoByUnionid userid:" + res.data[0].myInfo.userid);
+                            //console.log("getOrCreateUserInfoByUnionid userid:" + JSON.parse(res.data[0].myInfo.job_title).k);
+                            //set userid 2 Storage
+                            getApp().globalData.userid = res.data[0].myInfo.userid;
+                            getApp().globalData.mobile = res.data[0].myInfo.mobile;
+                            cb(res.data[0].myInfo);
+                            wx.hideLoading();
+                          }
+                        });
 
                       }
                     });
@@ -94,9 +117,9 @@ const initMyInfo = function (unionid) {
       data: {
         unionid: unionid,
         openid: openid,
-        nick_name: getApp().globalData.userInfo.nickName,
-        icon: getApp().globalData.userInfo.avatarUrl,
-        gender: getApp().globalData.userInfo.gender,
+        nick_name: getApp().globalData.nickName,
+        icon: getApp().globalData.icon,
+        gender: getApp().globalData.gender,
       },
       success: function (res) {
 

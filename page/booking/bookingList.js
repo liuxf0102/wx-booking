@@ -1,5 +1,6 @@
 // pages/booking/bookingList.js
 let util = require('../../util/util.js');
+let m_login = require('m_login.js');
 var startX, endX;
 var moveFlag = true;// 判断左右华东超出菜单最大值时不再执行滑动事件
 
@@ -36,8 +37,8 @@ Page({
     today: '',
     curYear: '',
     curMonth: '',
-    time:'0:0',
-    timeRange: [['8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20'], ['0','15','30','45']],
+    time: '0:0',
+    timeRange: [['8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20'], ['0', '15', '30', '45']],
     buttonDisabled: true
   },
 
@@ -184,9 +185,11 @@ Page({
                 tmpDayBookingUnfinished[t] = 1;
               }
             }
-
+            if (getApp().globalData.BOOKING_PROP_CLASSES.length == 0) {
+              getApp().globalData.BOOKING_PROP_CLASSES = getApp().globalData.BOOKING_PROP_CLASSES_DEFAULT;
+            }
             //check whether exist key task
-            if ((getApp().globalData.BOOKING_PROP_CLASSES.length > 0 && (bookings_all[i].prop_class == getApp().globalData.BOOKING_PROP_CLASSES[0])) && (bookings_all[i].status.toString() == "0" || bookings_all[i].status.toString() == "1")) {
+            if ((bookings_all[i].prop_class == getApp().globalData.BOOKING_PROP_CLASSES[0]) && (bookings_all[i].status.toString() == "0" || bookings_all[i].status.toString() == "1")) {
 
               tmpDayBookingKeyTask[t]++;
               if (tmpDayBookingKeyTask[t] > 4) {
@@ -217,7 +220,7 @@ Page({
 
         let prop_class_class = 'text-black';
         //the first class is key task
-        if (getApp().globalData.BOOKING_PROP_CLASSES.length>0&&(bookings_all[i].prop_class == getApp().globalData.BOOKING_PROP_CLASSES[0])) {
+        if (getApp().globalData.BOOKING_PROP_CLASSES.length > 0 && (bookings_all[i].prop_class == getApp().globalData.BOOKING_PROP_CLASSES[0])) {
           prop_class_class = 'text-red';
         }
         if (bookings_all[i].status == 4)//status is finished
@@ -233,8 +236,8 @@ Page({
 
           memo1 = bookings_all[i].memo2 == "" ? "" : "[留]" + bookings_all[i].memo2
         }
-        if (memo1.length > 16) {
-          memo1 = memo1.substring(0, 16);
+        if (memo1.length > 15) {
+          memo1 = memo1.substring(0, 15);
         }
 
 
@@ -297,101 +300,131 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    wx.showLoading({
-      title: '数据加载中...',
-    })
-
+    
     // 
     var that = this;
 
     this.initWeekday(new Date().getTime());
-    // 登录
-    wx.login({
-      success: res => {
-        // 发送 res.code 到后台换取 openId, sessionKey, unionId
-        //console.log("App 10");
-        if (res.code) {
-          //发起网络请求
+   // console.log("userid:" + JSON.stringify(getApp().globalData));
+    /*
+    let myInfo = wx.getStorageSync('MY_INFO') || {};
+    if (myInfo.userid) {
+      console.log("getUnionid from storage.");
+      getApp().initGlobalData(myInfo);
+      
+    } else {
+      console.log("can't getUnionid from storage.");
+      // 登录
+      wx.login({
+        success: res => {
+          // 发送 res.code 到后台换取 openId, sessionKey, unionId
+          //console.log("App 10");
+          if (res.code) {
+            //发起网络请求
 
-          wx.request({
-            url: getApp().globalData.SERVER_URL + "/weixin/getUserInfo",
-            data: {
-              js_code: res.code,
-            },
-            method: "post",
-            success: function (res) {
-              //console.log("openid:" + JSON.stringify(res.data[0].data));
-              var tmp_openid = JSON.parse(res.data[0].data).openid;
-              console.log("openid:" + tmp_openid);
-              getApp().globalData.openid = tmp_openid;
+            wx.request({
+              url: getApp().globalData.SERVER_URL + "/weixin/getUserInfo",
+              data: {
+                js_code: res.code,
+              },
+              method: "post",
+              success: function (res) {
+                //console.log("openid:" + JSON.stringify(res.data[0].data));
+                var tmp_openid = JSON.parse(res.data[0].data).openid;
+                console.log("openid:" + tmp_openid);
+                getApp().globalData.openid = tmp_openid;
 
-              var tmp_session_key = JSON.parse(res.data[0].data).session_key;
+                var tmp_session_key = JSON.parse(res.data[0].data).session_key;
 
-              // 获取用户信息
-              wx.getSetting({
-                success: res => {
-                  // console.log("App 30");
-                  //if (res.authSetting['scope.userInfo']) {
+                // 获取用户信息
+                wx.getSetting({
+                  success: res => {
+                    // console.log("App 30");
+                    //if (res.authSetting['scope.userInfo']) {
 
-                  // 已经授权，可以直接调用 getUserInfo 获取头像昵称，不会弹框
-                  wx.getUserInfo({
-                    withCredentials: true,
-                    success: res => {
-                      // 可以将 res 发送给后台解码出 unionId
-                      //console.log("App 40");
-                      // console.log("encryptedData:" + res.encryptedData);
-                      getApp().globalData.userInfo = res.userInfo;
-                      getApp().globalData.nickName = res.userInfo.nickName;
-                      getApp().globalData.icon = res.userInfo.avatarUrl;
-                      getApp().globalData.gender = res.userInfo.gender;
-                      //console.log("userInfo:" + JSON.stringify(res.userInfo));
+                    // 已经授权，可以直接调用 getUserInfo 获取头像昵称，不会弹框
+                    wx.getUserInfo({
+                      withCredentials: true,
+                      success: res => {
+                        // 可以将 res 发送给后台解码出 unionId
+                        //console.log("App 40");
+                        // console.log("encryptedData:" + res.encryptedData);
+                        getApp().globalData.userInfo = res.userInfo;
+                        getApp().globalData.nickName = res.userInfo.nickName;
+                        getApp().globalData.icon = res.userInfo.avatarUrl;
+                        getApp().globalData.gender = res.userInfo.gender;
+                        //console.log("userInfo:" + JSON.stringify(res.userInfo));
 
-                      //发起网络请求
+                        //发起网络请求
 
-                      wx.request({
-                        url: getApp().globalData.SERVER_URL + "/weixin/getUnionid",
-                        data: {
-                          sessionKey: tmp_session_key,
-                          iv: res.iv,
-                          encryptedData: res.encryptedData
-                        },
-                        method: "post",
-                        success: function (res) {
-                          var unionid = res.data[0].unionid;
-                          getApp().globalData.unionid = unionid;
-                          console.log("unionid:" + unionid);
-                          that.initMyInfo(unionid);
-
-
-                        }
-                      });
-
-
-                      // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
-                      // 所以此处加入 callback 以防止这种情况
-                      //console.log("this.userInfoReadyCallback:" + this.userInfoReadyCallback)
-                      //if (this.userInfoReadyCallback) {
-                      //  console.log("App 50");
-                      //  this.userInfoReadyCallback(res)
-                      // }
-                    }
-                  })
-                  //}
-                }
-              });
+                        wx.request({
+                          url: getApp().globalData.SERVER_URL + "/weixin/getUnionid",
+                          data: {
+                            sessionKey: tmp_session_key,
+                            iv: res.iv,
+                            encryptedData: res.encryptedData
+                          },
+                          method: "post",
+                          success: function (res) {
+                            var unionid = res.data[0].unionid;
+                            getApp().globalData.unionid = unionid;
+                            console.log("unionid:" + unionid);
+                            that.initMyInfo(unionid);
 
 
-            }
-          });
+                          }
+                        });
 
 
-        } else {
-          console.log('获取用户登录态失败！' + res.errMsg)
+                        // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
+                        // 所以此处加入 callback 以防止这种情况
+                        //console.log("this.userInfoReadyCallback:" + this.userInfoReadyCallback)
+                        //if (this.userInfoReadyCallback) {
+                        //  console.log("App 50");
+                        //  this.userInfoReadyCallback(res)
+                        // }
+                      }
+                    })
+                    //}
+                  }
+                });
+
+
+              }
+            });
+
+
+          } else {
+            console.log('获取用户登录态失败！' + res.errMsg)
+          }
+
         }
+      })
 
-      }
-    })
+    }
+    */
+    let myInfo = wx.getStorageSync('MY_INFO') || {};
+    if (myInfo.userid) {
+      console.log("getUnionid from storage.");
+      getApp().initGlobalData(myInfo);
 
+      this.setData({
+        myInfo: myInfo
+      });
+      that.server_getBookingList();
+      that.server_getUserRotaList();
+    } else {
+      m_login.login(function (myInfo) {
+        getApp().initGlobalData(myInfo);
+        that.setData({
+          myInfo: myInfo
+        });
+        //set myInfo 2 storage
+        wx.setStorageSync('MY_INFO', myInfo);
+        that.server_getBookingList();
+        that.server_getUserRotaList();
+      });
+    }
 
 
 
@@ -409,27 +442,16 @@ Page({
         data: {
           unionid: unionid,
           openid: openid,
-          nick_name: getApp().globalData.userInfo.nickName,
-          icon: getApp().globalData.userInfo.avatarUrl,
-          gender: getApp().globalData.userInfo.gender,
+          nick_name: getApp().globalData.nickName,
+          icon: getApp().globalData.icon,
+          gender: getApp().globalData.gender,
         },
         success: function (res) {
 
           console.log("getOrCreateUserInfoByUnionid userid:" + res.data[0].myInfo.userid);
           //console.log("getOrCreateUserInfoByUnionid userid:" + JSON.parse(res.data[0].myInfo.job_title).k);
-          //set userid 2 Storage
-          getApp().globalData.userid = res.data[0].myInfo.userid;
-          getApp().globalData.mobile = res.data[0].myInfo.mobile;
-          getApp().globalData.real_name = res.data[0].myInfo.real_name;
-          let strConfig = res.data[0].myInfo.config;
-          if (strConfig==''){
-            strConfig="{}";
-          }
-          let config = JSON.parse(strConfig);
-          if (config.prop_classes && config.prop_classes.length > 0) {
-            getApp().globalData.BOOKING_PROP_CLASSES = config.prop_classes;
-          }
-          wx.setStorageSync('MY_INFO', res.data[0].myInfo)
+          getApp().initGlobalData(res.data[0].myInfo);
+          wx.setStorageSync('MY_INFO', res.data[0].myInfo);
           that.server_getBookingList();
           that.server_getUserRotaList();
 
@@ -437,8 +459,7 @@ Page({
       });
     }
   },
-
-
+  
 
   initWeekday: function (theLongTime) {
     var curDate = new Date();
@@ -565,27 +586,9 @@ Page({
   },
   bindNewBooking: function (e) {
     var that = this;
-    wx.showActionSheet({
-      itemList: getApp().globalData.BOOKING_HOURS_FORMAT,
-      success: function (res) {
-        //let selectedHour = that.data.hourLabels[res.tapIndex];
-        //console.log("selectedHour:" + res.tapIndex);
-        if (!res.cancel) {
-          //select other time
-          // if (getApp().globalData.BOOKING_HOURS[res.tapIndex]=="-1"){
-          //   that.setData({
-          //     time:"8:00"
-          //   });
-          //   return;
-          // }
-
-          wx.navigateTo({
-            url: '/page/booking/booking?year=' + that.data.selectedYear + '&month=' + that.data.selectedMonth + '&day=' + that.data.selectedDay + '&weekday=' + that.data.selectedWeekday + '&hour=' + getApp().globalData.BOOKING_HOURS[res.tapIndex] + '&userid2=' + that.data.selectedUserid2,
-          });
-        }
-      }
+    wx.navigateTo({
+      url: '/page/booking/booking?year=' + that.data.selectedYear + '&month=' + that.data.selectedMonth + '&day=' + that.data.selectedDay + '&weekday=' + that.data.selectedWeekday + '&userid2=' + that.data.selectedUserid2,
     });
-
   },
 
   selectedUserid2: function (e) {
@@ -793,6 +796,11 @@ Page({
     //console.log("formid:"+e.detail.formid);
     let formid = e.detail.formId;
     getApp().formidCollect(formid);
+  },
+  bindShowMyQrcode: function (e) {
+    wx.navigateTo({
+      url: '/page/booking/showMyQrcode',
+    })
   },
   /**
    * 生命周期函数--监听页面初次渲染完成

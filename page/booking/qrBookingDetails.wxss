@@ -2,3 +2,6 @@
 .booking-memo{
   color:blue;
 }
+button::after {
+  border: 0;
+}

@@ -16,7 +16,8 @@
     "page/booking/memo2_1",
     "page/booking/qrMemo2",
     "page/me/settingPropClass",
-    "page/me/comment"
+    "page/me/comment",
+    "page/test/index"
   ],
   "window": {
     "backgroundTextStyle": "light",

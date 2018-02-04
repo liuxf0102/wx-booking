@@ -35,15 +35,35 @@ App({
             success: function (res) {
 
               console.log("userid:" + res.data[0].myInfo.userid);
+              getApp().initGlobalData(res.data[0].myInfo);
               //set userid 2 Storage
-              getApp().globalData.userid = res.data[0].myInfo.userid;
-              getApp().globalData.mobile = res.data[0].myInfo.mobile;
               wx.setStorageSync('MY_INFO', res.data[0].myInfo)
             }
           });
         }
       }
     })
+  },
+
+  initGlobalData:function(myInfo){
+    //set userid 2 Storage
+    getApp().globalData.userid = myInfo.userid;
+    getApp().globalData.unionid = myInfo.unionid;
+    getApp().globalData.openid = myInfo.openid;
+    getApp().globalData.mobile = myInfo.mobile;
+    getApp().globalData.real_name = myInfo.real_name;
+    getApp().globalData.nickName = myInfo.nick_name;
+    getApp().globalData.nick_name = myInfo.nick_name;
+    getApp().globalData.icon = myInfo.icon;
+    getApp().globalData.gender = myInfo.gender;
+    let strConfig = myInfo.config;
+    if (strConfig == '') {
+      strConfig = "{}";
+    }
+    let config = JSON.parse(strConfig);
+    if (config.prop_classes && config.prop_classes.length > 0) {
+      getApp().globalData.BOOKING_PROP_CLASSES = config.prop_classes;
+    }
   },
 
   formidCollect: function (formid) {
@@ -56,10 +76,7 @@ App({
       formids.push(data);
     }
     getApp().globalData.formids = formids;
-    //if the formid count 10 then send to server
-    if (getApp().globalData.formids.length>10){
-      this.formids2Server();
-    }
+   
   },
   formids2Server: function () {
     if (getApp().globalData.formids.length==0)
@@ -96,7 +113,7 @@ App({
 
   },
   globalData: {
-    version: "V2.3.0",
+    version: "V2.3.1",
     formids: [],
     userInfo: null,
     userid: '',

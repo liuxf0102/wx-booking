@@ -56,6 +56,12 @@
 					"name": "memo",
 					"pathName": "page/booking/memo1",
 					"query": "bookingId=1090"
+				},
+				{
+					"id": 5,
+					"name": "Test",
+					"pathName": "page/test/index",
+					"query": ""
 				}
 			]
 		}

@@ -36,12 +36,19 @@ Page({
         //  bookings: res.data[0].data
         //});
         //wx.setStorageSync(getApp().SCONST.BOOKING, res.data[0].data);
-        console.log("get comment finished.");
+        //console.log("get comment finished.");
+        let comments = res.data[0].data;
+        for(let i=0;i<comments.length;i++)
+        {
+          let t1=new Date();
+          t1.setTime(comments[i].c_time);
+          comments[i].c_time_format = ((t1.getMonth() + 1) + "月" + t1.getDate() +"号");
+        }
         wx.stopPullDownRefresh();
 
         that.setData(
           {
-            comments: res.data[0].data
+            comments: comments
           }
         )
         wx.hideLoading();
@@ -73,12 +80,13 @@ Page({
         console.log("id:" + res.data[0].data);
         
         that.setData({
+          comment:'',
           buttonIsReady: false
         });
 
         //set userid 2 Storage
         wx.showToast({
-          title: '保存成功',
+          title: '保存提交成功',
         });
 
 
@@ -119,7 +127,7 @@ Page({
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function () {
-  
+    this.server_getCommentList();
   },
 
   /**

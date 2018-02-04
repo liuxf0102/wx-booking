@@ -133,7 +133,12 @@
   </view>
   <view class="graySpace"></view>
   <view class="weui-btn-area">
-    <button class="weui-btn" type="primary" disabled="{{buttonDisabled}}" bindtap="bindNewBooking">新建预约{{selectedUserid2Name}}</button>
+    <form bindsubmit="formSubmit" report-submit='true'>
+
+      <button form-type="submit" class="weui-btn" type="primary" disabled="{{buttonDisabled}}" bindtap="bindNewBooking">新建预约{{selectedUserid2Name}}</button>
+
+      <button form-type="submit" class="weui-btn" type="primary" bindtap="bindShowMyQrcode">让对方扫码预约</button>
+    </form>
   </view>
 
   <view class="space_900rpx"></view>

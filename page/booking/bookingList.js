@@ -111,12 +111,12 @@ Page({
   touchMove: function (e) {
     endX = e.touches[0].pageX; // 获取触摸时的原点
     if (moveFlag) {
-      if (endX - startX > 50) {
+      if (endX - startX > 120) {
         console.log("move right");
         this.move2right();
         moveFlag = false;
       }
-      if (startX - endX > 50) {
+      if (startX - endX > 120) {
         console.log("move left");
         this.move2left();
         moveFlag = false;

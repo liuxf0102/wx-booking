@@ -16,7 +16,8 @@ Page({
     sliderLeft: 0,
     buttonIsReady: true,
     userInfo1IsReady: false,
-    mobileIsReady: false,
+    userInfo2RealNameIsReady: false,
+    userInfo2MobileIsReady: false,
     userInfo1: {},
     myInfo: {},
     year: 2018,
@@ -75,15 +76,27 @@ Page({
     if (myInfo.userid) {
       console.log("getUnionid from storage.");
       getApp().initGlobalData(myInfo);
-
+      let userInfo2MobileIsReady=false;
+      if (myInfo.mobile.length > 0) {
+        userInfo2MobileIsReady=true;
+      }
       this.setData({
-        myInfo: myInfo
+        myInfo: myInfo,
+        userInfo2MobileIsReady: userInfo2MobileIsReady
       });
+      
+
     } else {
       m_login.login(function (myInfo) {
         getApp().initGlobalData(myInfo);
+
+        let userInfo2MobileIsReady = false;
+        if (myInfo.mobile.length > 0) {
+          userInfo2MobileIsReady = true;
+        }
         that.setData({
-          myInfo: myInfo
+          myInfo: myInfo,
+          userInfo2MobileIsReady: userInfo2MobileIsReady
         });
         //set myInfo 2 storage
         wx.setStorageSync('MY_INFO',myInfo);
@@ -309,6 +322,21 @@ Page({
               },
               success: function (res) {
                 console.log("userid2:" + res.data[0].userid);
+                //reload userInfo
+                m_login.login(function (myInfo) {
+                  getApp().initGlobalData(myInfo);
+
+                  let userInfo2MobileIsReady = false;
+                  if (myInfo.mobile.length > 0) {
+                    userInfo2MobileIsReady = true;
+                  }
+                  that.setData({
+                    myInfo: myInfo,
+                    userInfo2MobileIsReady: userInfo2MobileIsReady
+                  });
+                  //set myInfo 2 storage
+                  wx.setStorageSync('MY_INFO', myInfo);
+                });
 
               }
             });
@@ -369,7 +397,7 @@ Page({
                       //set userid 2 Storage
                       getApp().reloadUserInfo();
                       that.setData(
-                        { mobileIsReady: true }
+                        { userInfo2MobileIsReady: true }
                       );
                       wx.showModal({
                         title: '系统提示',
@@ -401,7 +429,7 @@ Page({
           return;
         } else {
           that.setData(
-            { mobileIsReady: true }
+            { userInfo2MobileIsReady: true }
           )
         }
 
@@ -436,7 +464,7 @@ Page({
       }
     } else {
       this.setData({
-        mobileIsReady: false
+        userInfo2MobileIsReady: false
       });
     }
     this.setData({

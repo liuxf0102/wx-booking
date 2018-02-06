@@ -102,7 +102,7 @@
           <view class="weui-btn-area">
             <form bindsubmit="formSubmit" report-submit="true">
 
-              <button formType="submit" class="weui-btn" type="primary" disabled="{{!(buttonIsReady&&userInfo1IsReady&&mobileIsReady)}}" bindtap="bindNewBookingQR">申请预约</button>
+              <button formType="submit" class="weui-btn" type="primary" disabled="{{!(buttonIsReady&&userInfo1IsReady&&userInfo2MobileIsReady)}}" bindtap="bindNewBookingQR">申请预约</button>
 
             </form>
           </view>

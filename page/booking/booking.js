@@ -23,8 +23,8 @@ Page({
     minute: 0,
     hourLabel: "上午8点",
     qrcodeURL: '',
-    prop_class:'未知',
-    memo1:''
+    prop_class: '未知',
+    memo1: ''
 
 
   },
@@ -56,7 +56,7 @@ Page({
       this.initSelectedUserid2(options.userid2);
     }
 
-
+    this.initPropClass();
 
   },
 
@@ -134,8 +134,8 @@ Page({
         weekday: this.data.weekday,
         hour: this.data.hour,
         minute: this.data.minute,
-        prop_class:this.data.prop_class,
-        memo1:this.data.memo1
+        prop_class: this.data.prop_class,
+        memo1: this.data.memo1
 
       }, success: function (res) {
         //console.log("add date success:");
@@ -325,6 +325,22 @@ Page({
     });
 
   },
+  initPropClass: function (e) {
+    var that = this;
+    //console.log("tapPropClass:"+JSON.stringify(e));
+
+    let prop_classes = getApp().globalData.BOOKING_PROP_CLASSES;
+    if (prop_classes.length == 0) {
+      prop_classes = getApp().globalData.BOOKING_PROP_CLASSES_DEFAULT;
+    }
+
+    that.setData({
+      prop_class: prop_classes[0]
+    });
+
+
+  },
+
   tapPropClass: function (e) {
     var that = this;
     //console.log("tapPropClass:"+JSON.stringify(e));

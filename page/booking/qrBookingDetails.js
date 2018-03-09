@@ -31,20 +31,15 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
- 
+    let that=this;
     
     let myInfo = wx.getStorageSync('MY_INFO') || {};
     if (myInfo.userid) {
-      console.log("getUnionid from storage.");
+      console.log("getUnionid userid from storage.");
       getApp().initGlobalData(myInfo);
     }else{
       m_login.login(function (myInfo) {
-        getApp().initGlobalData(myInfo);
-        that.setData({
-          myInfo: myInfo
-        });
-        //set myInfo 2 storage
-        wx.setStorageSync('MY_INFO', myInfo);
+        
       });
     }
     //console.log("options:" + JSON.stringify(options));
@@ -53,7 +48,7 @@ Page({
         bookingNext:true
       });
     }
-    var that=this;
+    
     wx.getSystemInfo({
       success: function (res) {
         that.setData({
@@ -64,7 +59,7 @@ Page({
     });
     server.refreshBooking(getApp().globalData.userid, function () { });
     //console.log(map.get(8));
-    var that = this;
+    
     let id = options.bookingId;
     if (id != 'undefined') {
       this.initBooking(id);

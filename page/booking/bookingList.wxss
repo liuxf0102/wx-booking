@@ -1,20 +1,20 @@
 /* pages/booking/bookingList.wxss */
 
 .title {
-  font-family: "微软雅黑";
+  
   font-size: 38rpx;
   padding-top: 20rpx;
 }
 
 .sub_title {
-  font-family: "微软雅黑";
+  
   font-size: 28rpx;
   color: darkgrey;
 }
 
 .content {
   padding-left: 10px;
-  font-family: "微软雅黑";
+  
   font-size: 36rpx;
   color: #1aad19;
 }
@@ -22,7 +22,7 @@
 .bottom {
   padding-left: 10px;
   padding-bottom: 20rpx;
-  font-family: "微软雅黑";
+  
   font-size: 28rpx;
   text-align: center;
   color: darkgrey;

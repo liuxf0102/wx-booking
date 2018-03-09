@@ -1,36 +1,97 @@
 <view class="page">
-    <view class="graySpace"></view>
-     <view class="weui-panel__bd">
-                <view class="weui-media-box weui-media-box_text">
-                    <view class="weui-media-box__title weui-media-box__title_in-text">帮助中心</view>
-                    <view class="weui-media-box__desc">让我帮你玩转简单实用，设计人性化的预约本小程序。</view>
-                </view>
-               
-            </view>
-    <view class="graySpace"></view>
-    <view class="page__bd">
-        
-        <view class="weui-panel weui-panel_access">
-            <view class="weui-panel__hd">新建预约的方式</view>
-            <view class="weui-panel__bd">
-                <view class="weui-media-box weui-media-box_text">
-                    <view class="weui-media-box__title weui-media-box__title_in-text">填写乙方手机号预约</view>
-                    <view class="weui-form-preview__value">作为预约的甲方，你有权利通过输入乙方的信息来进行新建预约。请输入乙方的手机号码，真实姓名，选择预约时间，然后点击确认按钮，就可以完成新建预约了。</view>
-                </view>
-                <view class="weui-media-box weui-media-box_text">
-                    <view class="weui-media-box__title weui-media-box__title_in-text">乙方扫码预约</view>
-                    <view class="weui-form-preview__value">作为预约的甲方，我想做甩手掌柜，输入乙方信息，太麻烦了，那么你可以让乙方扫码进行新建预约。你可以提醒乙方，要输入电话号码和姓名。</view>
-                </view>
-            </view>
-            
-        </view>
-        <view class="weui-panel weui-panel_access">
-            
-           
-           
-        </view>
-        
+  <view class="graySpace"></view>
+  <view class="weui-panel__bd">
+    <view class="weui-media-box weui-media-box_text">
+      <view class="weui-media-box__title weui-media-box__title_in-text">帮助中心</view>
+      <view class="weui-media-box__desc">让我帮你玩转简单实用，设计人性化的预约本小程序。</view>
     </view>
 
-    
+  </view>
+  <view class="graySpace"></view>
+  <view class="page__bd">
+
+    <view class="weui-panel weui-panel_access">
+
+      <view class="weui-panel__hd">
+        <image class="image-yyb" src="{{yyburl}}" />
+      </view>
+
+      <view class="weui-panel__hd">预约本字体颜色说明</view>
+      <view class="weui-panel__bd">
+        <view class="weui-media-box weui-media-box_text">
+          <view class="weui-media-box__title weui-media-box__title_in-text">
+            <text class="text-day-count-blue">蓝色表示预约还没有处理</text>
+          </view>
+          <view class="weui-form-preview__value">在预约列表页面，以今天为时间点，以后要处理的预约用蓝色表示。</view>
+        </view>
+
+        <view class="weui-media-box weui-media-box_text">
+          <view class="weui-media-box__title weui-media-box__title_in-text">
+            <text class="text-day-count">黑色表示预约已经处理完</text>
+          </view>
+          <view class="weui-form-preview__value">在预约列表页面，以今天为时间点，所有的预约都已经处理完用黑色表示。</view>
+        </view>
+        <view class="weui-media-box weui-media-box_text">
+          <view class="weui-media-box__title weui-media-box__title_in-text">
+            <text class="text-color-unfinished-1">灰色表示预约有未处理完的预约</text>
+          </view>
+          <view class="weui-form-preview__value">在预约列表页面，以今天为时间点，当天有未处理完的预约用灰色表示。</view>
+        </view>
+
+        <view class="weui-media-box weui-media-box_text">
+          <view class="weui-media-box__title weui-media-box__title_in-text">
+            <text class="text-color-pending-approval-1">红色表示有待审核的预约</text>
+          </view>
+          <view class="weui-form-preview__value">在预约列表页面，如果当天有需要待审核的预约，并且还没有超过今天，则当天的预约数字用红色显示。</view>
+        </view>
+        <view class="weui-media-box weui-media-box_text">
+          <view class="weui-media-box__title weui-media-box__title_in-text">
+            <text class="text-bold-1">粗体表示有关键类型预约</text>
+          </view>
+          <view class="weui-form-preview__value">在预约列表页面，如果当天有关键类型预约，则当天的预约数字用粗体显示。系统默认预约类型的第一个类型属于关键类型，在当天的预约列表里面，关键类型用
+            <text class="text-color-pending-approval-1">红色</text>显示。</view>
+        </view>
+
+      </view>
+
+    </view>
+    <view class="weui-panel weui-panel_access">
+      <view class="weui-panel__hd">新建预约的方式</view>
+      <view class="weui-panel__bd">
+        <view class="weui-media-box weui-media-box_text">
+          <view class="weui-media-box__title weui-media-box__title_in-text">填写乙方手机号预约</view>
+          <view class="weui-form-preview__value">作为预约的甲方，你有权利通过输入乙方的信息来进行新建预约。请输入乙方的手机号码，真实姓名，选择预约时间，然后点击确认按钮，就可以完成新建预约了。</view>
+        </view>
+        <view class="weui-media-box weui-media-box_text">
+          <view class="weui-media-box__title weui-media-box__title_in-text">乙方扫码预约</view>
+          <view class="weui-form-preview__value">作为预约的甲方，我想做甩手掌柜，输入乙方信息，太麻烦了，那么你可以让乙方扫码进行新建预约。你可以提醒乙方，要输入电话号码和姓名。</view>
+        </view>
+      </view>
+
+    </view>
+    <view class="weui-panel weui-panel_access">
+      <view class="weui-panel__hd">使用技巧</view>
+      <view class="weui-media-box weui-media-box_text">
+        <view class="weui-media-box__title weui-media-box__title_in-text">日期切换</view>
+        <view class="weui-form-preview__value">默认显示当前一周的预约情况，通过字体大小和颜色来表示当前预约的总体情况。通过向左右滑动可以查看上一周和下一周的总体情况。</view>
+      </view>
+ <view class="weui-media-box weui-media-box_text">
+        <view class="weui-media-box__title weui-media-box__title_in-text">修改预约信息</view>
+        <view class="weui-form-preview__value">在当天的预约列表里面，通过点击预约列表，可以查看该预约的详细信息。修改预约类型，修改预约时间，修改预约备注，改变预约状态。长按预约列表，默认可以将该预约从待审核状态到审核通过状态，从审核通过状态到完成履约状态。</view>
+      </view>
+    </view>
+
+  </view>
+  <view class="space_30rpx"></view>
+  <view class="space_30rpx"></view>
+  <view class="space_30rpx"></view>
+  <view class="weui-footer">
+    <view class="weui-footer__links">
+      <navigator url="/page/me/help" class="weui-footer__link">使用说明</navigator>
+      <navigator url="/page/me/comment" class="weui-footer__link">联系我们</navigator>
+    </view>
+    <view class="weui-footer__text">Copyright © 2018-2020 预约本</view>
+  </view>
+  <view class="space_30rpx"></view>
+  <view class="space_30rpx"></view>
 </view>

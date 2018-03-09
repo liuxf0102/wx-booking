@@ -1,6 +1,7 @@
 // page/booking/bookingDetails.js
 let util = require('../../util/util.js');
 let server = require('server.js');
+let m_login = require('m_login.js');
 Page({
 
   /**
@@ -47,6 +48,16 @@ Page({
       endMonth: endDate.getMonth() + 1,
       endDay: endDate.getDate()
     })
+    let myInfo = wx.getStorageSync('MY_INFO') || {};
+    if (myInfo.userid) {
+      console.log("getUnionid userid from storage.");
+      getApp().initGlobalData(myInfo);
+     
+    } else {
+      m_login.login(function (myInfo) {
+        
+      });
+    }
 
   },
   initBooking: function (id) {

@@ -4,7 +4,6 @@
     "page/booking/booking",
     "page/me/me",
     "page/me/update",
-    "page/calendar/calendar",
     "page/booking/bookingDetails",
     "page/me/help",
     "page/me/about",
@@ -45,5 +44,11 @@
         "text": "我"
       }
     ]
+  },
+  "networkTimeout": {
+    "request": 6000, 
+    "connectSocket": 6000, 
+    "uploadFile": 6000, 
+    "downloadFile": 6000 
   }
 }

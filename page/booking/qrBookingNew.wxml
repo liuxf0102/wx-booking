@@ -117,5 +117,15 @@
       <view class="weui-tab__content" hidden="{{activeIndex != 2}}"></view>
     </view>
   </view>
-
+<view class="space_30rpx"></view>
+  <view class="space_30rpx"></view>
+  <view class="weui-footer">
+    <view class="weui-footer__links">
+      <navigator url="/page/me/help" class="weui-footer__link">使用说明</navigator>
+      <navigator url="/page/me/comment" class="weui-footer__link">联系我们</navigator>
+    </view>
+    <view class="weui-footer__text">Copyright © 2018-2020 预约本</view>
+  </view>
+  <view class="space_30rpx"></view>
+  <view class="space_30rpx"></view>
 </view>

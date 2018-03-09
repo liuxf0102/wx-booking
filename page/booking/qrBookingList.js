@@ -19,9 +19,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    wx.showLoading({
-      title: '数据加载中...',
-    })
+    
     var that = this;
     wx.getSystemInfo({
       success: function (res) {
@@ -42,6 +40,9 @@ Page({
     
   },
   server_getBookingList() {
+    wx.showLoading({
+      title: '数据加载中...',
+    })
     var that = this;
     console.log("server_getBookingList userid:" + getApp().globalData.userid);
     //发起网络请求 restAPI dates
@@ -60,11 +61,19 @@ Page({
           bookings[i].status_format = util.formatBookingStatus(bookings[i].status);
           //format location
           let location = bookings[i].job_location;
-          if(location.length>12)
+          
+          if (bookings[i].memo2.length>0)
           {
-            location=location.substring(0,12);
+            location = bookings[i].memo2;
+          }
+          if (bookings[i].memo2_1.length > 0) {
+            location = "[回]"+bookings[i].memo2_1;
+          }
+          if (location.length > 12) {
+            location = location.substring(0, 12);
           }
           bookings[i].location_format = location;
+          
           // applyItem.userid1 = bookings[i].userid1;
           // applyItem.real_name = bookings[i].real_name;
           // applyItem.nick_name = bookings[i].nick_name;
@@ -73,6 +82,8 @@ Page({
         }
         //sort by c_time
         bookings.sort(function(a,b){
+          //console.log("sort1:"+(b.year * 1000000 + b.month * 10000 + b.day * 100 + b.hour));
+          //console.log("sort2:" + (a.year * 1000000 + a.month * 10000 + a.day * 100 + a.hour));
           return (b.year * 1000000 + b.month * 10000 + b.day * 100 + b.hour) - (a.year * 1000000 + a.month * 10000 + a.day * 100 + a.hour);
         })
         //console.log(res);

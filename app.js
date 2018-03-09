@@ -1,7 +1,8 @@
 //app.js
 App({
   onLaunch: function () {
-    // 展示本地存储能力
+    // update version
+    setTimeout(this.updateVersion, 10000);
     
   },
 
@@ -10,7 +11,34 @@ App({
     this.globalData.userInfo = res.userInfo;
   },
 
+  updateVersion: function () {
+    let userid = "";
 
+    try{
+      userid = getApp().globalData.userid;
+    }catch(e){
+      console.error("get uesrid "+userid);
+    }
+
+
+    if (userid != "") {
+
+      //发起网络请求 
+      wx.request({
+        url: getApp().globalData.SERVER_URL + '/user/update',
+        method: 'put',
+        data: {
+          userid: userid,
+          version: getApp().globalData.version
+        },
+        success: function (res) {
+          //console.log("userid:" + res.data[0].userid);
+        }
+      });
+
+    }
+
+  },
 
   reloadUserInfo: function () {
 
@@ -45,7 +73,7 @@ App({
     })
   },
 
-  initGlobalData:function(myInfo){
+  initGlobalData: function (myInfo) {
     //set userid 2 Storage
     getApp().globalData.userid = myInfo.userid;
     getApp().globalData.unionid = myInfo.unionid;
@@ -71,16 +99,15 @@ App({
     console.log("formid:" + formid);
     // "the formId is a mock one" will be set for formid
     if (!(formid.indexOf("formId") > 0)) {
-      let data={"formid":formid,"expire":((new Date().getTime())+7*24*3600*1000-3*60*1000)};
-      
+      let data = { "formid": formid, "expire": ((new Date().getTime()) + 7 * 24 * 3600 * 1000 - 3 * 60 * 1000) };
+
       formids.push(data);
     }
     getApp().globalData.formids = formids;
-   
+
   },
   formids2Server: function () {
-    if (getApp().globalData.formids.length==0)
-    {
+    if (getApp().globalData.formids.length == 0) {
       return;
     }
     wx.request({
@@ -113,7 +140,7 @@ App({
 
   },
   globalData: {
-    version: "V2.3.3",
+    version: "V2.3.16",
     formids: [],
     userInfo: null,
     userid: '',
@@ -125,9 +152,9 @@ App({
     gender: '',
     params: {},
     BOOKING_HOURS: [8, 9, 10, 13, 14, -1],
-    BOOKING_HOURS_FORMAT:['上午8点', '上午9点', '上午10点', '下午1点', '下午2点', '下午3点'],
+    BOOKING_HOURS_FORMAT: ['上午8点', '上午9点', '上午10点', '下午1点', '下午2点', '下午3点'],
     BOOKING_PROP_CLASSES_DEFAULT: ['修复', '治疗', '拔牙', '洗牙', '换药'],
-    BOOKING_PROP_CLASSES:[],
+    BOOKING_PROP_CLASSES: [],
     SERVER_URL: 'https://www.4exam.cn',
     //SERVER_URL: 'http://127.0.0.1:8081'
 

@@ -1,6 +1,5 @@
 /**app.wxss**/
 @import 'style/weui.wxss';
-
 .graySpace {
   background: #eee;
   min-height: 20rpx;

@@ -1,8 +1,5 @@
-const  login= function (cb) {
-  var that = this;
-  wx.showLoading({
-    title: '数据加载中',
-  })
+const  login= function (callback) {
+  
   // 登录
   wx.login({
     success: res => {
@@ -58,28 +55,8 @@ const  login= function (cb) {
                         var unionid = res.data[0].unionid;
                         getApp().globalData.unionid = unionid;
                         console.log("unionid:" + unionid);
-                        //initMyInfo(unionid);
-                        wx.request({
-                          url: getApp().globalData.SERVER_URL + '/user/getOrCreateUserInfoByUnionid',
-                          method: 'post',
-                          data: {
-                            unionid: unionid,
-                            openid: getApp().globalData.openid,
-                            nick_name: getApp().globalData.nickName,
-                            icon: getApp().globalData.icon,
-                            gender: getApp().globalData.gender,
-                          },
-                          success: function (res) {
+                        initMyInfo(unionid,callback);
 
-                            console.log("getOrCreateUserInfoByUnionid userid:" + res.data[0].myInfo.userid);
-                            //console.log("getOrCreateUserInfoByUnionid userid:" + JSON.parse(res.data[0].myInfo.job_title).k);
-                            //set userid 2 Storage
-                            getApp().globalData.userid = res.data[0].myInfo.userid;
-                            getApp().globalData.mobile = res.data[0].myInfo.mobile;
-                            cb(res.data[0].myInfo);
-                            wx.hideLoading();
-                          }
-                        });
 
                       }
                     });
@@ -103,11 +80,10 @@ const  login= function (cb) {
 
     }
   })
-
 }
 
-const initMyInfo = function (unionid) {
-  var that = this;
+const initMyInfo = function (unionid,callback) {
+  
   if (unionid != "") {
     //发起网络请求 restAPI QRCode
     var openid = getApp().globalData.openid;
@@ -117,17 +93,24 @@ const initMyInfo = function (unionid) {
       data: {
         unionid: unionid,
         openid: openid,
-        nick_name: getApp().globalData.nickName,
-        icon: getApp().globalData.icon,
-        gender: getApp().globalData.gender,
+        nick_name: getApp().globalData.userInfo.nickName,
+        icon: getApp().globalData.userInfo.avatarUrl,
+        gender: getApp().globalData.userInfo.gender,
       },
       success: function (res) {
 
         console.log("getOrCreateUserInfoByUnionid userid:" + res.data[0].myInfo.userid);
         //console.log("getOrCreateUserInfoByUnionid userid:" + JSON.parse(res.data[0].myInfo.job_title).k);
         //set userid 2 Storage
-        getApp().globalData.userid = res.data[0].myInfo.userid;
-        getApp().globalData.mobile = res.data[0].myInfo.mobile;
+        //getApp().globalData.userid = res.data[0].myInfo.userid;
+        //getApp().globalData.mobile = res.data[0].myInfo.mobile;
+        let myInfo = res.data[0].myInfo;
+        getApp().initGlobalData(myInfo);
+        console.log("init myInfo");
+        
+        wx.setStorageSync('MY_INFO', myInfo);
+
+        callback(myInfo);
         wx.hideLoading();
       }
     });

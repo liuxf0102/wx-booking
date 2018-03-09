@@ -22,17 +22,15 @@
         <image class="image" src="{{item.icon}}" data-userid="{{item.userid2}}" data-name="{{item.real_name}}" />
       </view>
       <view class="weui-cell__bd" >
-        <view data-bookingid="{{item.id}}" data-status="{{item.status}}" >{{item.real_name}}</view>
+        <view data-bookingid="{{item.id}}" data-status="{{item.status}}" >{{item.c_time_format}}--{{item.real_name}}</view>
         <view data-bookingid="{{item.id}}" data-status="{{item.status}}" class="comment" >{{item.comment}}</view>
+        <view class="reply">{{item.reply}}</view>  
       </view>
-      <view class="weui-cell__ft" >
-        <view data-bookingid="{{item.id}}" >{{item.c_time_format}}</view>
-        <view>
-          <text class="{{item.status_class}}"></text>
-          <text class="{{item.prop_class_class}}"></text>
-        </view>
-      </view>
+      
+    
     </view>
+    
+
   </view>
 
 </view>

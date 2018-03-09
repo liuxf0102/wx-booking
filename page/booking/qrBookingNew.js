@@ -74,7 +74,7 @@ Page({
     console.log("scene:" + this.pageScene);
     let myInfo = wx.getStorageSync('MY_INFO') || {};
     if (myInfo.userid) {
-      console.log("getUnionid from storage.");
+      console.log("getUnionid userid from storage.");
       getApp().initGlobalData(myInfo);
       let userInfo2MobileIsReady=false;
       if (myInfo.mobile.length > 0) {
@@ -87,24 +87,23 @@ Page({
       
 
     } else {
-      m_login.login(function (myInfo) {
-        getApp().initGlobalData(myInfo);
+      m_login.login(that,function (myInfo) {
+        
 
         let userInfo2MobileIsReady = false;
         if (myInfo.mobile.length > 0) {
           userInfo2MobileIsReady = true;
         }
         that.setData({
-          myInfo: myInfo,
           userInfo2MobileIsReady: userInfo2MobileIsReady
         });
-        //set myInfo 2 storage
-        wx.setStorageSync('MY_INFO',myInfo);
+        
       });
     }
 
     this.initQrcodeScene();
     this.initSelectedTime();
+    this.initPropClass();
   },
   tabClick: function (e) {
     wx.showLoading({
@@ -473,6 +472,22 @@ Page({
 
 
   },
+  initPropClass: function (e) {
+    var that = this;
+    //console.log("tapPropClass:"+JSON.stringify(e));
+
+    let prop_classes = getApp().globalData.BOOKING_PROP_CLASSES;
+    if (prop_classes.length == 0) {
+      prop_classes = getApp().globalData.BOOKING_PROP_CLASSES_DEFAULT;
+    }
+
+    that.setData({
+      prop_class: prop_classes[0]
+    });
+
+
+  },
+
   tapPropClass: function (e) {
     var that = this;
     //console.log("tapPropClass:"+JSON.stringify(e));

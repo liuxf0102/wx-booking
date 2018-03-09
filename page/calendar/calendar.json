@@ -1,8 +1,0 @@
-{
-  "name": "CPQStats",
-  "description": "Enter your description for this record",
-  "expires": 36000,
-  "clientKey": "PAAS_SX_CPQ",
-  "redirectUri": "https://java-gse00011950.java.us2.oraclecloudapps.com/Application2-Project1-context-root/jersey/clientRedirectEndpoint/PAAS_SX_CPQ",
-  "grantType": "AuthorizationCode"
-}

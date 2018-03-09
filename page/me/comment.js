@@ -38,11 +38,18 @@ Page({
         //wx.setStorageSync(getApp().SCONST.BOOKING, res.data[0].data);
         //console.log("get comment finished.");
         let comments = res.data[0].data;
+        //sort
+        comments.sort(function (a, b) {
+
+          return b.m_time-a.m_time;
+
+        });
+
         for(let i=0;i<comments.length;i++)
         {
           let t1=new Date();
           t1.setTime(comments[i].c_time);
-          comments[i].c_time_format = ((t1.getMonth() + 1) + "月" + t1.getDate() +"号");
+          comments[i].c_time_format = ((t1.getMonth() + 1) + "月" + t1.getDate() +"号"+t1.getHours()+":"+t1.getMinutes());
         }
         wx.stopPullDownRefresh();
 

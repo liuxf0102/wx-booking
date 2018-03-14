@@ -13,15 +13,18 @@ Page({
     mobileIsReady: false,
     realNameIsReady: true,
     weekdayLabels: ["", "一", "二", "三", "四", "五", "六", "日"],
-    hourLabels: ["上午8点", "上午9点", "上午10点", "下午1点", "下午2点", "下午3点"],
-    hours: [8, 9, 10, 13, 14, 15],
+    minute:0,
     year: 2018,
     month: 1,
     day: 1,
     weekday: 1,
     hour: 8,
-    minute: 0,
-    hourLabel: "上午8点",
+    hours: [6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22],
+    hour_format: '上午8点',
+    hourLabels: ["早上6点", "早上7点", "上午8点", "上午9点", "上午10点", "上午11点", "中午12点", "下午1点", "下午2点", "下午3点", "下午4点", "下午5点", "晚上6点", "晚上7点", "晚上8点", "晚上9点", "夜里10点"],
+    pickerTimeArray: [],
+    pickerTimeArrayDay: [],
+
     qrcodeURL: '',
     prop_class: '未知',
     memo1: ''
@@ -57,7 +60,7 @@ Page({
     }
 
     this.initPropClass();
-
+    this.initPickerTimeArray();
   },
 
 
@@ -177,43 +180,79 @@ Page({
 
   },
 
+  initPickerTimeArray: function () {
 
+    let pickerTimeArray = [["今天", "明天", "后天"], []];
+    let dayArray = [];
+    let dayArrayValue = [];
+
+    for (let i = 0; i < 30; i++) {
+      let curDate = new Date();
+      curDate.setDate(curDate.getDate() + i);
+      let weekday = curDate.getDay();
+      if (weekday == 0) {
+        weekday = 7;
+      }
+      let tmpDay = (curDate.getMonth() + 1) + "月" + curDate.getDate() + "日";
+      let theDay = util.formatWeekday(weekday) + '  ' + tmpDay;
+      if (i == 0) {
+        theDay = "今天 " + theDay
+      }
+      if (i == 1) {
+        theDay = "明天 " + theDay;
+      }
+      if (i == 2) {
+        theDay = "后天 " + theDay;
+      }
+
+      dayArray.push(theDay);
+      let theDayValue = curDate.getFullYear() + "/" + (curDate.getMonth() + 1) + "/" + curDate.getDate();
+      dayArrayValue.push(theDayValue);
+    }
+    pickerTimeArray[0] = dayArray;
+    pickerTimeArray[1] = this.data.hourLabels;
+    this.setData({
+      pickerTimeArray: pickerTimeArray,
+      pickerTimeArrayDay: dayArrayValue
+    }
+    );
+
+  },
   bindDateChange: function (e) {
     let that = this;
-    let selectedDate = new Date(e.detail.value);
-    let weekday = selectedDate.getDay();
-    if (weekday == 0) {
-      weekday = 7;
-    }
-    this.setData({
-      date: e.detail.value,
-      weekday: weekday
-    })
+    // if(true)
+    // return; 
+    let theSelectedDay = this.data.pickerTimeArrayDay[e.detail.value[0]];
+    let theSelectedTimeLabel = this.data.pickerTimeArray[1][e.detail.value[1]];
+    let theSelectedTime = this.data.hours[e.detail.value[1]];
+    console.log("day:" + theSelectedDay);
+    console.log("time:" + theSelectedTime);
 
 
-    let times = e.detail.value.split("-");
-    if (times.length == 3) {
-      console.log("selectedDay:" + times.join(","));
+    let selectedDays = theSelectedDay.split("/");
+    if (selectedDays.length == 3) {
+      console.log("weekday:" + new Date(theSelectedDay).getDay())
+
+      let weekday = new Date(theSelectedDay).getDay();
+      if (weekday == 0) {
+        weekday = 7;
+      }
+
+
       this.setData({
-        year: times[0],
-        month: times[1],
-        day: times[2],
+        year: selectedDays[0],
+        month: selectedDays[1],
+        day: selectedDays[2],
+        weekday: weekday,
+        weekday_format: util.formatWeekday(weekday),
+
       })
     }
+    that.setData({
+      hour_format: theSelectedTimeLabel,
+      hour: theSelectedTime
+    })
 
-    wx.showActionSheet({
-      itemList: ['上午8点', '上午9点', '上午10点', '下午1点', '下午2点', '下午3点'],
-      success: function (res) {
-        //let selectedHour = that.data.hourLabels[res.tapIndex];
-        //console.log("selectedHour:" + res.tapIndex);
-        if (!res.cancel) {
-          that.setData({
-            hourLabel: that.data.hourLabels[res.tapIndex],
-            hour: that.data.hours[res.tapIndex]
-          })
-        }
-      }
-    });
   },
 
   inputMobile: function (e) {

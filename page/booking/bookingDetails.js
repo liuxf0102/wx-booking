@@ -14,8 +14,12 @@ Page({
     day: 1,
     weekday: 1,
     hour: 8,
-    hours: [8, 9, 10, 13, 14, 15],
-    hourLabels: ["上午8点", "上午9点", "上午10点", "下午1点", "下午2点", "下午3点"],
+    hours: [6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22],
+    hour_format: '上午8点',
+    hourLabels: ["早上6点", "早上7点", "上午8点", "上午9点", "上午10点", "上午11点", "中午12点", "下午1点", "下午2点", "下午3点", "下午4点", "下午5点", "晚上6点", "晚上7点", "晚上8点", "晚上9点", "夜里10点"],
+    pickerTimeArray: [],
+    pickerTimeArrayDay: [],
+
     datePickerDisabled: true,
     memo1Length: 0,
     memo2_1Length: 0,
@@ -58,7 +62,7 @@ Page({
         
       });
     }
-
+    this.initPickerTimeArray();
   },
   initBooking: function (id) {
     var that = this;
@@ -201,90 +205,200 @@ Page({
     });
   },
 
-  bindDateChange: function (e) {
+  initPickerTimeArray: function () {
 
-    let that = this;
+    let pickerTimeArray = [["今天", "明天", "后天"], []];
+    let dayArray = [];
+    let dayArrayValue = [];
+
+    for (let i = 0; i < 30; i++) {
+      let curDate = new Date();
+      curDate.setDate(curDate.getDate() + i);
+      let weekday = curDate.getDay();
+      if (weekday == 0) {
+        weekday = 7;
+      }
+      let tmpDay = (curDate.getMonth() + 1) + "月" + curDate.getDate() + "日";
+      let theDay = util.formatWeekday(weekday) + '  ' + tmpDay;
+      if (i == 0) {
+        theDay = "今天 " + theDay
+      }
+      if (i == 1) {
+        theDay = "明天 " + theDay;
+      }
+      if (i == 2) {
+        theDay = "后天 " + theDay;
+      }
+
+      dayArray.push(theDay);
+      let theDayValue = curDate.getFullYear() + "/" + (curDate.getMonth() + 1) + "/" + curDate.getDate();
+      dayArrayValue.push(theDayValue);
+    }
+    pickerTimeArray[0] = dayArray;
+    pickerTimeArray[1] = this.data.hourLabels;
     this.setData({
-      date: e.detail.value
-    })
-    let times = e.detail.value.split("-");
-    if (times.length == 3) {
-      console.log("weekday:" + new Date(e.detail.value).getDay())
-      console.log("selectedDay:" + times.join(","));
-      let weekday = new Date(e.detail.value).getDay();
+      pickerTimeArray: pickerTimeArray,
+      pickerTimeArrayDay: dayArrayValue
+    }
+    );
+
+  },
+  bindDateChange: function (e) {
+    let that = this;
+    // if(true)
+    // return; 
+    let theSelectedDay = this.data.pickerTimeArrayDay[e.detail.value[0]];
+    let theSelectedTimeLabel = this.data.pickerTimeArray[1][e.detail.value[1]];
+    let theSelectedTime = this.data.hours[e.detail.value[1]];
+    console.log("day:" + theSelectedDay);
+    console.log("time:" + theSelectedTime);
+
+
+    let selectedDays = theSelectedDay.split("/");
+    if (selectedDays.length == 3) {
+      console.log("weekday:" + new Date(theSelectedDay).getDay())
+
+      let weekday = new Date(theSelectedDay).getDay();
       if (weekday == 0) {
         weekday = 7;
       }
 
-      let booking = that.data.booking;
-      booking.year = times[0];
-      booking.month = times[1];
-      booking.day = times[2];
-      booking.weekday_format = util.formatWeekday(weekday);
+
       this.setData({
-        year: times[0],
-        month: times[1],
-        day: times[2],
+        year: selectedDays[0],
+        month: selectedDays[1],
+        day: selectedDays[2],
         weekday: weekday,
-        booking: booking,
+        weekday_format: util.formatWeekday(weekday),
+
       })
     }
-
-    wx.showActionSheet({
-      itemList: ['上午8点', '上午9点', '上午10点', '下午1点', '下午2点', '下午3点'],
+    that.setData({
+      hour_format: theSelectedTimeLabel,
+      hour: theSelectedTime
+    })
+    wx.showModal({
+      title: '调整预约时间',
+      content: '时间调整为:' + that.data.weekday_format + " " + that.data.month + "-" + that.data.day + " " + that.data.hour_format + "吗?",
       success: function (res) {
-        //let selectedHour = that.data.hourLabels[res.tapIndex];
-        //console.log("selectedHour:" + res.tapIndex);
-        if (!res.cancel) {
-
-          let booking = that.data.booking;
-          booking.hour_format = that.data.hourLabels[res.tapIndex],
-            that.setData({
-              booking: booking,
-              hour: that.data.hours[res.tapIndex]
-            })
-
-
-          wx.showModal({
-            title: '调整预约时间',
-            content: '时间调整为:' + that.data.booking.weekday_format + " " + that.data.month + "-" + that.data.day + " " + that.data.booking.hour_format + "吗?",
+        if (res.confirm) {
+          wx.request({
+            url: getApp().globalData.SERVER_URL + '/booking/update',
+            method: 'put',
+            data: {
+              id: that.data.booking.id,
+              year: that.data.year,
+              month: that.data.month,
+              day: that.data.day,
+              weekday: that.data.weekday,
+              hour: that.data.hour
+            },
             success: function (res) {
-              if (res.confirm) {
-                wx.request({
-                  url: getApp().globalData.SERVER_URL + '/booking/update',
-                  method: 'put',
-                  data: {
-                    id: that.data.booking.id,
-                    year: that.data.year,
-                    month: that.data.month,
-                    day: that.data.day,
-                    weekday: that.data.weekday,
-                    hour: that.data.hour
-                  },
-                  success: function (res) {
-                    console.log("id:" + res.data[0].id);
-                    that.initBooking(res.data[0].id);
-                    //set userid 2 Storage
+              console.log("id:" + res.data[0].id);
+              that.initBooking(res.data[0].id);
+              //set userid 2 Storage
 
-                    wx.showToast({
-                      title: '更新成功.',
-                    })
+              wx.showToast({
+                title: '更新成功.',
+              })
 
-                    //refreshBooking
-                    server.refreshBooking(getApp().globalData.userid, function () { });
+              //refreshBooking
+              server.refreshBooking(getApp().globalData.userid, function () { });
 
-                  }
-                });
-
-
-                return;
-              }
             }
           });
+
+
+          return;
         }
       }
     });
   },
+
+  // bindDateChange: function (e) {
+
+  //   let that = this;
+  //   this.setData({
+  //     date: e.detail.value
+  //   })
+  //   let times = e.detail.value.split("-");
+  //   if (times.length == 3) {
+  //     console.log("weekday:" + new Date(e.detail.value).getDay())
+  //     console.log("selectedDay:" + times.join(","));
+  //     let weekday = new Date(e.detail.value).getDay();
+  //     if (weekday == 0) {
+  //       weekday = 7;
+  //     }
+
+  //     let booking = that.data.booking;
+  //     booking.year = times[0];
+  //     booking.month = times[1];
+  //     booking.day = times[2];
+  //     booking.weekday_format = util.formatWeekday(weekday);
+  //     this.setData({
+  //       year: times[0],
+  //       month: times[1],
+  //       day: times[2],
+  //       weekday: weekday,
+  //       booking: booking,
+  //     })
+  //   }
+
+  //   wx.showActionSheet({
+  //     itemList: ['上午8点', '上午9点', '上午10点', '下午1点', '下午2点', '下午3点'],
+  //     success: function (res) {
+  //       //let selectedHour = that.data.hourLabels[res.tapIndex];
+  //       //console.log("selectedHour:" + res.tapIndex);
+  //       if (!res.cancel) {
+
+  //         let booking = that.data.booking;
+  //         booking.hour_format = that.data.hourLabels[res.tapIndex],
+  //           that.setData({
+  //             booking: booking,
+  //             hour: that.data.hours[res.tapIndex]
+  //           })
+
+
+  //         wx.showModal({
+  //           title: '调整预约时间',
+  //           content: '时间调整为:' + that.data.booking.weekday_format + " " + that.data.month + "-" + that.data.day + " " + that.data.booking.hour_format + "吗?",
+  //           success: function (res) {
+  //             if (res.confirm) {
+  //               wx.request({
+  //                 url: getApp().globalData.SERVER_URL + '/booking/update',
+  //                 method: 'put',
+  //                 data: {
+  //                   id: that.data.booking.id,
+  //                   year: that.data.year,
+  //                   month: that.data.month,
+  //                   day: that.data.day,
+  //                   weekday: that.data.weekday,
+  //                   hour: that.data.hour
+  //                 },
+  //                 success: function (res) {
+  //                   console.log("id:" + res.data[0].id);
+  //                   that.initBooking(res.data[0].id);
+  //                   //set userid 2 Storage
+
+  //                   wx.showToast({
+  //                     title: '更新成功.',
+  //                   })
+
+  //                   //refreshBooking
+  //                   server.refreshBooking(getApp().globalData.userid, function () { });
+
+  //                 }
+  //               });
+
+
+  //               return;
+  //             }
+  //           }
+  //         });
+  //       }
+  //     }
+  //   });
+  // },
   tapMemo1: function (e) {
     wx.redirectTo({
       url: '/page/booking/memo1?bookingId=' + this.data.booking.id,

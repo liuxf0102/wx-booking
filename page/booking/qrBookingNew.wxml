@@ -42,7 +42,7 @@
               <view class="weui-cell__hd">
                 <view class="weui-label">预约时间:</view>
               </view>
-              <picker mode="date" value="{{date}}" start="{{curYear+ '-' + curMonth + '-' + curDay}}" end="{{endYear+ '-' + endMonth + '-' + endDay}}" bindchange="bindDateChange">
+              <picker mode="multiSelector" range="{{pickerTimeArray}}" bindchange="bindDateChange">
                 <view class="weui-cell__bd">
                   <form bindsubmit="formSubmit" report-submit='true'>
                     <button class="form_button" form-type="submit">

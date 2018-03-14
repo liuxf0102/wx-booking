@@ -23,12 +23,24 @@ const formatNumber = n => {
 const formatHour = hour => {
   hour = hour.toString();
   let map = new Map();
+  map.set("6", "早上6点");
+  map.set("7", "早上7点");
   map.set("8", "上午8点");
   map.set("9", "上午9点");
   map.set("10", "上午10点");
+  map.set("11", "上午11点");
+  map.set("12", "中午12点");
   map.set("13", "下午1点");
   map.set("14", "下午2点");
   map.set("15", "下午3点");
+  map.set("16", "下午4点");
+  map.set("17", "下午5点");
+  map.set("18", "晚上6点");
+  map.set("19", "晚上7点");
+  map.set("20", "晚上8点");
+  map.set("21", "晚上9点");
+  map.set("22", "夜里10点");
+
   // console.log("hour:"+hour);
   if (map.has(hour)) {
     return map.get(hour);

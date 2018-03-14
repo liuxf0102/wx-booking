@@ -8,8 +8,8 @@
         <view class="weui-label">预约时间:</view>
       </view>
       <view class="weui-cell__bd">
-        <picker mode="date" value="{{date}}" start="{{curYear+ '-' + curMonth + '-' + curDay}}" end="{{endYear+ '-' + endMonth + '-' + endDay}}" bindchange="bindDateChange">
-          <view class="weui-input">{{month}}月{{day}}日 周{{weekdayLabels[weekday]}} {{hourLabel}}</view>
+        <picker mode="multiSelector"  range="{{pickerTimeArray}}" bindchange="bindDateChange">
+          <view class="weui-input">{{weekday_format}} {{month}}月{{day}}号 {{hour_format}}</view>
         </picker>
       </view>
     </view>

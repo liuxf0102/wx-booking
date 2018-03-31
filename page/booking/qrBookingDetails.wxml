@@ -16,7 +16,7 @@
       
       <view class="weui-tab__panel">
         <view class="weui-tab__content" hidden="{{activeIndex != 0}}">
-          <view class="weui-cell" hover-class="weui-cell_active" data-id="{{booking.id}}">
+          <view class="weui-cell" hover-class="weui-cell_active" data-id="{{booking.id}}" bindtap='tapBooking'>
             <view class="weui-cell__hd">
               <image class="image" src="{{booking.icon}}" />
             </view>

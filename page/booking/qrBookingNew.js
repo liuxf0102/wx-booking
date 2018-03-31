@@ -30,6 +30,7 @@ Page({
     hourLabels: ["早上6点", "早上7点", "上午8点", "上午9点", "上午10点", "上午11点", "中午12点", "下午1点", "下午2点", "下午3点", "下午4点", "下午5点", "晚上6点", "晚上7点", "晚上8点", "晚上9点", "夜里10点"],
     pickerTimeArray: [],
     pickerTimeArrayDay: [],
+    selectedTimeArray: [7, 2],
     memo2: "",
     prop_class: "未知",
     prop_classes: [],

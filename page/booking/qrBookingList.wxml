@@ -35,16 +35,16 @@
         </view>
         <view class="weui-tab__content" hidden="{{activeIndex != 1}}">
           <view class="weui-cells weui-cells_after-title">
-            <view class="weui-cell" hover-class="weui-cell_active" wx:for="{{bookings}}" wx:key="{{item.id}}">
+            <view class="weui-cell" hover-class="weui-cell_active" wx:for="{{bookings}}" wx:key="{{item.id}}" data-bookingid="{{item.id}}"  bindtap='tapBookingDetails'>
               <view class="weui-cell__hd">
                 <image class="image" src="{{item.icon}}" />
               </view>
               <view class="weui-cell__bd">
-                <view data-bookingid="{{item.id}}" bindtap='tapBookingDetails'>{{item.real_name}}</view>
+                <view>{{item.real_name}}</view>
                 <view class="memo1">{{item.location_format}}</view>
               </view>
               <view class="weui-cell__ft">
-                <view data-bookingid="{{item.id}}" bindtap='tapBookingDetails'>{{item.month+"-"+item.day +" " +item.hour_format}}</view>
+                <view>{{item.month+"-"+item.day +" " +item.hour_format}}</view>
                 <view class="memo1">{{item.status_format}}</view>
               </view>
             </view>

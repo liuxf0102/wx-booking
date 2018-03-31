@@ -12,11 +12,12 @@ Page({
   pageUserid1: '',
   pageUserid2: '',
   pageBookingId: '',
-
+  pageShowWeekData: true,
   /**
    * 页面的初始数据
    */
   data: {
+    version: getApp().globalData.version,
     userInfo: {},
     myInfo: {},
     hasUserInfo: false,
@@ -39,7 +40,8 @@ Page({
     curMonth: '',
     time: '0:0',
     timeRange: [['8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20'], ['0', '15', '30', '45']],
-    buttonDisabled: true
+    buttonDisabled: true,
+    showWeekData: true,
   },
 
   server_getBookingList() {
@@ -67,7 +69,7 @@ Page({
         wx.setStorageSync(getApp().SCONST.BOOKING, res.data[0].data);
         console.log("getUserBooking finished.");
         wx.stopPullDownRefresh();
-        that.setSelectedBookings();
+        that.setSelectedBookings('week');
         that.setData(
           {
             selectedUserid2: '',
@@ -155,7 +157,7 @@ Page({
     let curDate = new Date();
     if (this.theCurrentPageLongTime < curDate.getTime() + 200 * 24 * 3600 * 1000) {
       this.initWeekday(this.theCurrentPageLongTime + 7 * 24 * 3600 * 1000);
-      this.setSelectedBookings();
+      this.setSelectedBookings('week');
     }
   },
   move2right() {
@@ -163,13 +165,13 @@ Page({
     if (this.theCurrentPageLongTime > curDate.getTime() - 200 * 24 * 3600 * 1000) {
 
       this.initWeekday(this.theCurrentPageLongTime - 7 * 24 * 3600 * 1000);
-      this.setSelectedBookings();
+      this.setSelectedBookings('week');
     }
   },
 
   setSelectedBookings() {
 
-  //console.log("setSelectedBooking:year" + this.data.selectedYear + "month:" + this.data.selectedMonth + "day:" + this.data.selectedDay + "weekday:" + this.data.selectedWeekday)
+    //console.log("setSelectedBooking:year" + this.data.selectedYear + "month:" + this.data.selectedMonth + "day:" + this.data.selectedDay + "weekday:" + this.data.selectedWeekday)
 
     var bookings_all = wx.getStorageSync(getApp().SCONST.BOOKING) || [];
     var selectedBookings = [];
@@ -177,6 +179,7 @@ Page({
     var tmpDayBookingPendingApproval = [0, 0, 0, 0, 0, 0, 0];
     var tmpDayBookingUnfinished = [0, 0, 0, 0, 0, 0, 0];
     var tmpDayBookingKeyTask = [0, 0, 0, 0, 0, 0, 0];
+
 
 
     for (var i = 0; i < bookings_all.length; i++) {
@@ -221,11 +224,21 @@ Page({
           }
         }
       }
+      let showTheDay = (bookings_all[i].year == this.data.selectedYear && bookings_all[i].month == this.data.selectedMonth && bookings_all[i].day == this.data.selectedDay);
+      if (this.pageShowWeekData) {
+        let theSelectedWeekNumber = util.getWeekNumber(this.data.selectedYear, this.data.selectedMonth, this.data.selectedDay);
+        let theWeekNumber = util.getWeekNumber(bookings_all[i].year, bookings_all[i].month, bookings_all[i].day);
+        showTheDay = (theWeekNumber == theSelectedWeekNumber);
+      }
 
-      if (bookings_all[i].year == this.data.selectedYear && bookings_all[i].month == this.data.selectedMonth && bookings_all[i].day == this.data.selectedDay) {
+      if (showTheDay) {
         //convert hour to hour_format
         //console.log("hour:" + bookings_all[i].hour);
-        bookings_all[i].hour_format = util.formatHour(bookings_all[i].hour);
+
+
+
+
+        bookings_all[i].hour_format = util.formatWeekday(bookings_all[i].weekday) + util.formatHour(bookings_all[i].hour);
         bookings_all[i].status_format = util.formatBookingStatus(bookings_all[i].status);
         let status_class = "text-status";
         if (bookings_all[i].status == 4)//status is finished
@@ -283,14 +296,45 @@ Page({
     //console.log("daybooking:" + tmpDayBooking);
     //console.log("daybooking:"+this.data.hours.indexOf(15));
 
-    //sort booking by hour
-    selectedBookings.sort(function (a, b) {
-      //console.log("a:" + (a.status * 100 + (a.hour-0)));
-      return (a.status * 100 + (a.hour - 0)) - (b.status * 100 + (b.hour - 0));
-    });
+    if (this.pageShowWeekData) {
+      selectedBookings.sort(function (a, b) {
+        //console.log("a:" + (a.status * 100 + (a.hour-0)));
+        return (a.year * 1000000 + (a.month - 0) * 10000 + (a.day - 0) * 100 + (a.hour - 0)) - (b.year * 1000000 + (b.month - 0) * 10000 + (b.day - 0) * 100 + (b.hour - 0));
+      });
 
 
 
+    } else {
+      //sort booking by hour
+      selectedBookings.sort(function (a, b) {
+        //console.log("a:" + (a.status * 100 + (a.hour-0)));
+        return (a.status * 100 + (a.hour - 0)) - (b.status * 100 + (b.hour - 0));
+      });
+    }
+    let preWeekDay = -1;
+    let changeBgcolor = 0;
+    for (let i = 0; i < selectedBookings.length; i++) {
+      if (preWeekDay == -1) {
+        selectedBookings[i].bgcolor = ""
+      } else {
+        if (selectedBookings[i].weekday == preWeekDay) {
+          if (changeBgcolor % 2 == 0) {
+            selectedBookings[i].bgcolor = ""
+          } else {
+            selectedBookings[i].bgcolor = "bgcolor_eee"
+          }
+        } else {
+          if (changeBgcolor % 2 == 0) {
+            selectedBookings[i].bgcolor = "bgcolor_eee"
+
+          } else {
+            selectedBookings[i].bgcolor = ""
+          }
+          changeBgcolor++;
+        }
+      }
+      preWeekDay = selectedBookings[i].weekday;
+    }
     let curDate = new Date();
     let selectedDate = new Date(this.data.selectedYear + "/" + this.data.selectedMonth + "/" + this.data.selectedDay);
     //check wether selected Time > now Time 
@@ -324,6 +368,7 @@ Page({
   },
 
 
+
   /**
    * 生命周期函数--监听页面加载
    */
@@ -342,7 +387,7 @@ Page({
       that.server_getBookingList();
       that.server_getUserRotaList();
     } else {
-      m_login.login(function(myInfo){
+      m_login.login(function (myInfo) {
         //console.log("myInfo:"+JSON.stringify(myInfo));
         that.server_getBookingList();
         that.server_getUserRotaList();
@@ -493,8 +538,24 @@ Page({
     // console.log("curWeekday:" + curWeekday + ":selectWeekday" + selectedWeekday + ":diffDay:" + diffDay);
     curDate.setDate(curDate.getDate() + diffDay);
     //console.log("selDate:" + curDate);
+
+    console.log("setWeekday");
+    if (this.data.showWeekData) {
+      this.pageShowWeekData = false;
+      this.setData({ showWeekData: false });
+    } else {
+      this.pageShowWeekData = true;
+      this.setData({ showWeekData: true });
+    }
+    //if change day 
+    console.log("selectedWeekday:" + selectedWeekday);
+    console.log("Data selectedWeekday:" + this.data.selectedWeekday);
+    if (selectedWeekday != this.data.selectedWeekday) {
+      this.pageShowWeekData = false;
+      this.setData({ showWeekData: false });
+    }
+
     this.initWeekday(this.theCurrentPageLongTime + diffDay * 24 * 3600 * 1000);
-    //console.log("setWeekday");
     this.setSelectedBookings();
   },
 
@@ -528,11 +589,11 @@ Page({
       selectedUserid2: selectedUserid2,
       selectedUserid2Name: selectedUserid2Name
     });
-    if (selectedUserid2Name!=""){
-    wx.showToast({
-      title: '已经选中用户\n\r' + selectedUserid2Name,
-    });
-    }else{
+    if (selectedUserid2Name != "") {
+      wx.showToast({
+        title: '已经选中用户\n\r' + selectedUserid2Name,
+      });
+    } else {
       wx.showToast({
         title: '取消选中用户\n\r' + selectedUserid2Name,
       })
@@ -770,7 +831,7 @@ Page({
     this.setData({
       myInfo: wx.getStorageSync('MY_INFO')
     });
-    //this.initWeekDay();
+
     // console.log("onShow");
   },
 
@@ -795,9 +856,7 @@ Page({
     wx.reLaunch({
       url: '/page/booking/bookingList',
     })
-    //this.server_getBookingList();
-    //this.server_getUserRotaList()
-    //this.initWeekday(new Date().getTime());
+
 
   },
 

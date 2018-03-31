@@ -75,9 +75,24 @@
         <view class="weui-media-box__title weui-media-box__title_in-text">日期切换</view>
         <view class="weui-form-preview__value">默认显示当前一周的预约情况，通过字体大小和颜色来表示当前预约的总体情况。通过向左右滑动可以查看上一周和下一周的总体情况。</view>
       </view>
- <view class="weui-media-box weui-media-box_text">
+      <view class="weui-media-box weui-media-box_text">
         <view class="weui-media-box__title weui-media-box__title_in-text">修改预约信息</view>
         <view class="weui-form-preview__value">在当天的预约列表里面，通过点击预约列表，可以查看该预约的详细信息。修改预约类型，修改预约时间，修改预约备注，改变预约状态。长按预约列表，默认可以将该预约从待审核状态到审核通过状态，从审核通过状态到完成履约状态。</view>
+      </view>
+    </view>
+    <view class="weui-panel weui-panel_access">
+      <view class="weui-panel__hd">公众号关联小程序</view>
+      <view class="weui-media-box weui-media-box_text">
+        <view class="weui-media-box__title weui-media-box__title_in-text">小程序ID</view>
+        <view class="weui-form-preview__value">appid:wx5699f282563037ea</view>
+      </view>
+      <view class="weui-media-box weui-media-box_text">
+        <view class="weui-media-box__title weui-media-box__title_in-text">关联预约本乙方</view>
+        <view class="weui-form-preview__value">公众号关联小程序乙方，小程序路径为：page/booking/qrBookingNew?userid1=ID,其中ID为用户的ID，该ID在个人中心页面，图标旁边可以查看到。用户的ID为999，则小程序路径为：page/booking/qrBookingNew?userid1=999</view>
+      </view>
+      <view class="weui-media-box weui-media-box_text">
+        <view class="weui-media-box__title weui-media-box__title_in-text">关联预约本甲方</view>
+        <view class="weui-form-preview__value">公众号关联小程序甲方，小程序路径为：page/booking/bookingList</view>
       </view>
     </view>
 

@@ -99,7 +99,7 @@ Page({
   },
   tapBookingDetails:function(e){
     //console.log("tapBookingDetails:"+JSON.stringify(e));
-    let bookingId=e.target.dataset.bookingid;
+    let bookingId = e.currentTarget.dataset.bookingid;
     if(bookingId){
     wx.redirectTo({
       url: '/page/booking/qrBookingDetails?bookingNext=true&bookingId='+bookingId,

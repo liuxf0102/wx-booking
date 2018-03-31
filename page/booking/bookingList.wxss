@@ -198,7 +198,17 @@
   padding: 0rpx;
   margin: 0rpx;
 }
-
+.text-week{
+  font-size: 32rpx;
+  color: black;
+  padding-top: 4rpx;
+}
+.bgcolor_eee {
+  background-color: #eee
+}
+.bgcolor_1 {
+  background-color:darkgrey
+}
 
 .image {
   float: left;

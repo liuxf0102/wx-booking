@@ -100,65 +100,72 @@ Page({
           memo2Length: booking.memo2.length
         });
         console.log("booking userid1:" + booking.userid1);
-        if (getApp().globalData.userid == booking.userid1) {
-          that.setData({
-            datePickerDisabled: false
-          })
-        }
-
+      
       }
     })
   },
-  tapBooking: function (bookingId) {
+  tapBooking: function () {
     var that = this;
+    if (getApp().globalData.userid == '') {
+      return;
+    }
+    //only for apply status
+    if (that.data.booking.status==0){
     wx.showActionSheet({
-      itemList: ['审核通过', '取消预约', '用户爽约', '完成履约'],
+      itemList: ['取消预约'],
       success: function (res) {
         //let selectedHour = that.data.hourLabels[res.tapIndex];
         //console.log("selectedHour:" + res.tapIndex);
 
-        let status = 0;
+        let status = -1;
         if (res.tapIndex == 0) {
-          status = 1;
-        } else if (res.tapIndex == 1) {
-          status = 2;
-        } else if (res.tapIndex == 2) {
-          status = 3;
-        } else if (res.tapIndex == 3) {
-          status = 4;
-        } else {
-          status = 0;
-        }
+          status = -1;
+        } 
 
 
 
         if (!res.cancel) {
-          //发起网络请求 
-          wx.request({
-            url: getApp().globalData.SERVER_URL + '/booking/update',
-            method: 'put',
-            data: {
-              id: that.data.booking.id,
-              status: status
-            },
+
+
+          wx.showModal({
+            title: '取消预约',
+            content: '你要取消该预约吗？',
             success: function (res) {
-              console.log("id:" + res.data[0].id);
-              that.initBooking(res.data[0].id);
-              //set userid 2 Storage
-              wx.showModal({
-                title: '系统提示',
-                content: '更新成功.',
-                showCancel: false
-              });
+              if (res.confirm) {
+                //发起网络请求 
+                wx.request({
+                  url: getApp().globalData.SERVER_URL + '/booking/update',
+                  method: 'put',
+                  data: {
+                    id: that.data.booking.id,
+                    status: status
+                  },
+                  success: function (res) {
+                    console.log("id:" + res.data[0].id);
+                    that.initBooking(res.data[0].id);
+                    //set userid 2 Storage
+                    wx.showModal({
+                      title: '系统提示',
+                      content: '更新成功.',
+                      showCancel: false
+                    });
 
 
 
+                  }
+                });
+
+                return;
+              }
             }
           });
+
+         
 
         }
       }
     });
+    }
   },
   bindDateChange: function (e) {
 

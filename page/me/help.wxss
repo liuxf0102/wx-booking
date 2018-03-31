@@ -1,9 +1,14 @@
 /* page/me/help.wxss */
 @import '../booking/bookingList.wxss';
+
 .image-yyb {
-  
   width: 700rpx;
   height: 160rpx;
-  
   box-sizing: border-box;
+}
+
+.weui-panel__hd {
+  font-size: 36rpx;
+  color: blue;
+  font-weight: 600;
 }

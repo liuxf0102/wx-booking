@@ -140,7 +140,7 @@ App({
 
   },
   globalData: {
-    version: "V2.5.0",
+    version: "V2.6.3",
     formids: [],
     userInfo: null,
     userid: '',
@@ -156,7 +156,7 @@ App({
     BOOKING_PROP_CLASSES_DEFAULT: ['修复', '治疗', '拔牙', '洗牙', '换药'],
     BOOKING_PROP_CLASSES: [],
     SERVER_URL: 'https://www.4exam.cn',
-    //SERVER_URL: 'http://127.0.0.1:8081'
+    SERVER_URL: 'http://127.0.0.1:8081'
 
 
   },

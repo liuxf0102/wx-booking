@@ -11,7 +11,7 @@
     </view>
     <view class="weui-cell__bd">
       <view>{{myInfo.real_name}}</view>
-      <view style="font-size: 13px;color: #888888;">{{myInfo.nick_name}}</view>
+      <view style="font-size: 13px;color: #888888;">ID:{{myInfo.userid}}-{{myInfo.nick_name}}</view>
     </view>
     <view class="weui-cell__ft">
       <view>{{version}}</view>
@@ -41,27 +41,7 @@
     </view>
   </view>
 
-  <!--
-    <view class="item-avatar-xs" id="job_title" bindtap="bindUpdateMyInfo">
-      <view>
-        <text class="title">职称:</text>
-        <text class="content">{{myInfo.job_title}}</text>
-      </view>
-    </view>
-    <view class="item-avatar-xs" bindtap="bindUpdateMyInfo">
-      <view>
-        <text class="title">科室:</text>
-        <text class="content">{{myInfo.job_office}}</text>
-      </view>
-    </view>
-    
-    <view class="item-avatar-xs" bindtap="bindUpdateMyInfo">
-      <view>
-        <text class="title">擅长:</text>
-        <text class="content">{{myInfo.goodat}}</text>
-      </view>
-    </view>
-    -->
+  
      <view class="graySpace"></view>
   <view class="item-avatar-xs" bindtap="bindBookingPropClass">
     <view>

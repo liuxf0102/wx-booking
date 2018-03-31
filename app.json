@@ -16,7 +16,8 @@
     "page/booking/qrMemo2",
     "page/me/settingPropClass",
     "page/me/comment",
-    "page/test/index"
+    "page/test/index",
+    "page/me/reply"
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -46,9 +47,9 @@
     ]
   },
   "networkTimeout": {
-    "request": 6000, 
-    "connectSocket": 6000, 
-    "uploadFile": 6000, 
-    "downloadFile": 6000 
+    "request": 6000,
+    "connectSocket": 6000,
+    "uploadFile": 6000,
+    "downloadFile": 6000
   }
 }

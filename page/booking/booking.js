@@ -2,6 +2,7 @@ var util = require('../../util/util.js');
 let server = require('server.js');
 Page({
   pageBookingId: 0,
+  pageSelectedTime: '',
   data: {
     userid2: "",
     userid2Name: "",
@@ -58,15 +59,27 @@ Page({
     if (options.userid2 != '') {
       this.initSelectedUserid2(options.userid2);
     }
-
+    if (options.selectedTime) {
+      this.pageSelectedTime = options.selectedTime;
+      console.log("this.pageSelectedTime:" + this.pageSelectedTime);
+    }
     this.initPropClass();
-    this.initPickerTimeArray();
+    this.initSelectedTime();
   },
 
 
   bindNewBooking: function (e) {
 
     var that = this;
+
+    if (this.data.weekday == "") {
+      wx.showModal({
+        title: '系统提示：',
+        content: '请先选择预约时间.',
+      })
+      return;
+    }
+    
     var mobile = that.data.mobile;
 
 
@@ -180,79 +193,60 @@ Page({
 
   },
 
-  initPickerTimeArray: function () {
-
-    let pickerTimeArray = [["今天", "明天", "后天"], []];
-    let dayArray = [];
-    let dayArrayValue = [];
-
-    for (let i = 0; i < 30; i++) {
-      let curDate = new Date();
-      curDate.setDate(curDate.getDate() + i);
-      let weekday = curDate.getDay();
-      if (weekday == 0) {
-        weekday = 7;
-      }
-      let tmpDay = (curDate.getMonth() + 1) + "月" + curDate.getDate() + "日";
-      let theDay = util.formatWeekday(weekday) + '  ' + tmpDay;
-      if (i == 0) {
-        theDay = "今天 " + theDay
-      }
-      if (i == 1) {
-        theDay = "明天 " + theDay;
-      }
-      if (i == 2) {
-        theDay = "后天 " + theDay;
-      }
-
-      dayArray.push(theDay);
-      let theDayValue = curDate.getFullYear() + "/" + (curDate.getMonth() + 1) + "/" + curDate.getDate();
-      dayArrayValue.push(theDayValue);
+  initSelectedTime: function () {
+    let curDate = new Date();
+    curDate.setDate(curDate.getDate() + 1);
+    let weekday = curDate.getDay();
+    if (weekday == 0) {
+      weekday = 7;
     }
-    pickerTimeArray[0] = dayArray;
-    pickerTimeArray[1] = this.data.hourLabels;
-    this.setData({
-      pickerTimeArray: pickerTimeArray,
-      pickerTimeArrayDay: dayArrayValue
+    let year = curDate.getFullYear();
+    let month = (curDate.getMonth() + 1);
+    let day = curDate.getDate();
+    let hour = "8";
+    if (this.pageSelectedTime.length > 0) {
+      var theSelectedTime = this.pageSelectedTime.split(",");
+      if (theSelectedTime.length == 5) {
+        year = theSelectedTime[0];
+        month = theSelectedTime[1];
+        day = theSelectedTime[2];
+        hour = theSelectedTime[3];
+        weekday = theSelectedTime[4];
+      }
+      this.setData({
+        date: year + "/" + month + "/" + day,
+        year: year,
+        month: month,
+        month_format: month + "月",
+        day: day,
+        day_format: day + "号",
+        weekday: weekday,
+        hour: hour,
+        hour_format: util.formatHour(hour),
+        weekday_format: util.formatWeekday(weekday),
+      })
+    } else {
+      this.setData({
+        date: year + "/" + month + "/" + day,
+        year: year,
+        month: month,
+        month_format: "",
+        day: day,
+        day_format: "",
+        weekday: "",
+        hour: hour,
+        hour_format: "",
+        weekday_format: "请选择预约时间",
+      })
     }
-    );
+
 
   },
   bindDateChange: function (e) {
     let that = this;
-    // if(true)
-    // return; 
-    let theSelectedDay = this.data.pickerTimeArrayDay[e.detail.value[0]];
-    let theSelectedTimeLabel = this.data.pickerTimeArray[1][e.detail.value[1]];
-    let theSelectedTime = this.data.hours[e.detail.value[1]];
-    console.log("day:" + theSelectedDay);
-    console.log("time:" + theSelectedTime);
-
-
-    let selectedDays = theSelectedDay.split("/");
-    if (selectedDays.length == 3) {
-      console.log("weekday:" + new Date(theSelectedDay).getDay())
-
-      let weekday = new Date(theSelectedDay).getDay();
-      if (weekday == 0) {
-        weekday = 7;
-      }
-
-
-      this.setData({
-        year: selectedDays[0],
-        month: selectedDays[1],
-        day: selectedDays[2],
-        weekday: weekday,
-        weekday_format: util.formatWeekday(weekday),
-
-      })
-    }
-    that.setData({
-      hour_format: theSelectedTimeLabel,
-      hour: theSelectedTime
+    wx.redirectTo({
+      url: '/page/booking/qrBookingTime?source=booking&userid1=' + this.pageUserid1,
     })
-
   },
 
   inputMobile: function (e) {

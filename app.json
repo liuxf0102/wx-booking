@@ -17,7 +17,9 @@
     "page/me/settingPropClass",
     "page/me/comment",
     "page/test/index",
-    "page/me/reply"
+    "page/me/reply",
+    "page/booking/qrBookingTime",
+    "page/me/settingTime"
   ],
   "window": {
     "backgroundTextStyle": "light",

@@ -14,6 +14,10 @@
       <view class="weui-panel__hd">更新历史</view>
       <view class="weui-panel__bd">
         <view class="weui-media-box weui-media-box_text">
+          <view class="weui-media-box__title weui-media-box__title_in-text">2018/4/30:添加预约时间自定义功能</view>
+          <view class="weui-form-preview__value">预约时间甲方可以自己定义，赶快设置适合自己的预约时间吧。</view>
+        </view>
+        <view class="weui-media-box weui-media-box_text">
           <view class="weui-media-box__title weui-media-box__title_in-text">2018/2/2:添加预约类型自定义功能</view>
           <view class="weui-form-preview__value">预约类型甲方可以自己定义，赶快设置适合自己的预约类型吧。</view>
         </view>

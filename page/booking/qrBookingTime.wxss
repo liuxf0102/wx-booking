@@ -1,3 +1,4 @@
+/* page/booking/qrBookingTime.wxss */
 /* pages/booking/bookingList.wxss */
 
 .title {
@@ -43,7 +44,6 @@
   width: 100rpx;
   align-content: center;
   align-items: center;
-  background: #eee;
 }
 
 .view-button-selected {
@@ -212,17 +212,16 @@
   background-color:darkgrey
 }
 
-.image {
+.view-left {
   float: left;
-  width: 100rpx;
-  height: 100rpx;
+  text-align: center;
   margin-right: 20rpx;
-  box-sizing: border-box;
+
 }
 
 .memo1 {
-  font-size: 26rpx;
-  color: #888;
+  font-size: 30rpx;
+  color: black;
   padding-top: 10rpx;
 }
 
@@ -236,4 +235,16 @@
   font-size: 32rpx;
   color: black;
   padding-top: 2rpx;
+}
+.action-red{
+  color: red;
+}
+.action-green{
+  color: green;
+}
+
+.text-capacity {
+  font-size: 32rpx;
+  font-weight: 700;
+  color: green;
 }

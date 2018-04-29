@@ -4,7 +4,7 @@
   <view class="button-line">
     <form bindsubmit="formSubmit" report-submit='true'>
 
-      <button form-type="submit" class="{{(selectedWeekday==1&&!showWeekData)? 'view-button-selected' : 'view-button' }} {{(today==(curYear+'/'+curMonth+'/'+day[0]))?'view-button-today':''}}" data-idx="1" bindtap='setWeekDay' bindlongpress='longpressDay'>
+      <button form-type="submit" class="{{(selectedWeekday==1&&!showWeekData)? 'view-button-selected' : 'view-button' }} {{(today==(curYear+'/'+curMonth+'/'+day[0]))?'view-button-today':''}}" data-idx="1" bindtap='setWeekDay' >
         <view class="view-weekday">
           <text class="text-weekday">一</text>
           <text class="text-weekday-flag">{{dayFlag[0]}}</text>
@@ -18,7 +18,7 @@
     </form>
     <form bindsubmit="formSubmit" report-submit='true'>
 
-      <button form-type="submit" class="{{(selectedWeekday==2&&!showWeekData)? 'view-button-selected' : 'view-button' }} {{(today==(curYear+'/'+curMonth+'/'+day[1]))?'view-button-today':''}}" data-idx="2" bindtap='setWeekDay' bindlongpress='longpressDay'>
+      <button form-type="submit" class="{{(selectedWeekday==2&&!showWeekData)? 'view-button-selected' : 'view-button' }} {{(today==(curYear+'/'+curMonth+'/'+day[1]))?'view-button-today':''}}" data-idx="2" bindtap='setWeekDay' >
         <view class="view-weekday">
           <text class="text-weekday">二</text>
           <text class="text-weekday-flag">{{dayFlag[1]}}</text>
@@ -33,7 +33,7 @@
     </form>
     <form bindsubmit="formSubmit" report-submit='true'>
 
-      <button form-type="submit" class="{{(selectedWeekday==3&&!showWeekData)? 'view-button-selected' : 'view-button' }} {{(today==(curYear+'/'+curMonth+'/'+day[2]))?'view-button-today':''}}" data-idx="3" bindtap='setWeekDay' bindlongpress='longpressDay'>
+      <button form-type="submit" class="{{(selectedWeekday==3&&!showWeekData)? 'view-button-selected' : 'view-button' }} {{(today==(curYear+'/'+curMonth+'/'+day[2]))?'view-button-today':''}}" data-idx="3" bindtap='setWeekDay' >
         <view class="view-weekday">
           <text class="text-weekday">三</text>
           <text class="text-weekday-flag">{{dayFlag[2]}}</text>
@@ -48,7 +48,7 @@
     </form>
     <form bindsubmit="formSubmit" report-submit='true'>
 
-      <button form-type="submit" class="{{(selectedWeekday==4&&!showWeekData)? 'view-button-selected' : 'view-button' }} {{(today==(curYear+'/'+curMonth+'/'+day[3]))?'view-button-today':''}}" data-idx="4" bindtap='setWeekDay' bindlongpress='longpressDay'>
+      <button form-type="submit" class="{{(selectedWeekday==4&&!showWeekData)? 'view-button-selected' : 'view-button' }} {{(today==(curYear+'/'+curMonth+'/'+day[3]))?'view-button-today':''}}" data-idx="4" bindtap='setWeekDay' >
         <view class="view-weekday">
           <text class="text-weekday">四</text>
           <text class="text-weekday-flag">{{dayFlag[3]}}</text>
@@ -64,7 +64,7 @@
 
     <form bindsubmit="formSubmit" report-submit='true'>
 
-      <button form-type="submit" class="{{(selectedWeekday==5&&!showWeekData)? 'view-button-selected' : 'view-button' }} {{(today==(curYear+'/'+curMonth+'/'+day[4]))?'view-button-today':''}}" data-idx="5" bindtap='setWeekDay' bindlongpress='longpressDay'>
+      <button form-type="submit" class="{{(selectedWeekday==5&&!showWeekData)? 'view-button-selected' : 'view-button' }} {{(today==(curYear+'/'+curMonth+'/'+day[4]))?'view-button-today':''}}" data-idx="5" bindtap='setWeekDay' >
         <view class="view-weekday">
           <text class="text-weekday">五</text>
           <text class="text-weekday-flag">{{dayFlag[4]}}</text>
@@ -80,7 +80,7 @@
 
     <form bindsubmit="formSubmit" report-submit='true'>
 
-      <button form-type="submit" class="{{(selectedWeekday==6&&!showWeekData)? 'view-button-selected' : 'view-button' }} {{(today==(curYear+'/'+curMonth+'/'+day[5]))?'view-button-today':''}}" data-idx="6" bindtap='setWeekDay' bindlongpress='longpressDay'>
+      <button form-type="submit" class="{{(selectedWeekday==6&&!showWeekData)? 'view-button-selected' : 'view-button' }} {{(today==(curYear+'/'+curMonth+'/'+day[5]))?'view-button-today':''}}" data-idx="6" bindtap='setWeekDay' >
         <view class="view-weekday">
           <text class="text-weekend">六</text>
           <text class="text-weekday-flag">{{dayFlag[5]}}</text>
@@ -96,7 +96,7 @@
 
     <form bindsubmit="formSubmit" report-submit='true'>
 
-      <button form-type="submit" class="{{(selectedWeekday==7&&!showWeekData)? 'view-button-selected' : 'view-button' }} {{(today==(curYear+'/'+curMonth+'/'+day[6]))?'view-button-today':''}}" data-idx="7" bindtap='setWeekDay' bindlongpress='longpressDay'>
+      <button form-type="submit" class="{{(selectedWeekday==7&&!showWeekData)? 'view-button-selected' : 'view-button' }} {{(today==(curYear+'/'+curMonth+'/'+day[6]))?'view-button-today':''}}" data-idx="7" bindtap='setWeekDay' >
         <view class="view-weekday">
           <text class="text-weekend">日</text>
           <text class="text-weekday-flag">{{dayFlag[6]}}</text>
@@ -114,31 +114,24 @@
   <view class="graySpace"></view>
   <view class="weui-cells weui-cells_after-title">
 
-    <view class="weui-cell {{item.bgcolor}}" hover-class="weui-cell_active bgcolor_1" wx:for="{{bookings}}" wx:key="{{item.id}}" data-bookingid="{{item.id}}" data-status="{{item.status}}" bindlongpress='longpressBooking'>
-      <view class="weui-cell__hd">
-        <image class="image" src="{{item.icon}}" data-userid="{{item.userid2}}" data-name="{{item.real_name}}" bindtap="selectedUserid2" />
+    <view class="weui-cell {{item.bgcolor}}" hover-class="weui-cell_active bgcolor_1" wx:for="{{bookings}}" wx:key="{{item.id}}" data-seltectedtime="{{item.seletectedTime}}" data-capacity="{{item.capacity}}" bindtap='tapSelectedTime'>
+      <view class="weui-cell__hd view-left">
+        <view>{{item.week_format}}</view>
+        <view>{{item.month}}月{{item.day}}号</view>
       </view>
       <view class="weui-cell__bd">
-        <view data-bookingid="{{item.id}}" data-status="{{item.status}}" bindtap='tapBookingDetails'>{{item.name_format}}</view>
-        <view data-bookingid="{{item.id}}" data-status="{{item.status}}" bindtap='tapBookingDetails' class="memo1">{{item.memo1_format}}</view>
+        <view data-bookingid="{{item.id}}">{{item.hour_format}}</view>
+        <view class="memo1">剩余名额:<text class="text-capacity">{{item.capacity}}</text>{{item.pending}}</view>
       </view>
-      <view class="weui-cell__ft" hover-class="weui-cell_active" data-bookingid="{{item.id}}" data-status="{{item.status}}">
-        <view data-bookingid="{{item.id}}" bindtap='tapBookingDetails'><text class="text-week">{{item.hour_format}}</text></view>
-        <view>
-          <text class="{{item.status_class}}">{{item.status_format}}</text>
-          <text class="{{item.prop_class_class}}">{{item.prop_class_format}}</text>
-        </view>
+      <view class="weui-cell__ft">
+        <view data-bookingid="{{item.id}}" ><text class="{{item.action_class}}">{{item.action}}</text></view>
+        
       </view>
     </view>
   </view>
   <view class="graySpace"></view>
   <view class="weui-btn-area">
-    <form bindsubmit="formSubmit" report-submit='true'>
-
-      <button form-type="submit" class="weui-btn" type="primary" disabled="{{buttonDisabled}}" bindtap="bindNewBooking">新建预约{{selectedUserid2Name}}</button>
-
-      <button form-type="submit" class="weui-btn" type="primary" bindtap="bindShowMyQrcode">让对方扫码预约</button>
-    </form>
+  <button form-type="submit" class="weui-btn" type="primary" bindtap="bindGoBack">返回</button>
   </view>
   <view class="space_30rpx"></view>
   <view class="space_30rpx"></view>

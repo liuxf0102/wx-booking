@@ -7,28 +7,36 @@ Page({
   data: {
     myInfo: {},
     prop_classes: [],
-    newPropClass: ''
+    newPropClass: '',
+    config:{}
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    let myInfo = wx.getStorageSync('MY_INFO');
     let prop_classes = getApp().globalData.BOOKING_PROP_CLASSES;
     if (prop_classes.length==0)
     {
       prop_classes = getApp().globalData.BOOKING_PROP_CLASSES_DEFAULT;
     }
+    let strConfig = myInfo.config;
+    if (strConfig == '') {
+      strConfig = "{}";
+    }
+    let config = JSON.parse(strConfig);
     this.setData({
-      myInfo: wx.getStorageSync('MY_INFO'),
-      prop_classes: prop_classes
+      myInfo: myInfo,
+      prop_classes: prop_classes,
+      config:config
     });
   },
   bindUpdateUserInfo: function (e) {
 
     var that = this;
 
-    let config = {};
+    let config = this.data.config;
     config.prop_classes = this.data.prop_classes;
     console.log("this.data.prop_classes" + JSON.stringify(this.data.prop_classes));
     //发起网络请求 

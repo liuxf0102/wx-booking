@@ -20,12 +20,16 @@
 			"current": -1,
 			"list": []
 		},
+		"plugin": {
+			"current": -1,
+			"list": []
+		},
 		"game": {
 			"current": -1,
 			"list": []
 		},
 		"miniprogram": {
-			"current": -1,
+			"current": 1,
 			"list": [
 				{
 					"id": 0,
@@ -73,6 +77,12 @@
 					"id": -1,
 					"name": "预约历史",
 					"pathName": "page/booking/qrBookingList",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "预约时间",
+					"pathName": "page/booking/qrBookingTime",
 					"query": ""
 				}
 			]

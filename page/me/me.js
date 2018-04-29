@@ -96,6 +96,11 @@ Page({
       url: '/page/me/settingPropClass',
     })
   },
+  bindBookingTime: function (e) {
+    wx.navigateTo({
+      url: '/page/me/settingTime',
+    })
+  },
   /**
    * 生命周期函数--监听页面初次渲染完成
    */

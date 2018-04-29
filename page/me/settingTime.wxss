@@ -1,0 +1,5 @@
+/* page/me/settingTime.wxss */
+/* page/me/settingPropClass.wxss */
+.view-color-blue{
+  color: blue
+}

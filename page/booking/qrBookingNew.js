@@ -5,6 +5,7 @@ var sliderWidth = 96
 Page({
   pageUserid1: "",
   pageScene: '999',
+  pageSelectedTime:'',
 
   /**
    * 页面的初始数据
@@ -104,11 +105,12 @@ Page({
 
       });
     }
-
+    if (options.selectedTime) {
+      this.pageSelectedTime = options.selectedTime;
+      console.log("this.pageSelectedTime:" + this.pageSelectedTime);
+    }
     this.initQrcodeScene();
-    this.initPickerTimeArray();
     this.initSelectedTime();
-
     this.initPropClass();
   },
   tabClick: function (e) {
@@ -130,7 +132,9 @@ Page({
 
     let that = this;
     if (this.pageScene !== '') {
-
+      wx.showLoading({
+        title: '数据加载中...',
+      })
       let scenes = this.pageScene.split("-");
       console.log("scenes:" + scenes.join(','));
       if (scenes.length >= 1) {
@@ -145,6 +149,7 @@ Page({
           userid: this.pageUserid1
         },
         success: function (res) {
+          wx.hideLoading();
           if (res.statusCode == 200 && res.data[0].result == 'success') {
 
             console.log("userid1 real_name:" + res.data[0].myInfo.real_name);
@@ -159,6 +164,10 @@ Page({
                 prop_classes: prop_classes
               });
             }
+
+            //set userid1Info to storage
+            wx.setStorageSync("USERID1_INFO", res.data[0].myInfo);
+
             that.setData({
               userInfo1: res.data[0].myInfo,
               userInfo1IsReady: true
@@ -191,104 +200,75 @@ Page({
     }
   },
 
-  initPickerTimeArray: function () {
-
-    let pickerTimeArray = [["今天", "明天", "后天"], []];
-    let dayArray = [];
-    let dayArrayValue=[];
-
-    for (let i = 0; i < 30; i++) {
-      let curDate = new Date();
-      curDate.setDate(curDate.getDate() + i);
-      let weekday = curDate.getDay();
-      if (weekday == 0) {
-        weekday = 7;
-      }
-      let tmpDay = (curDate.getMonth() + 1) + "月" + curDate.getDate() + "日";
-      let theDay = util.formatWeekday(weekday) + '  ' + tmpDay;
-      if (i == 0) {
-        theDay = "今天 " + theDay
-      }
-      if (i == 1) {
-        theDay = "明天 " + theDay;
-      }
-      if (i == 2) {
-        theDay = "后天 " + theDay;
-      }
-      
-      dayArray.push(theDay);
-      let theDayValue = curDate.getFullYear() + "/" + (curDate.getMonth() + 1) + "/" + curDate.getDate();
-      dayArrayValue.push(theDayValue);
-    }
-    pickerTimeArray[0] = dayArray;
-    pickerTimeArray[1] = this.data.hourLabels;
-    this.setData({
-      pickerTimeArray: pickerTimeArray,
-      pickerTimeArrayDay: dayArrayValue
-    }
-    );
-
-  },
+  
   initSelectedTime: function () {
     let curDate = new Date();
-    curDate.setDate(curDate.getDate() + 7);
+    curDate.setDate(curDate.getDate() + 1);
     let weekday = curDate.getDay();
     if (weekday == 0) {
       weekday = 7;
     }
-    this.setData({
-      date: curDate.getFullYear() + "/" + (curDate.getMonth() + 1) + "/" + curDate.getDate(),
-      year: curDate.getFullYear(),
-      month: (curDate.getMonth() + 1),
-      day: curDate.getDate(),
-      weekday: weekday,
-      weekday_format: util.formatWeekday(weekday),
-
-    })
-  },
-  bindDateChange: function (e) {
-
-    let that = this;
-    // this.setData({
-    //   date: e.detail.value
-    // })
-
-    let theSelectedDay=this.data.pickerTimeArrayDay[e.detail.value[0]];
-    let theSelectedTimeLabel = this.data.pickerTimeArray[1][e.detail.value[1]];
-    let theSelectedTime = this.data.hours[e.detail.value[1]];
-    console.log("day:" + theSelectedDay);
-    console.log("time:" + theSelectedTime);
-
-
-    let selectedDays = theSelectedDay.split("/");
-    if (selectedDays.length == 3) {
-      console.log("weekday:" + new Date(theSelectedDay).getDay())
-      
-      let weekday = new Date(theSelectedDay).getDay();
-      if (weekday == 0) {
-        weekday = 7;
+    let year = curDate.getFullYear();
+    let month =  (curDate.getMonth() + 1);
+    let day = curDate.getDate();
+    let hour="8";
+    if(this.pageSelectedTime.length>0){
+      var theSelectedTime = this.pageSelectedTime.split(",");
+      if (theSelectedTime.length==5){
+      year = theSelectedTime[0];
+      month = theSelectedTime[1];
+      day = theSelectedTime[2];
+      hour = theSelectedTime[3];
+      weekday = theSelectedTime[4];
       }
-
-
       this.setData({
-        year: selectedDays[0],
-        month: selectedDays[1],
-        day: selectedDays[2],
+        date: year + "/" + month + "/" + day,
+        year: year,
+        month: month,
+        month_format: month + "月",
+        day: day,
+        day_format: day + "号",
         weekday: weekday,
+        hour: hour,
+        hour_format: util.formatHour(hour),
         weekday_format: util.formatWeekday(weekday),
-
+      })
+    }else{
+      this.setData({
+        date: year + "/" + month + "/" + day,
+        year: year,
+        month: month,
+        month_format: "",
+        day: day,
+        day_format:"",
+        weekday: "",
+        hour: hour,
+        hour_format: "",
+        weekday_format: "请选择预约时间",
       })
     }
-    that.setData({
-      hour_format: theSelectedTimeLabel,
-      hour: theSelectedTime
+
+    
+  },
+  bindDateChange: function (e) {
+    //console.log("ddd");
+    wx.redirectTo({
+      url: '/page/booking/qrBookingTime?source=qrBookingNew&userid1=' + this.pageUserid1,
     })
-   
   },
 
   bindNewBookingQR: function (e) {
     var that = this;
     //console.log("formids:"+JSON.stringify(getApp().globalData.formids));
+    if(this.data.weekday=="")
+    {
+      wx.showModal({
+        title: '系统提示：',
+        content: '请先选择预约时间.',
+      })
+      return;
+    }
+
 
     wx.showModal({
       title: '预约信息确认',

@@ -2,7 +2,7 @@
 App({
   onLaunch: function () {
     // update version
-    setTimeout(this.updateVersion, 10000);
+    setTimeout(this.updateVersion, 6000);
     
   },
 
@@ -140,7 +140,7 @@ App({
 
   },
   globalData: {
-    version: "V2.6.3",
+    version: "V2.7.0",
     formids: [],
     userInfo: null,
     userid: '',
@@ -155,8 +155,9 @@ App({
     BOOKING_HOURS_FORMAT: ['上午8点', '上午9点', '上午10点', '下午1点', '下午2点', '下午3点'],
     BOOKING_PROP_CLASSES_DEFAULT: ['修复', '治疗', '拔牙', '洗牙', '换药'],
     BOOKING_PROP_CLASSES: [],
+    BOOKING_HOUR_CAPACITY_DEFAULT: [{ "h": 8, "c": "2" }, { "h": 9, "c": "2" }, { "h": 13, "c": "2" }, { "h": 14, "c": "2" }],
     SERVER_URL: 'https://www.4exam.cn',
-    SERVER_URL: 'http://127.0.0.1:8081'
+    //SERVER_URL: 'http://127.0.0.1:8081'
 
 
   },

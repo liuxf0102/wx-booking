@@ -162,5 +162,6 @@ module.exports = {
   formatWeekday: formatWeekday,
   formatBookingStatus: formatBookingStatus,
   formatBookingClass: formatBookingClass,
+  formatNumber: formatNumber,
   getWeekNumber:getWeekNumber
 }

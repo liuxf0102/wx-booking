@@ -41,15 +41,20 @@
     </view>
   </view>
 
-  
-     <view class="graySpace"></view>
+
+  <view class="graySpace"></view>
   <view class="item-avatar-xs" bindtap="bindBookingPropClass">
     <view>
       <text class="title">个性化设置-预约类型</text>
       <text class="content"></text>
     </view>
   </view>
- 
+<view class="item-avatar-xs" bindtap="bindBookingTime">
+    <view>
+      <text class="title">个性化设置-预约时间和人数</text>
+      <text class="content"></text>
+    </view>
+  </view>
   <view class="graySpace"></view>
   <view class="item-avatar-xs" bindtap="bindQrcode">
     <view>
@@ -82,7 +87,7 @@
       <text class="content">{{version}}</text>
     </view>
   </view>
-<view class="space_30rpx"></view>
+  <view class="space_30rpx"></view>
   <view class="space_30rpx"></view>
   <view class="space_30rpx"></view>
   <view class="weui-footer">

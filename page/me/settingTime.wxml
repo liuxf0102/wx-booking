@@ -1,0 +1,43 @@
+<view class="page">
+
+
+  <view class="weui-cells__title">设置预约时间</view>
+  <view class="weui-cell" wx:for="{{timeCapacities}}" wx:key="{{item}}">
+
+    <view class="weui-cell__bd" hover-class="weui-cell_active">
+      <view bindtap='tapBookingDetails'>{{item.h}}点，预约人数:{{item.c}}</view>
+    </view>
+    <view class="weui-cell__ft" hover-class="weui-cell_active">
+      <view class="view-color-blue" data-propclass="{{item.h}}" bindtap='tapDelete'>删除</view>
+    </view>
+  </view>
+  <view class="graySpace"></view>
+  <view class="weui-cell weui-cell_input">
+    <view class="weui-cell__hd">
+      <view class="weui-label">预约时间:</view>
+    </view>
+    <view class="weui-cell__bd">
+      <picker mode="selector" range="{{pickerTimeArray}}" bindchange="bindDateChange">
+        <view class="weui-input">{{hour_format}}</view>
+      </picker>
+    </view>
+  </view>
+  <view class="weui-cell weui-cell_input">
+    <view class="weui-cell__hd">
+      <view class="weui-label">预约人数:</view>
+    </view>
+    <view class="weui-cell__bd">
+      <input class="weui-input" placeholder="请输入预约人数" value="{{timeCapacity}}" maxlength='2' bindinput='inputTimeCapacity' />
+
+
+    </view>
+  </view>
+  <view class="weui-btn-area">
+    <view  class="view-color-blue" bindtap="bindAddTimeCapacity">添加预约时间和人数</view>
+  </view>
+<view class="graySpace"></view>
+
+<view class="weui-btn-area">
+    <button class="weui-btn" type="primary" bindtap="bindSave">保存更新</button>
+  </view>
+</view>

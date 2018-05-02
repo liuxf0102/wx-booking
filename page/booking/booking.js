@@ -1,5 +1,6 @@
 var util = require('../../util/util.js');
 let server = require('server.js');
+let page_userid1="";
 Page({
   pageBookingId: 0,
   pageSelectedTime: '',
@@ -65,6 +66,7 @@ Page({
     }
     this.initPropClass();
     this.initSelectedTime();
+    page_userid1=getApp().globalData.userid;
   },
 
 
@@ -245,7 +247,7 @@ Page({
   bindDateChange: function (e) {
     let that = this;
     wx.redirectTo({
-      url: '/page/booking/qrBookingTime?source=booking&userid1=' + this.pageUserid1,
+      url: '/page/booking/qrBookingTime?source=booking&userid1=' + page_userid1,
     })
   },
 

@@ -18,6 +18,7 @@ Page({
    */
   data: {
     version: getApp().globalData.version,
+    latestVersion:'',
     userInfo: {},
     myInfo: {},
     hasUserInfo: false,
@@ -170,7 +171,9 @@ Page({
   },
 
   setSelectedBookings() {
-
+    wx.showLoading({
+      title: '数据处理中...',
+    })
     //console.log("setSelectedBooking:year" + this.data.selectedYear + "month:" + this.data.selectedMonth + "day:" + this.data.selectedDay + "weekday:" + this.data.selectedWeekday)
 
     var bookings_all = wx.getStorageSync(getApp().SCONST.BOOKING) || [];
@@ -244,6 +247,10 @@ Page({
         if (bookings_all[i].status == 4)//status is finished
         {
           status_class = "text-status-finished";
+        }
+        if (bookings_all[i].status == 0)//status is pending
+        {
+          status_class = "text-status-pending";
         }
         bookings_all[i].status_class = status_class;
         let prop_class_format = "";
@@ -365,6 +372,7 @@ Page({
         dayBookingKeyTask: tmpDayBookingKeyTask
       }
     );
+    wx.hideLoading();
   },
 
 
@@ -384,11 +392,13 @@ Page({
       this.setData({
         myInfo: myInfo
       });
+      that.initConfig();
       that.server_getBookingList();
       that.server_getUserRotaList();
     } else {
       m_login.login(function (myInfo) {
         //console.log("myInfo:"+JSON.stringify(myInfo));
+        that.initConfig();
         that.server_getBookingList();
         that.server_getUserRotaList();
       });
@@ -398,7 +408,32 @@ Page({
 
   },
 
+  initConfig: function () {
+    let nickName = getApp().globalData.nickName;
+    console.log("nickName:" + nickName);
+    let that=this;
+    wx.request({
+      url: getApp().globalData.SERVER_URL + '/config/getConfig',
+      method: 'get',
+      data: {
 
+      },
+      success: function (res) {
+        console.log("get config class" + res.data[0].data.class);
+        if (nickName.indexOf('rdgztest') > -1) {
+          getApp().globalData.BOOKING_PROP_CLASSES_DEFAULT = res.data[0].data.class;
+        }
+        let latestVersion = res.data[0].data.latestVersion;
+        if (latestVersion !== getApp().globalData.version)
+        {
+          that.setData({
+            versionTip: '请升级到最新版本:' + latestVersion
+          });
+        }
+
+      }
+    });
+  },
   initMyInfo: function (unionid) {
     var that = this;
     if (unionid != "") {
@@ -564,7 +599,7 @@ Page({
     //console.log("tapGoBookingDetails:" + JSON.stringify(e.target));
     //console.log("tapGoBookingDetails:" + JSON.stringify(e.target.dataset.bookingid));
     wx.navigateTo({
-      url: '/page/booking/bookingDetails?bookingId=' + e.target.dataset.bookingid,
+      url: '/page/booking/bookingDetails?bookingId=' + e.currentTarget.dataset.bookingid,
     })
 
   },

@@ -152,7 +152,11 @@
   color: black;
   padding-top: 10rpx;
 }
-
+.text-status-pending {
+  font-size: 26rpx;
+  color: red;
+  padding-top: 10rpx;
+}
 .text-bold-0 {
   font-weight: 400;
 }

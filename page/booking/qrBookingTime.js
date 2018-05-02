@@ -3,7 +3,7 @@ let util = require('../../util/util.js');
 let m_login = require('m_login.js');
 var startX, endX;
 var moveFlag = true;// 判断左右华东超出菜单最大值时不再执行滑动事件
-var page_userid1 = "999";
+var page_userid1 = "";
 var page_bookingPendingCountMap = new Map();
 var page_bookingApprovedCountMap = new Map();
 var page_source = "";
@@ -195,7 +195,9 @@ Page({
 
 
   setSelectedBookings() {
-
+    wx.showLoading({
+      title: '数据处理中...',
+    })
     var bookItems = [];
     var tmpFullDay = this.pageFullDay;
     var tmpHourConfig = this.data.hourConfig;
@@ -369,6 +371,7 @@ Page({
         bookings: bookItems
       }
     );
+    wx.hideLoading();
   },
 
 
@@ -383,7 +386,7 @@ Page({
     var that = this;
     this.initWeekday(new Date().getTime());
     if (options.userid1) {
-      that.page_userid1 = options.userid1;
+      page_userid1 = options.userid1;
       that.server_getBookingList();
       that.server_getUserRotaList();
       that.getUserid1Data();
@@ -399,6 +402,10 @@ Page({
     let userid1Info = wx.getStorageSync("USERID1_INFO");
     console.log("useid1 config:" + userid1Info.config);
     let config = userid1Info.config;
+    if(config==undefined || config=="")
+    {
+      config={};
+    }
     let timeCapacities = [];
     if (config.hour_capacity) {
       timeCapacities = config.hour_capacity;
@@ -660,7 +667,7 @@ Page({
     }
     if (page_source == "qrBookingNew") {
       wx.redirectTo({
-        url: '/page/booking/qrBookingNew?selectedTime=' + seltectedTime
+        url: '/page/booking/qrBookingNew?userid1='+page_userid1+'&selectedTime=' + seltectedTime
       })
     }
   },

@@ -4,7 +4,7 @@ let m_login = require('m_login.js');
 var sliderWidth = 96
 Page({
   pageUserid1: "",
-  pageScene: '999',
+  pageScene: '900',
   pageSelectedTime:'',
 
   /**

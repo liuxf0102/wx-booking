@@ -62,12 +62,7 @@
       <text class="content"></text>
     </view>
   </view>
-  <view class="item-avatar-xs" bindtap="bindUserid2Page">
-    <view>
-      <text class="title">我是乙方:</text>
-      <text class="content"></text>
-    </view>
-  </view>
+ 
   <view class="graySpace"></view>
   <view class="item-avatar-xs" bindtap="bindHelp">
     <view>

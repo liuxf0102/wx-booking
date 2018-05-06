@@ -68,7 +68,7 @@
         </view>
         <view class="weui-media-box weui-media-box_text">
           <view class="weui-media-box__title weui-media-box__title_in-text">甲方自定义预约时间和预约人数</view>
-          <view class="weui-form-preview__value">甲方可以自己定义预约时间和预约人数（我-->个性化设置-预约时间和人数），另外甲方可以设置休班或值班（在预约里面里面长按日期选项,可以设置当天是休班或值班，系统默认周一到周五值班，周六周日休班）。</view>
+          <view class="weui-form-preview__value">甲方可以自己定义预约时间和预约人数（我-->个性化设置-预约时间和人数），另外甲方可以设置休班或值班（在预约列表页面长按日期选项,可以设置当天是休班或值班，系统默认周一到周五值班，周六周日休班）。</view>
         </view>
       </view>
 

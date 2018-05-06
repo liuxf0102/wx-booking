@@ -1,5 +1,5 @@
 <view class="page" bindtouchstart="touchStart" bindtouchmove="touchMove" bindtouchend="touchEnd">
-
+<view class="top-180">
   <view class="graySpace"></view>
   <view class="button-line">
     <form bindsubmit="formSubmit" report-submit='true'>
@@ -112,7 +112,8 @@
   </view>
 
   <view class="graySpace"></view>
-  <view class="weui-cells weui-cells_after-title">
+</view >
+  <view class="top-180-below weui-cells weui-cells_after-title">
 
     <view class="weui-cell {{item.bgcolor}}" hover-class="weui-cell_active bgcolor_1" wx:for="{{bookings}}" wx:key="{{item.id}}" data-bookingid="{{item.id}}" data-status="{{item.status}}" bindtap='tapBookingDetails' bindlongpress='longpressBooking'>
       <view class="weui-cell__hd">

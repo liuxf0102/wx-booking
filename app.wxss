@@ -56,3 +56,15 @@
   line-height:42rpx;
   
 }
+.top-180 {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 5000;
+  background: #fff;
+  min-height: 180rpx;
+}
+.top-180-below{
+  margin-top: 180rpx;
+}

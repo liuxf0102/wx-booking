@@ -37,7 +37,9 @@ Page({
       timeCapacities = getApp().globalData.BOOKING_HOUR_CAPACITY_DEFAULT;
     } 
     console.log("config:" + JSON.stringify(config));
-
+    timeCapacities.sort(function (a, b) {
+      return a.h - b.h;
+    })
     this.setData({
       config: config,
       timeCapacities: timeCapacities
@@ -74,6 +76,9 @@ Page({
     let config = this.data.config;
     config.hour_capacity = timeCapacities;
     console.log("config" + JSON.stringify(config));
+    timeCapacities.sort(function(a,b){
+      return a.h-b.h;
+    })
     //发起网络请求 
     this.setData({
       timeCapacities: timeCapacities

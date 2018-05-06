@@ -1,6 +1,7 @@
 var util = require('../../util/util.js');
 let server = require('server.js');
-let page_userid1="";
+let page_userid1 = "";
+let page_userid2 = "";
 Page({
   pageBookingId: 0,
   pageSelectedTime: '',
@@ -15,7 +16,7 @@ Page({
     mobileIsReady: false,
     realNameIsReady: true,
     weekdayLabels: ["", "一", "二", "三", "四", "五", "六", "日"],
-    minute:0,
+    minute: 0,
     year: 2018,
     month: 1,
     day: 1,
@@ -56,8 +57,9 @@ Page({
     })
 
     var that = this;
-
+    console.log("options:"+JSON.stringify(options));
     if (options.userid2 != '') {
+      page_userid2 = options.userid2;
       this.initSelectedUserid2(options.userid2);
     }
     if (options.selectedTime) {
@@ -66,7 +68,7 @@ Page({
     }
     this.initPropClass();
     this.initSelectedTime();
-    page_userid1=getApp().globalData.userid;
+    page_userid1 = getApp().globalData.userid;
   },
 
 
@@ -81,7 +83,7 @@ Page({
       })
       return;
     }
-    
+
     var mobile = that.data.mobile;
 
 
@@ -247,7 +249,7 @@ Page({
   bindDateChange: function (e) {
     let that = this;
     wx.redirectTo({
-      url: '/page/booking/qrBookingTime?source=booking&userid1=' + page_userid1,
+      url: '/page/booking/qrBookingTime?source=booking&userid2='+page_userid2+'&userid1=' + page_userid1,
     })
   },
 

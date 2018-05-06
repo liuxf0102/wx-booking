@@ -4,6 +4,8 @@ let m_login = require('m_login.js');
 var startX, endX;
 var moveFlag = true;// 判断左右华东超出菜单最大值时不再执行滑动事件
 
+let page_iconClicked = false;
+
 Page({
 
   theCurrentPageLongTime: 0,
@@ -18,7 +20,7 @@ Page({
    */
   data: {
     version: getApp().globalData.version,
-    latestVersion:'',
+    latestVersion: '',
     userInfo: {},
     myInfo: {},
     hasUserInfo: false,
@@ -411,7 +413,7 @@ Page({
   initConfig: function () {
     let nickName = getApp().globalData.nickName;
     console.log("nickName:" + nickName);
-    let that=this;
+    let that = this;
     wx.request({
       url: getApp().globalData.SERVER_URL + '/config/getConfig',
       method: 'get',
@@ -424,8 +426,7 @@ Page({
           getApp().globalData.BOOKING_PROP_CLASSES_DEFAULT = res.data[0].data.class;
         }
         let latestVersion = res.data[0].data.latestVersion;
-        if (latestVersion !== getApp().globalData.version)
-        {
+        if (latestVersion !== getApp().globalData.version) {
           that.setData({
             versionTip: '请升级到最新版本:' + latestVersion
           });
@@ -597,6 +598,10 @@ Page({
 
   tapBookingDetails: function (e) {
     //console.log("tapGoBookingDetails:" + JSON.stringify(e.target));
+    if (page_iconClicked) {
+      page_iconClicked = false;
+      return;
+    }
     //console.log("tapGoBookingDetails:" + JSON.stringify(e.target.dataset.bookingid));
     wx.navigateTo({
       url: '/page/booking/bookingDetails?bookingId=' + e.currentTarget.dataset.bookingid,
@@ -611,7 +616,9 @@ Page({
   },
 
   selectedUserid2: function (e) {
-    //console.log("selectedUserid2:" + JSON.stringify(e.target.dataset.userid));
+    page_iconClicked = true;
+    console.log("selectedUserid2:" + JSON.stringify(e.target.dataset.userid));
+
     let selectedUserid2 = e.target.dataset.userid;
     let selectedUserid2Name = e.target.dataset.name;
     if (selectedUserid2 == this.data.selectedUserid2) {

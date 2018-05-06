@@ -1,11 +1,11 @@
 // page/booking/qrBookingNew.js
 let util = require('../../util/util.js');
 let m_login = require('m_login.js');
-var sliderWidth = 96
+var sliderWidth = 96;
+var page_userid1 = "";
 Page({
-  pageUserid1: "",
   pageScene: '900',
-  pageSelectedTime:'',
+  pageSelectedTime: '',
 
   /**
    * 页面的初始数据
@@ -26,7 +26,7 @@ Page({
     day: 1,
     weekday: 1,
     hour: 8,
-    hours: [6,7,8, 9, 10,11,12,13, 14, 15,16,17,18,19,20,21,22],
+    hours: [6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22],
     hour_format: '上午8点',
     hourLabels: ["早上6点", "早上7点", "上午8点", "上午9点", "上午10点", "上午11点", "中午12点", "下午1点", "下午2点", "下午3点", "下午4点", "下午5点", "晚上6点", "晚上7点", "晚上8点", "晚上9点", "夜里10点"],
     pickerTimeArray: [],
@@ -34,8 +34,8 @@ Page({
     selectedTimeArray: [7, 2],
     memo2: "",
     prop_class: "未知",
-    prop_classes: [],
-    
+    prop_classes: getApp().globalData.BOOKING_PROP_CLASSES_DEFAULT,
+
   },
 
   /**
@@ -111,7 +111,7 @@ Page({
     }
     this.initQrcodeScene();
     this.initSelectedTime();
-    this.initPropClass();
+
   },
   tabClick: function (e) {
     wx.showLoading({
@@ -138,15 +138,15 @@ Page({
       let scenes = this.pageScene.split("-");
       console.log("scenes:" + scenes.join(','));
       if (scenes.length >= 1) {
-        this.pageUserid1 = scenes[0];
+        page_userid1 = scenes[0];
       }
-
+      console.log("userid1:" +page_userid1);
       //get userinfo info by userid
       wx.request({
         url: getApp().globalData.SERVER_URL + '/user/getUserInfoByUserid',
         method: 'post',
         data: {
-          userid: this.pageUserid1
+          userid: page_userid1
         },
         success: function (res) {
           wx.hideLoading();
@@ -158,12 +158,17 @@ Page({
               strConfig = "{}";
             }
             let config = JSON.parse(strConfig);
-            if (config.prop_classes && config.prop_classes.length > 0) {
-              let prop_classes = config.prop_classes;
-              that.setData({
-                prop_classes: prop_classes
-              });
+            let prop_classes = getApp().globalData.BOOKING_PROP_CLASSES_DEFAULT;
+            if (config.prop_classes) {
+              if (config.prop_classes.length > 0) {
+                prop_classes = config.prop_classes;
+              }
             }
+            console.log("prop_classes[0]" + prop_classes[0]);
+            that.setData({
+              prop_classes: prop_classes,
+              prop_class: prop_classes[0],
+            });
 
             //set userid1Info to storage
             wx.setStorageSync("USERID1_INFO", res.data[0].myInfo);
@@ -200,7 +205,7 @@ Page({
     }
   },
 
-  
+
   initSelectedTime: function () {
     let curDate = new Date();
     curDate.setDate(curDate.getDate() + 1);
@@ -209,17 +214,17 @@ Page({
       weekday = 7;
     }
     let year = curDate.getFullYear();
-    let month =  (curDate.getMonth() + 1);
+    let month = (curDate.getMonth() + 1);
     let day = curDate.getDate();
-    let hour="8";
-    if(this.pageSelectedTime.length>0){
+    let hour = "8";
+    if (this.pageSelectedTime.length > 0) {
       var theSelectedTime = this.pageSelectedTime.split(",");
-      if (theSelectedTime.length==5){
-      year = theSelectedTime[0];
-      month = theSelectedTime[1];
-      day = theSelectedTime[2];
-      hour = theSelectedTime[3];
-      weekday = theSelectedTime[4];
+      if (theSelectedTime.length == 5) {
+        year = theSelectedTime[0];
+        month = theSelectedTime[1];
+        day = theSelectedTime[2];
+        hour = theSelectedTime[3];
+        weekday = theSelectedTime[4];
       }
       this.setData({
         date: year + "/" + month + "/" + day,
@@ -233,14 +238,14 @@ Page({
         hour_format: util.formatHour(hour),
         weekday_format: util.formatWeekday(weekday),
       })
-    }else{
+    } else {
       this.setData({
         date: year + "/" + month + "/" + day,
         year: year,
         month: month,
         month_format: "",
         day: day,
-        day_format:"",
+        day_format: "",
         weekday: "",
         hour: hour,
         hour_format: "",
@@ -248,20 +253,19 @@ Page({
       })
     }
 
-    
+
   },
   bindDateChange: function (e) {
     //console.log("ddd");
     wx.redirectTo({
-      url: '/page/booking/qrBookingTime?source=qrBookingNew&userid1=' + this.pageUserid1,
+      url: '/page/booking/qrBookingTime?source=qrBookingNew&userid1=' + page_userid1,
     })
   },
 
   bindNewBookingQR: function (e) {
     var that = this;
     //console.log("formids:"+JSON.stringify(getApp().globalData.formids));
-    if(this.data.weekday=="")
-    {
+    if (this.data.weekday == "") {
       wx.showModal({
         title: '系统提示：',
         content: '请先选择预约时间.',
@@ -272,7 +276,7 @@ Page({
 
     wx.showModal({
       title: '预约信息确认',
-      content: ' 对方姓名:' + this.data.userInfo1.real_name + '\n\r时间:' + this.data.weekday_format + ' ' + this.data.month + '月' + this.data.day + '号 ' + this.data.hour_format + '\n\r预约类型:' + this.data.prop_class,
+      content: ' 预约的是:' + this.data.userInfo1.real_name + '\n\r时间:' + this.data.weekday_format + ' ' + this.data.month + '月' + this.data.day + '号 ' + this.data.hour_format + '\n\r预约类型:' + this.data.prop_class,
       showCancel: true,
       success: function (res) {
         if (res.confirm) {
@@ -485,21 +489,6 @@ Page({
     }
     this.setData({
       mobile: mobile
-    });
-
-
-  },
-  initPropClass: function (e) {
-    var that = this;
-    //console.log("tapPropClass:"+JSON.stringify(e));
-
-    let prop_classes = getApp().globalData.BOOKING_PROP_CLASSES;
-    if (prop_classes.length == 0) {
-      prop_classes = getApp().globalData.BOOKING_PROP_CLASSES_DEFAULT;
-    }
-
-    that.setData({
-      prop_class: prop_classes[0]
     });
 
 

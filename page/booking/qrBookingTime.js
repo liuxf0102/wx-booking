@@ -4,9 +4,11 @@ let m_login = require('m_login.js');
 var startX, endX;
 var moveFlag = true;// 判断左右华东超出菜单最大值时不再执行滑动事件
 var page_userid1 = "";
+var page_userid2 = "";
 var page_bookingPendingCountMap = new Map();
 var page_bookingApprovedCountMap = new Map();
 var page_source = "";
+var page_options="";
 Page({
 
   theCurrentPageLongTime: 0,
@@ -385,11 +387,16 @@ Page({
     page_bookingApprovedCountMap = new Map();
     var that = this;
     this.initWeekday(new Date().getTime());
+    console.log("options:" + JSON.stringify(options));
+    page_options = options;
     if (options.userid1) {
       page_userid1 = options.userid1;
       that.server_getBookingList();
       that.server_getUserRotaList();
       that.getUserid1Data();
+    }
+    if (options.userid2) {
+      page_userid2 = options.userid2;
     }
     if (options.source) {
       page_source = options.source;
@@ -399,26 +406,56 @@ Page({
   },
 
   getUserid1Data: function () {
-    let userid1Info = wx.getStorageSync("USERID1_INFO");
-    console.log("useid1 config:" + userid1Info.config);
-    let config = userid1Info.config;
-    if(config==undefined || config=="")
-    {
-      config={};
-    }
+    console.log("userid1:" + page_userid1);
+    let that=this;
+    let config = {};
     let timeCapacities = [];
-    if (config.hour_capacity) {
-      timeCapacities = config.hour_capacity;
-      if (timeCapacities.length == 0) {
-        timeCapacities = getApp().globalData.BOOKING_HOUR_CAPACITY_DEFAULT;
+    console.log("userid1:" + page_userid1);
+    //get userinfo info by userid
+    wx.request({
+      url: getApp().globalData.SERVER_URL + '/user/getUserInfoByUserid',
+      method: 'post',
+      data: {
+        userid: page_userid1
+      },
+      success: function (res) {
+        wx.hideLoading();
+        if (res.statusCode == 200 && res.data[0].result == 'success') {
+
+          console.log("userid1 real_name:" + res.data[0].myInfo.real_name);
+          let strConfig = res.data[0].myInfo.config;
+          if (strConfig == '') {
+            strConfig = "{}";
+          }
+          let config = JSON.parse(strConfig);
+          let prop_classes = getApp().globalData.BOOKING_PROP_CLASSES_DEFAULT;
+          if (config.prop_classes) {
+            if (config.prop_classes.length > 0) {
+              prop_classes = config.prop_classes;
+            }
+          }
+          console.log("prop_classes[0]" + prop_classes[0]);
+      
+          if (config.hour_capacity) {
+            timeCapacities = config.hour_capacity;
+            if (timeCapacities.length == 0) {
+              timeCapacities = getApp().globalData.BOOKING_HOUR_CAPACITY_DEFAULT;
+            }
+          } else {
+            timeCapacities = getApp().globalData.BOOKING_HOUR_CAPACITY_DEFAULT;
+          }
+          console.log("timeCapacities:" + JSON.stringify(timeCapacities));
+          that.setData({
+            hourConfig: timeCapacities
+          });
+
+        }
+
       }
-    } else {
-      timeCapacities = getApp().globalData.BOOKING_HOUR_CAPACITY_DEFAULT;
-    }
-    //console.log("timeCapacities:" + timeCapacities);
-    this.setData({
-      hourConfig: timeCapacities
-    });
+    });    
+    
+    
+    
 
 
   },
@@ -662,7 +699,7 @@ Page({
 
     if (page_source == "booking") {
       wx.redirectTo({
-        url: '/page/booking/booking?selectedTime=' + seltectedTime
+        url: '/page/booking/booking?userid2='+page_userid2+'&selectedTime=' + seltectedTime
       })
     }
     if (page_source == "qrBookingNew") {
@@ -731,9 +768,9 @@ Page({
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function () {
-    console.log("onPullDownRefresh :" + page_userid1);
+    console.log("onPullDownRefresh :" + JSON.stringify(page_options));
     wx.redirectTo({
-      url: '/page/booking/qrBookingTime?userid1=' + page_userid1,
+      url: '/page/booking/qrBookingTime?source=' + page_options.source+'&userid1=' + page_options.userid1 + "&userid2=" + page_options.userid2,
     })
 
   },

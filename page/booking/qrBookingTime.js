@@ -689,12 +689,7 @@ Page({
   tapSelectedTime: function (e) {
     let seltectedTime = e.currentTarget.dataset.seltectedtime;
     let capacity = e.currentTarget.dataset.capacity;
-    if ((capacity - 0) < 1) {
-      wx.showToast({
-        title: '请选择其他时间。',
-      })
-      return;
-    }
+   
     console.log("seltectedTime" + JSON.stringify(seltectedTime));
 
     if (page_source == "booking") {
@@ -724,7 +719,7 @@ Page({
   bindGoBack: function (e) {
     console.log("userid1:" + page_userid1);
     wx.redirectTo({
-      url: '/page/booking/qrBookingNew?userid1=' + page_userid1,
+      url: '/page/booking/booking?userid2=' + page_userid2,
     })
   },
   /**

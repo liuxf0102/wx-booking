@@ -5,3 +5,8 @@
 .weui-tab__content{
     padding-top: 10rpx;
 }
+.text-red {
+  font-size: 56rpx;
+  color: red;
+  padding-top: 20rpx;
+}

@@ -266,11 +266,7 @@ Page({
         });
 
         console.log("mobile:" + mobile);
-        //Check if the user exists ,if not exists then create the user
-        wx.showLoading({
-          title: '数据加载中......',
-          mask: true
-        })
+       
         //wx.showNavigationBarLoading();
         this.getOrCreateUserInfoByMobile(mobile);
 
@@ -311,12 +307,17 @@ Page({
   },
   getOrCreateUserInfoByMobile: function (mobile) {
     var that = this;
+    //Check if the user exists ,if not exists then create the user
+    wx.showLoading({
+      title: '数据加载中......',
+    })
     //发起网络请求 
     wx.request({
       url: getApp().globalData.SERVER_URL + '/user/getOrCreateUserInfoByMobile',
       method: 'post',
       data: {
         mobile: mobile,
+        appid:getApp().globalData.APPID_2
       },
       success: function (res) {
         var tmpUserid = res.data[0].myInfo.userid;
@@ -328,6 +329,9 @@ Page({
           userid2isNew: isNewUser,
           userid2Name: res.data[0].myInfo.real_name
         })
+        
+      },
+      complete:function(e){
         wx.hideLoading();
       }
     });

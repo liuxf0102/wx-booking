@@ -140,7 +140,9 @@ App({
 
   },
   globalData: {
-    version: "V2.8.2",
+    version: "V3.0.0",
+    APPID: 0,
+    APPID_2: 1,
     formids: [],
     userInfo: null,
     userid: '',

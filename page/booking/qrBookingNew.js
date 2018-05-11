@@ -1,6 +1,5 @@
 // page/booking/qrBookingNew.js
 let util = require('../../util/util.js');
-let m_login = require('m_login.js');
 var sliderWidth = 96;
 var page_userid1 = "";
 Page({

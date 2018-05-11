@@ -4,7 +4,7 @@
 
     <view class="weui-cell" hover-class="weui-cell_active">
       <view class="weui-cell__hd">
-        <image class="image" src="{{myInfo.icon}}" />
+        <open-data class="image" type="userAvatarUrl"></open-data>
       </view>
       <view class="weui-cell__bd">
         <view>{{myInfo.real_name}}</view>

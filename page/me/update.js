@@ -34,10 +34,13 @@ Page({
         that.setData({
           buttonIsReady:false
         });
-        //set userid 2 Storage
-        wx.showToast({
-          title: '更新用户信息成功',
-        });
+        
+        wx.showModal({
+          title: '系统提示',
+          content: '更新用户信息成功。',
+          showCancel: false
+        })
+
 
         getApp().reloadUserInfo();
         
@@ -111,6 +114,10 @@ Page({
         realName: e.detail.value,
         realNameIsReady:true
       })
+    }else{
+      this.setData({
+        realNameIsReady: false
+      })
     }
 
     
@@ -148,6 +155,49 @@ Page({
         jobLocation: e.detail.value
      })
     }
+
+
+  },
+  getUserInfo: function (e) {
+    let that=this;
+    console.log("getUserInfo:" + JSON.stringify(e));
+    console.log("getUserInfo nickName:" + e.detail.userInfo.nickName);
+    console.log("getUserInfo avatarUrl:" + e.detail.userInfo.avatarUrl);
+    console.log("getUserInfo gender:" + e.detail.userInfo.gender);
+    let userid = getApp().globalData.userid;
+    let nickName = getApp().globalData.userNickName;
+    let icon = getApp().globalData.userAvatarUrl;
+    let gender = getApp().globalData.userGender;
+
+    console.log("db userInfo userid:" + userid);
+    console.log("db userInfo nickName:" + nickName);
+
+
+    wx.request({
+      url: getApp().globalData.SERVER_URL + '/user/update',
+      method: 'put',
+      data: {
+        userid: userid,
+        nick_name: e.detail.userInfo.nickName,
+        icon: e.detail.userInfo.avatarUrl,
+        gender: e.detail.userInfo.gender
+
+      },
+      success: function (res) {
+        console.log("userid:" + res.data[0].userid);
+        getApp().reloadUserInfo();
+        wx.showModal({
+          title: '系统提示',
+          content: '同步微信头像和昵称成功。',
+          showCancel:false
+        })
+        that.setData({
+          buttonIsReady: false
+        });
+      }
+    });
+
+
 
 
   },

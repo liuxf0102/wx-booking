@@ -157,7 +157,7 @@
       <navigator url="/page/me/comment" class="weui-footer__link">联系我们</navigator>
     </view>
     <view class="weui-footer__text">Copyright © 2018-2020 预约本{{version}}</view>
-    <view class="weui-footer__text text-red">{{versionTip}}</view>
+    
   </view>
   <view class="space_900rpx"></view>
 

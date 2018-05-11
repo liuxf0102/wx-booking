@@ -88,16 +88,14 @@
       <view class="weui-panel__hd">公众号关联小程序</view>
       <view class="weui-media-box weui-media-box_text">
         <view class="weui-media-box__title weui-media-box__title_in-text">小程序ID</view>
-        <view class="weui-form-preview__value">appid:wx5699f282563037ea</view>
+        <view class="weui-form-preview__value">wx7c76d2fdd4f4b7db</view>
       </view>
       <view class="weui-media-box weui-media-box_text">
-        <view class="weui-media-box__title weui-media-box__title_in-text">关联预约本乙方</view>
-        <view class="weui-form-preview__value">公众号关联小程序乙方，小程序路径为：page/booking/qrBookingNew?userid1=ID,其中ID为用户的ID，该ID在个人中心页面，图标旁边可以查看到。用户的ID为999，则小程序路径为：page/booking/qrBookingNew?userid1=999</view>
+        <view class="weui-media-box__title weui-media-box__title_in-text">关联预约本预约功能</view>
+       
+        <view class="weui-form-preview__value">小程序路径为：page/booking/qrBookingNew?userid1=ID,其中ID为用户的ID，该ID在个人中心页面，图标旁边可以查看到。如果用户的ID为999，则小程序路径为：page/booking/qrBookingNew?userid1=999</view>
       </view>
-      <view class="weui-media-box weui-media-box_text">
-        <view class="weui-media-box__title weui-media-box__title_in-text">关联预约本甲方</view>
-        <view class="weui-form-preview__value">公众号关联小程序甲方，小程序路径为：page/booking/bookingList</view>
-      </view>
+      
     </view>
 
   </view>

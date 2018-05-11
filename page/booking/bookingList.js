@@ -1,6 +1,6 @@
 // pages/booking/bookingList.js
 let util = require('../../util/util.js');
-let m_login = require('m_login.js');
+let m_login = require('../me/m_login.js');
 var startX, endX;
 var moveFlag = true;// 判断左右华东超出菜单最大值时不再执行滑动事件
 
@@ -389,18 +389,21 @@ Page({
 
     let myInfo = wx.getStorageSync('MY_INFO') || {};
     if (myInfo.userid) {
-      console.log("getUnionid userid from storage.");
+      console.log("get userid from cache:" + myInfo.userid);
       getApp().initGlobalData(myInfo);
       this.setData({
         myInfo: myInfo
       });
-      that.initConfig();
+      
       that.server_getBookingList();
       that.server_getUserRotaList();
     } else {
       m_login.login(function (myInfo) {
         //console.log("myInfo:"+JSON.stringify(myInfo));
-        that.initConfig();
+        console.log("get userid from db:" + JSON.stringify(myInfo.userid));
+        getApp().globalData.userid = myInfo.userid;
+        wx.setStorageSync('MY_INFO', myInfo);
+        
         that.server_getBookingList();
         that.server_getUserRotaList();
       });
@@ -410,31 +413,7 @@ Page({
 
   },
 
-  initConfig: function () {
-    let nickName = getApp().globalData.nickName;
-    console.log("nickName:" + nickName);
-    let that = this;
-    wx.request({
-      url: getApp().globalData.SERVER_URL + '/config/getConfig',
-      method: 'get',
-      data: {
-
-      },
-      success: function (res) {
-        console.log("get config class" + res.data[0].data.class);
-        if (nickName.indexOf('rdgztest') > -1) {
-          getApp().globalData.BOOKING_PROP_CLASSES_DEFAULT = res.data[0].data.class;
-        }
-        let latestVersion = res.data[0].data.latestVersion;
-        if (latestVersion !== getApp().globalData.version) {
-          that.setData({
-            versionTip: '请升级到最新版本:' + latestVersion
-          });
-        }
-
-      }
-    });
-  },
+  
   initMyInfo: function (unionid) {
     var that = this;
     if (unionid != "") {

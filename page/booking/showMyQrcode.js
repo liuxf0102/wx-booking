@@ -16,8 +16,7 @@ Page({
    */
   onLoad: function (options) {
     let myInfo={};
-        myInfo.icon=getApp().globalData.icon;
-        myInfo.nickName = getApp().globalData.nickName;
+        myInfo.nickName = getApp().globalData.useriNickName;
         myInfo.real_name = getApp().globalData.real_name;
     this.setData({
 
@@ -55,7 +54,27 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-  
+    if (getApp().globalData.mobile == '') {
+      wx.showModal({
+        title: '系统提示',
+        content: '请先完善用户信息，然后再用该功能.',
+        showCancel: true,
+        success: function (res) {
+          if (res.confirm) {
+            wx.navigateTo({
+              url: '/page/me/update',
+            })
+          }
+          if (res.cancel) {
+            console.log("cancel");
+            wx.switchTab({
+              url: '/page/me/me',
+            })
+          }
+        }
+      });
+
+    }
   },
 
   /**

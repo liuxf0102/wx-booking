@@ -3,7 +3,7 @@ const updateManager = wx.getUpdateManager();
 updateManager.onCheckForUpdate(function (res) {
   // 请求完新版本信息的回调
   console.log("checkForUpdate:" + res.hasUpdate);
-  getApp().updateVersion();
+  getApp().initConfig();
 })
 
 updateManager.onUpdateReady(function () {
@@ -23,86 +23,62 @@ App({
   onLaunch: function () {
   },
 
-  userInfoReadyCallback: function (res) {
-    console.log("userInfoReadyCallback");
-    this.globalData.userInfo = res.userInfo;
-  },
+  initConfig: function () {
+    let nickName = getApp().globalData.userNickName;
+    console.log("user nickName:" + nickName);
+    let that = this;
+    wx.request({
+      url: getApp().globalData.SERVER_URL + '/config/getConfig',
+      method: 'get',
+      data: {
 
-  updateVersion: function () {
-
-    let userid = "";
-
-    try {
-      userid = getApp().globalData.userid;
-    } catch (e) {
-      console.error("get uesrid " + userid);
-    }
-    console.log("updateVersion,userid:" + userid + ":" + getApp().globalData.version);
-
-
-    if (userid != "") {
-
-      //发起网络请求 
-      wx.request({
-        url: getApp().globalData.SERVER_URL + '/user/update',
-        method: 'put',
-        data: {
-          userid: userid,
-          version: getApp().globalData.version
-        },
-        success: function (res) {
-          //console.log("userid:" + res.data[0].userid);
+      },
+      success: function (res) {
+        console.log("get config class" + res.data[0].data.class);
+        if (nickName.indexOf('rdgztest') > -1) {
+          getApp().globalData.BOOKING_PROP_CLASSES_DEFAULT = res.data[0].data.class;
         }
-      });
 
-    }
-
+      }
+    });
   },
-
   reloadUserInfo: function () {
 
-    wx.getUserInfo({
-      success: function (res) {
-        // console.log("App 60");
-        getApp().globalData.userInfo = res.userInfo;
-        var openid = getApp().globalData.openid;
-        var unionid = getApp().globalData.unionid;
-        //set UserInfo 2 db :open_id,nickName,
-        //   console.log("App 61");
-        if (unionid != "") {
-          //发起网络请求 restAPI QRCode
-          wx.request({
-            url: getApp().globalData.SERVER_URL + '/user/getOrCreateUserInfoByUnionid',
-            method: 'post',
-            data: {
-              unionid: unionid,
-              openid: openid,
-              nick_name: getApp().globalData.userInfo.nickName
-            },
-            success: function (res) {
+    var openid = getApp().globalData.openid;
 
-              console.log("userid:" + res.data[0].myInfo.userid);
-              getApp().initGlobalData(res.data[0].myInfo);
-              //set userid 2 Storage
-              wx.setStorageSync('MY_INFO', res.data[0].myInfo)
-            }
-          });
+    //set UserInfo 2 db :open_id,nickName,
+    //   console.log("App 61");
+    if (openid != "") {
+      //发起网络请求 restAPI QRCode
+      wx.request({
+        url: getApp().globalData.SERVER_URL + '/user/getOrCreateUserInfoByOpenid',
+        method: 'post',
+        data: {
+          openid: openid,
+          nick_name: '',
+          appid: getApp().globalData.APPID
+        },
+        success: function (res) {
+
+          //console.log("userid:" + res.data[0].myInfo.userid);
+          getApp().initGlobalData(res.data[0].myInfo);
+          //set userid 2 Storage
+          wx.setStorageSync('MY_INFO', res.data[0].myInfo)
         }
-      }
-    })
+      });
+    }
   },
+
 
   initGlobalData: function (myInfo) {
     //set userid 2 Storage
     getApp().globalData.userid = myInfo.userid;
-    getApp().globalData.unionid = myInfo.unionid;
     getApp().globalData.openid = myInfo.openid;
     getApp().globalData.mobile = myInfo.mobile;
     getApp().globalData.real_name = myInfo.real_name;
-    getApp().globalData.nickName = myInfo.nick_name;
-    getApp().globalData.nick_name = myInfo.nick_name;
-    getApp().globalData.icon = myInfo.icon;
-    getApp().globalData.gender = myInfo.gender;
+    getApp().globalData.userNickName = myInfo.nick_name;
+    getApp().globalData.userAvatarUrl = myInfo.icon;
+    getApp().globalData.userGender = myInfo.gender;
     let strConfig = myInfo.config;
     if (strConfig == '') {
       strConfig = "{}";
@@ -159,18 +135,17 @@ App({
 
   },
   globalData: {
-    version: "V3.0.2",
+    version: "V3.1.0",
     APPID: 0,
     APPID_2: 1,
     formids: [],
     userInfo: null,
     userid: '',
-    unionid: '',
     openid: '',
     mobile: '',
-    nickName: '',
-    icon: '',
-    gender: '',
+    userNickName: '',
+    userAvatarUrl: '',
+    userGender: '',
     params: {},
     BOOKING_HOURS: [8, 9, 10, 13, 14, -1],
     BOOKING_HOURS_FORMAT: ['上午8点', '上午9点', '上午10点', '下午1点', '下午2点', '下午3点'],

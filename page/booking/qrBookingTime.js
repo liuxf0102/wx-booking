@@ -1,6 +1,5 @@
 // pages/booking/bookingList.js
 let util = require('../../util/util.js');
-let m_login = require('m_login.js');
 var startX, endX;
 var moveFlag = true;// 判断左右华东超出菜单最大值时不再执行滑动事件
 var page_userid1 = "";

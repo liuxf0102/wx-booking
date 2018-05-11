@@ -30,9 +30,11 @@
     </view>
   </view>
   <view class="weui-btn-area">
-    <button class="weui-btn" type="primary" disabled="{{!(buttonIsReady&&realNameIsReady&&mobileIsReady)}}" bindtap="bindUpdateUserInfo">更新数据</button>
+    <button class="weui-btn" type="primary" disabled="{{!(buttonIsReady&&realNameIsReady&&mobileIsReady)}}" bindtap="bindUpdateUserInfo"  open-type="getUserInfo" bindgetuserinfo="getUserInfo" >更新数据</button>
   </view>
   <view class="graySpace"></view>
-  <view class="weui-cells__title">添加其他属性</view>
+  <view class="weui-btn-area">
+  <button class="weui-btn" type="primary" disabled="{{!(buttonIsReady)}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo" >同步微信头像和昵称</button>
+</view>
 
 </view>

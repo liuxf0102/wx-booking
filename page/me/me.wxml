@@ -7,11 +7,13 @@
 
   <view class="weui-cell" hover-class="weui-cell_active">
     <view class="weui-cell__hd">
-      <image class="image" src="{{myInfo.icon}}" bindtap="bindQrcode" />
+      <open-data class="image" type="userAvatarUrl" bindtap="bindQrcode"></open-data>
     </view>
     <view class="weui-cell__bd">
       <view>{{myInfo.real_name}}</view>
-      <view style="font-size: 13px;color: #888888;">ID:{{myInfo.userid}}-{{myInfo.nick_name}}</view>
+      <view style="font-size: 13px;color: #888888;">ID:{{myInfo.userid}}-
+        <open-data type="userNickName"></open-data>
+      </view>
     </view>
     <view class="weui-cell__ft">
       <view>{{version}}</view>
@@ -49,7 +51,7 @@
       <text class="content"></text>
     </view>
   </view>
-<view class="item-avatar-xs" bindtap="bindBookingTime">
+  <view class="item-avatar-xs" bindtap="bindBookingTime">
     <view>
       <text class="title">个性化设置-预约时间和人数</text>
       <text class="content"></text>
@@ -62,7 +64,7 @@
       <text class="content"></text>
     </view>
   </view>
- 
+
   <view class="graySpace"></view>
   <view class="item-avatar-xs" bindtap="bindHelp">
     <view>

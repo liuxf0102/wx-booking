@@ -466,7 +466,7 @@ Page({
     var curDate = new Date();
     curDate.setTime(theLongTime)
     //console.log("theCurrentPageLongTime:" + curDate);
-    var t = "选择预约时间:" + curDate.getFullYear() + "年" + (curDate.getMonth() + 1) + "月";
+    var t = "时间:" + curDate.getFullYear() + "年" + (curDate.getMonth() + 1) + "月";
 
     this.setData({
       curYear: curDate.getFullYear(),

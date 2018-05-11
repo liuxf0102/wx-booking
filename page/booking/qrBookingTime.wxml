@@ -137,7 +137,11 @@
   <view class="weui-btn-area">
     <button form-type="submit" class="weui-btn" type="primary" bindtap="bindGoBack">返回</button>
   </view>
-  <view class="space_30rpx"></view>
+   <view class="text-blue">
+  <view>1.左右滑动，选择上或下一周的预约时间。</view>
+  <view>2.点击顶部日期，是否只显某一天预约列表。</view>
+
+  </view>
   <view class="space_30rpx"></view>
   <view class="space_30rpx"></view>
   <view class="weui-footer">

@@ -248,3 +248,8 @@
   font-weight: 700;
   color: green;
 }
+.text-blue {
+  font-size: 32rpx;
+  color: blue;
+  padding: 20rpx;
+}

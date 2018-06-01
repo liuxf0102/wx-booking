@@ -151,6 +151,6 @@
     </view>
     <view class="weui-footer__text">Copyright © 2018-2020 预约本{{version}}</view>
   </view>
-  <view class="space_900rpx"></view>
+  
 
 </view>

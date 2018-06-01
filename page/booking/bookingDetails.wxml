@@ -41,17 +41,17 @@
           <text> {{booking.prop_class}}</text>
         </view>
       </view>
-      <view class="weui-cell weui-cell_access" hidden="{{booking.memo2==''?true:false}}">
+      <view class="weui-cell weui-cell_access">
 
         <view class="weui-cell__hd">
           <view class="weui-label">对方留言:</view>
         </view>
         <view class="weui-cell__bd">
-          <text class="booking-memo2">{{booking.memo2}}</text>
+          <text>{{booking.memo2==''?'无留言':''}}{{booking.memo2}}</text>
         </view>
       </view>
 
-      <view class="weui-cell weui-cell_access" hidden="{{booking.memo2==''?true:false}}">
+      <view class="weui-cell weui-cell_access" >
 
         <view class="weui-cell__bd">
 

@@ -53,8 +53,11 @@ Page({
       title: '数据加载中...',
     })
     var that = this;
-    console.log("server_getBookingList userid:" + getApp().globalData.userid);
-    if (getApp().globalData.userid == '') {
+
+    let userid1 = getApp().globalData.userid;
+    //let userid1 = 2272;
+    console.log("server_getBookingList userid1:" + userid1);
+    if (userid1 == '') {
       return;
     }
     //发起网络请求 restAPI dates
@@ -62,7 +65,7 @@ Page({
       url: getApp().globalData.SERVER_URL + '/booking/list',
       method: 'post',
       data: {
-        userid: getApp().globalData.userid
+        userid: userid1
 
       }, success: function (res) {
         //console.log(res);
@@ -394,7 +397,7 @@ Page({
       this.setData({
         myInfo: myInfo
       });
-      
+
       that.server_getBookingList();
       that.server_getUserRotaList();
     } else {
@@ -403,7 +406,7 @@ Page({
         console.log("get userid from db:" + JSON.stringify(myInfo.userid));
         getApp().globalData.userid = myInfo.userid;
         wx.setStorageSync('MY_INFO', myInfo);
-        
+
         that.server_getBookingList();
         that.server_getUserRotaList();
       });
@@ -413,7 +416,7 @@ Page({
 
   },
 
-  
+
   initMyInfo: function (unionid) {
     var that = this;
     if (unionid != "") {
@@ -639,7 +642,7 @@ Page({
     let selectedDayLongTime = this.theCurrentPageLongTime + diffDay * 24 * 3600 * 1000;
 
     wx.showActionSheet({
-      itemList: ['值班', '休息'],
+      itemList: ['值班', '休息', '预约自定义'],
       success: function (res) {
 
         //console.log("selected:" + res.tapIndex);
@@ -650,17 +653,30 @@ Page({
         if (res.tapIndex == 1) {
           flag = '休';
         }
+        if (res.tapIndex == 2) {
+          flag = '自';
+        }
         if (!res.cancel) {
+
+
+
           let selectedDay = new Date();
           selectedDay.setTime(selectedDayLongTime);
           let day = util.formatDate(selectedDay);
+          if (res.tapIndex == 2) {
+            wx.navigateTo({
+              url: '/page/me/setTimeDay?day=' + day,
+            });
+            return;
+          }
           wx.request({
             url: getApp().globalData.SERVER_URL + '/rota/updateOrCreate',
             method: 'put',
             data: {
               userid: getApp().globalData.userid,
               day: day,
-              flag: flag
+              flag: flag,
+              memo:''
 
             }, success: function (res) {
               //console.log("add date success:");
@@ -852,7 +868,11 @@ Page({
     this.setData({
       myInfo: wx.getStorageSync('MY_INFO')
     });
+    if (getApp().globalData.FLAG_RELOAD) {
 
+      this.server_getUserRotaList();
+      getApp().globalData.FLAG_RELOAD = false;
+    }
     // console.log("onShow");
   },
 

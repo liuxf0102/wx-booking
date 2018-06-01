@@ -15,7 +15,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    if(getApp().globalData.userid==999){
+    if(getApp().globalData.userid<1000){
       this.setData({status:0});
     }
     this.server_getCommentList();
@@ -78,11 +78,17 @@ Page({
   },
   bindComment: function (e) {
     let that = this;
+    let userid = getApp().globalData.userid;
+    if(userid=='')
+    {
+      console.error("userid is empty");
+      return;
+    }
     wx.request({
       url: getApp().globalData.SERVER_URL + '/comment/create',
       method: 'post',
       data: {
-        userid2: getApp().globalData.userid,
+        userid2: userid,
         comment: that.data.comment,
 
       },
@@ -107,7 +113,7 @@ Page({
   },
   bindReply: function (e) {
     //console.log("bindReply:e:" + JSON.stringify(e));
-    if (getApp().globalData.userid == '999') {
+    if (getApp().globalData.userid < 1000) {
       wx.navigateTo({
         url: '/page/me/reply?id=' + e.currentTarget.dataset.id,
       })

@@ -142,10 +142,10 @@
     </form>
   </view>
   <view class="text-blue">
-  <view>1.左右滑动，选择上或下一周的预约时间。</view>
+  <view>1.左右滑动，查看上或下一周的预约列表。</view>
   <view>2.点击顶部日期，是否只显某一天预约列表。</view>
   <view>3.长按顶部日期，设置当天是值班或休班。</view>
-  <view>4.长按预约列表，改变预约预约状态。</view>
+  <view>4.长按预约列表，可以改变预约状态。</view>
   </view>
   
   
@@ -159,6 +159,6 @@
     <view class="weui-footer__text">Copyright © 2018-2020 预约本{{version}}</view>
     
   </view>
-  <view class="space_900rpx"></view>
+  
 
 </view>

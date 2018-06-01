@@ -22,7 +22,13 @@ updateManager.onUpdateReady(function () {
 App({
   onLaunch: function () {
   },
+  onShow: function () {
+    console.log('App onShow:' +this.globalData.userid);
+  },
 
+  onHide: function () {
+    console.log('App onHide');
+  },
   initConfig: function () {
     let nickName = getApp().globalData.userNickName;
     console.log("user nickName:" + nickName);
@@ -135,7 +141,7 @@ App({
 
   },
   globalData: {
-    version: "V3.1.0",
+    version: "V3.1.1",
     APPID: 0,
     APPID_2: 1,
     formids: [],
@@ -147,6 +153,7 @@ App({
     userAvatarUrl: '',
     userGender: '',
     params: {},
+    FLAG_RELOAD:false,
     BOOKING_HOURS: [8, 9, 10, 13, 14, -1],
     BOOKING_HOURS_FORMAT: ['上午8点', '上午9点', '上午10点', '下午1点', '下午2点', '下午3点'],
     BOOKING_PROP_CLASSES_DEFAULT: ['修复', '治疗', '拔牙', '洗牙', '换药'],

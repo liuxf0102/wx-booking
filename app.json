@@ -17,7 +17,8 @@
     "page/me/reply",
     "page/booking/qrBookingTime",
     "page/me/settingTime",
-    "page/me/setTimeDay"
+    "page/me/setTimeDay",
+    "page/me/setApproval"
   ],
   "window": {
     "backgroundTextStyle": "light",

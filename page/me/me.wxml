@@ -57,6 +57,12 @@
       <text class="content"></text>
     </view>
   </view>
+  <view class="item-avatar-xs" bindtap="bindBookingApproval">
+    <view>
+      <text class="title">个性化设置-预约是否需要审核</text>
+      <text class="content"></text>
+    </view>
+  </view>
   <view class="graySpace"></view>
   <view class="item-avatar-xs" bindtap="bindQrcode">
     <view>

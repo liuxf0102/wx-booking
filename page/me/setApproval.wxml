@@ -1,0 +1,11 @@
+<view class="container">
+  <view class="graySpace"></view>
+  <view class="weui-cells weui-cells_after-title">
+            <view class="weui-cell weui-cell_switch">
+                <view class="weui-cell__bd">预约申请需要审核</view>
+                <view class="weui-cell__ft">
+                    <switch checked='{{needApproval}}' bindchange="listenerSwitch"/>
+                </view>
+            </view>
+        </view>
+</view>
